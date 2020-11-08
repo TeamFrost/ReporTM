@@ -42,9 +42,9 @@ const styles = StyleSheet.create({
     info: {
         alignSelf: "flex-start",
         marginLeft: "10%",
-        flex: 0.8,
+        flex: 0.95,
         width: "80%",
-        marginBottom: "10%",
+        marginBottom: "5%",
     },
     text: {
         fontSize: 18,
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         marginLeft: '5%'
     },
     button: {
-        marginTop: "10%",
+        marginTop: "8%",
         width: "80%",
         backgroundColor: "#BB6BD9",
         height: "6%",
@@ -131,7 +131,7 @@ export default function LoginScreen() {
                 style={styles.ellipse_2}
             />
 
-            <View style={styles.info} marginTop={40}>
+            <View style={styles.info} marginTop={30}>
                 <Text style={styles.text}>
                     Email
                     </Text>
