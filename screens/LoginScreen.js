@@ -2,7 +2,6 @@ import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { Image, StyleSheet, Text, View, TouchableHighlight } from "react-native";
 import { Container, Content, Item, Input, Icon } from 'native-base';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const styles = StyleSheet.create({
     container: {
@@ -29,7 +28,7 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         marginBottom: 10,
-        marginTop: 70,
+        marginTop: '13%',
     },
     basetext: {
         fontSize: 48,
@@ -42,12 +41,12 @@ const styles = StyleSheet.create({
     info: {
         alignSelf: "flex-start",
         marginLeft: "10%",
-        flex: 0.95,
+        flex: 0.85,
         width: "80%",
         marginBottom: "5%",
     },
     text: {
-        fontSize: 18,
+        fontSize: 20,
         color: "#8F92A1",
         fontWeight: "bold",
     },
@@ -69,9 +68,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderRadius: 20,
         marginBottom: "5%",
+        elevation: 10,
     },
     buttonText: {
-        fontSize: 18,
+        fontSize: 20,
         color: "#fff",
         fontWeight: "bold",
 
@@ -131,7 +131,7 @@ export default function LoginScreen() {
                 style={styles.ellipse_2}
             />
 
-            <View style={styles.info} marginTop={30}>
+            <View style={styles.info} marginTop={'12%'}>
                 <Text style={styles.text}>
                     Email
                     </Text>
@@ -142,7 +142,7 @@ export default function LoginScreen() {
                 </Text>
                 <PasswordField />
             </View>
-            <TouchableHighlight style={styles.button}>
+            <TouchableHighlight underlayColor='#593480' onPress={() => console.log("Buton apasat test")} style={styles.button}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Text style={styles.buttonText}>Autentificare</Text>
                     <Icon active name='md-arrow-forward' style={styles.icons2} />
