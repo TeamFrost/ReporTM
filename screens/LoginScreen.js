@@ -1,8 +1,12 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { Image, StyleSheet, Text, View, TouchableHighlight } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableHighlight, Dimensions } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from 'react-native-elements';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+
+const screenHeight = Math.round(Dimensions.get('window').height);
 
 const styles = StyleSheet.create({
     container: {
@@ -24,16 +28,19 @@ const styles = StyleSheet.create({
         left: "-1%",
         width: 52,
         height: 103,
+
     },
     icon: {
-        width: 200,
-        height: 200,
+        width: screenHeight / 3.6,
+        height: screenHeight / 3.6,
         marginBottom: 10,
-        marginTop: '13%',
+        marginTop: '15%',
+        alignSelf: "center"
     },
     basetext: {
         fontSize: 48,
         fontWeight: "bold",
+        alignSelf: "center"
     },
     innertext: {
         fontWeight: "bold",
@@ -42,7 +49,7 @@ const styles = StyleSheet.create({
     info: {
         alignSelf: "flex-start",
         marginLeft: "10%",
-        marginTop: '15%',
+        marginTop: '10%',
         width: "80%",
         flex: 1,
         marginBottom: "5%",
@@ -62,20 +69,19 @@ const styles = StyleSheet.create({
         marginLeft: '5%'
     },
     button: {
-        marginTop: "15%",
+        marginTop: "10%",
         backgroundColor: "#BB6BD9",
-        height: "12%",
+        height: 50,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 20,
-        marginBottom: "5%",
+        marginBottom: "3%",
         elevation: 10,
     },
     buttonText: {
         fontSize: 20,
         color: "#fff",
         fontWeight: "bold",
-
     },
     outerText: {
         alignSelf: "center",
@@ -92,65 +98,67 @@ const styles = StyleSheet.create({
 export default function LoginScreen() {
     return (
         <View style={styles.container}>
-
-            <Image source={require("../assets/Icon.png")} style={styles.icon} />
-            <Text style={styles.basetext}>
-                Repor<Text style={styles.innertext}>TM</Text>
-            </Text>
-            <Image
-                source={require("../assets/Ellipse_1.png")}
-                style={styles.ellipse_1}
-            />
-            <Image
-                source={require("../assets/Ellipse_2.png")}
-                style={styles.ellipse_2}
-            />
-            <View style={styles.info}>
-                <Input
-                    label='Email'
-                    labelStyle={styles.text}
-                    placeholder='Email'
-                    leftIcon={
-                        <Icon
-                            name='md-person'
-                            size={30}
-                            color='black'
-                            style={{ marginRight: 5 }}
-                        />
-
-                    }
+            <KeyboardAwareScrollView
+                style={{ flex: 1, width: '100%' }}
+                keyboardShouldPersistTaps="always">
+                <Image source={require("../assets/Icon.png")} style={styles.icon} />
+                <Text style={styles.basetext}>
+                    Repor<Text style={styles.innertext}>TM</Text>
+                </Text>
+                <Image
+                    source={require("../assets/Ellipse_1.png")}
+                    style={styles.ellipse_1}
                 />
-                <Input
-                    label='Parola'
-                    labelStyle={styles.text}
-                    placeholder='Password'
-                    leftIcon={
-                        <Icon
-                            name='md-lock'
-                            size={30}
-                            color='black'
-                            style={{ marginRight: 7 }}
-                        />
-                    }
-                    rightIcon={
-                        <Icon
-                            name='md-eye'
-                            size={30}
-                            color='black'
-                        />
-                    }
+                <Image
+                    source={require("../assets/Ellipse_2.png")}
+                    style={styles.ellipse_2}
                 />
+                <View style={styles.info}>
+                    <Input
+                        label='Email'
+                        labelStyle={styles.text}
+                        placeholder='Email'
+                        leftIcon={
+                            <Icon
+                                name='md-person'
+                                size={30}
+                                color='black'
+                                style={{ marginRight: 5 }}
+                            />
 
-                <TouchableHighlight underlayColor='#593480' onPress={() => console.log("Buton apasat test")} style={styles.button}>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <Text style={styles.buttonText}>Autentificare</Text>
-                        <Icon active name='md-arrow-forward' style={styles.icons2} />
-                    </View>
-                </TouchableHighlight>
+                        }
+                    />
+                    <Input
+                        label='Parola'
+                        labelStyle={styles.text}
+                        placeholder='Password'
+                        leftIcon={
+                            <Icon
+                                name='md-lock'
+                                size={30}
+                                color='black'
+                                style={{ marginRight: 7 }}
+                            />
+                        }
+                        rightIcon={
+                            <Icon
+                                name='md-eye'
+                                size={30}
+                                color='black'
+                            />
+                        }
+                    />
+                    <TouchableHighlight underlayColor='#593480' onPress={() => console.log("Buton apasat test")} style={styles.button}>
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <Text style={styles.buttonText}>Autentificare</Text>
+                            <Icon active name='md-arrow-forward' style={styles.icons2} />
+                        </View>
+                    </TouchableHighlight>
 
-                <Text style={styles.outerText}>Daca nu ai cont, <Text onPress={() => console.log("Mergi la register")} style={styles.innerText}>inregistreaza-te</Text> acum.</Text>
-            </View>
-            <StatusBar style="auto" />
+                    <Text style={styles.outerText}>Daca nu ai cont, <Text onPress={() => console.log("Mergi la register")} style={styles.innerText}>inregistreaza-te</Text> acum.</Text>
+                </View>
+                <StatusBar style="auto" />
+            </KeyboardAwareScrollView>
         </View >
 
     );
