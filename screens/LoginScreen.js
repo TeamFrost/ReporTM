@@ -1,7 +1,8 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { Image, StyleSheet, Text, View, TouchableHighlight } from "react-native";
-import { Container, Content, Item, Input, Icon } from 'native-base';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { Input } from 'react-native-elements';
 
 const styles = StyleSheet.create({
     container: {
@@ -41,8 +42,9 @@ const styles = StyleSheet.create({
     info: {
         alignSelf: "flex-start",
         marginLeft: "10%",
-        flex: 0.85,
+        marginTop: '15%',
         width: "80%",
+        flex: 1,
         marginBottom: "5%",
     },
     text: {
@@ -60,10 +62,9 @@ const styles = StyleSheet.create({
         marginLeft: '5%'
     },
     button: {
-        marginTop: "8%",
-        width: "80%",
+        marginTop: "15%",
         backgroundColor: "#BB6BD9",
-        height: "6%",
+        height: "12%",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 20,
@@ -77,6 +78,7 @@ const styles = StyleSheet.create({
 
     },
     outerText: {
+        alignSelf: "center",
         color: "#8F92A1",
         fontSize: 16,
     },
@@ -86,33 +88,6 @@ const styles = StyleSheet.create({
     }
 
 })
-export function EmailField() {
-    return (
-        <Container>
-            <Content>
-                <Item>
-                    <Icon active name='md-person' style={styles.icons} />
-                    <Input placeholder='Email' />
-                </Item>
-            </Content>
-        </Container>
-    );
-}
-export function PasswordField() {
-    return (
-        <Container>
-            <Content>
-                <Item>
-                    <Icon name='md-lock' style={styles.icons} />
-                    <Input placeholder='Parola' />
-                    <Icon name='md-eye' style={styles.icons} />
-                </Item>
-            </Content>
-        </Container>
-    );
-}
-
-
 
 export default function LoginScreen() {
     return (
@@ -130,27 +105,53 @@ export default function LoginScreen() {
                 source={require("../assets/Ellipse_2.png")}
                 style={styles.ellipse_2}
             />
+            <View style={styles.info}>
+                <Input
+                    label='Email'
+                    labelStyle={styles.text}
+                    placeholder='Email'
+                    leftIcon={
+                        <Icon
+                            name='md-person'
+                            size={30}
+                            color='black'
+                            style={{ marginRight: 5 }}
+                        />
 
-            <View style={styles.info} marginTop={'12%'}>
-                <Text style={styles.text}>
-                    Email
-                    </Text>
-                <EmailField />
+                    }
+                />
+                <Input
+                    label='Parola'
+                    labelStyle={styles.text}
+                    placeholder='Password'
+                    leftIcon={
+                        <Icon
+                            name='md-lock'
+                            size={30}
+                            color='black'
+                            style={{ marginRight: 7 }}
+                        />
+                    }
+                    rightIcon={
+                        <Icon
+                            name='md-eye'
+                            size={30}
+                            color='black'
+                        />
+                    }
+                />
 
-                <Text style={styles.text}>
-                    Parola
-                </Text>
-                <PasswordField />
+                <TouchableHighlight underlayColor='#593480' onPress={() => console.log("Buton apasat test")} style={styles.button}>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                        <Text style={styles.buttonText}>Autentificare</Text>
+                        <Icon active name='md-arrow-forward' style={styles.icons2} />
+                    </View>
+                </TouchableHighlight>
+
+                <Text style={styles.outerText}>Daca nu ai cont, <Text onPress={() => console.log("Mergi la register")} style={styles.innerText}>inregistreaza-te</Text> acum.</Text>
             </View>
-            <TouchableHighlight underlayColor='#593480' onPress={() => console.log("Buton apasat test")} style={styles.button}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text style={styles.buttonText}>Autentificare</Text>
-                    <Icon active name='md-arrow-forward' style={styles.icons2} />
-                </View>
-            </TouchableHighlight>
-            <Text style={styles.outerText}>Daca nu ai cont, <Text style={styles.innerText}>inregistreaza-te</Text> acum.</Text>
             <StatusBar style="auto" />
-        </View>
+        </View >
 
     );
 }
