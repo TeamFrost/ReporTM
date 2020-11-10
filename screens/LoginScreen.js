@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Image, StyleSheet, Text, View, TouchableHighlight, Dimensions } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Toast from 'react-native-toast-message';
+import { firebase } from '../config/firebaseConfig'
 
 
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -95,7 +97,55 @@ const styles = StyleSheet.create({
 
 })
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen() {
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const [textSecurity, setTextSecurity] = useState(true)
+
+    const onFooterLinkPress = () => {
+        console.log("Mergi la register")
+    }
+
+    const handleEyeOnPress = () => {
+        setTextSecurity(false);
+    }
+
+    const onLoginPress = () => {
+        console.log("Autentificare")
+        firebase
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .then((response) => {
+                const uid = response.user.uid
+                const usersRef = firebase.firestore().collection('users')
+                usersRef
+                    .doc(uid)
+                    .get()
+                    .then(firestoreDocument => {
+                        if (!firestoreDocument.exists) {
+                            alert("User does not exist anymore.")
+                            return;
+                        }
+                        const user = firestoreDocument.data()
+                        console.log("Succes!")
+                        alert("Succes!")
+                        Toast.show({
+                            type: 'success',
+                            text1: 'Autentificare facuta cu succes!',
+                        });
+                        // navigation.navigate('Home', {user})
+                    })
+                    .catch(error => {
+                        alert(error)
+                    });
+            })
+            .catch(error => {
+                alert(error)
+            })
+    }
+
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView
@@ -117,20 +167,26 @@ export default function LoginScreen({ navigation }) {
                     <Input
                         label='Email'
                         labelStyle={styles.text}
+                        autoCapitalize="none"
+                        onChangeText={(text) => setEmail(text)}
+                        value={email}
                         placeholder='Email'
                         leftIcon={
                             <Icon
-                                name='md-person'
+                                name='md-mail'
                                 size={30}
                                 color='black'
                                 style={{ marginRight: 5 }}
                             />
-
                         }
                     />
                     <Input
                         label='Parola'
                         labelStyle={styles.text}
+                        secureTextEntry={textSecurity}
+                        autoCapitalize="none"
+                        onChangeText={(text) => setPassword(text)}
+                        value={password}
                         placeholder='Password'
                         leftIcon={
                             <Icon
@@ -145,18 +201,20 @@ export default function LoginScreen({ navigation }) {
                                 name='md-eye'
                                 size={30}
                                 color='black'
+                                onPress={handleEyeOnPress}
                             />
                         }
                     />
-                    <TouchableHighlight underlayColor='#593480' onPress={() => console.log("Buton apasat test")} style={styles.button}>
+                    <TouchableHighlight underlayColor='#593480' onPress={onLoginPress} style={styles.button}>
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <Text style={styles.buttonText}>Autentificare</Text>
                             <Icon active name='md-arrow-forward' style={styles.icons2} />
                         </View>
                     </TouchableHighlight>
 
-                    <Text style={styles.outerText}>Daca nu ai cont, <Text onPress={() => console.log("Mergi la register")} style={styles.innerText}>inregistreaza-te</Text> acum.</Text>
+                    <Text style={styles.outerText}>Daca nu ai cont, <Text onPress={onFooterLinkPress} style={styles.innerText}>inregistreaza-te</Text> acum.</Text>
                 </View>
+                <Toast ref={(ref) => Toast.setRef(ref)} />
                 <StatusBar style="auto" />
             </KeyboardAwareScrollView>
         </View >
