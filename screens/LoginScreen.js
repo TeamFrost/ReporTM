@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
 
 })
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView

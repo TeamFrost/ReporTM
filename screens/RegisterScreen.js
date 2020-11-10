@@ -23,14 +23,14 @@ const styles = StyleSheet.create({
     },
     ellipse_2: {
         position: "absolute",
-        top: "25%",
+        top: "20%",
         left: "-1%",
         width: 52,
         height: 103,
     },
     icon: {
-        width: screenHeight / 3.6,
-        height: screenHeight / 3.6,
+        width: screenHeight / 4,
+        height: screenHeight / 4,
         marginBottom: 10,
         marginTop: '15%',
         alignSelf: "center"
