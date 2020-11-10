@@ -4,6 +4,7 @@
     "slug": "ReporTM",
     "version": "1.0.0",
     "orientation": "portrait",
+    "icon": "./assets/Icon.png",
     "updates": {
       "fallbackToCacheTimeout": 0
     },

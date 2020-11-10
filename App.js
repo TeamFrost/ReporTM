@@ -4,6 +4,8 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 
+
+
 export default function App() {
 	return (
 		// <View style={styles.container}>
@@ -21,8 +23,11 @@ export default function App() {
 		// 	/>
 		// 	<StatusBar style="auto" />
 		// </View>
-		// <LoginScreen />
-		<RegisterScreen />
+		<LoginScreen />
+		// <RegisterScreen />
+
+
+
 	);
 }
 
