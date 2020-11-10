@@ -9,6 +9,7 @@ export default function LandingScreen({ navigation }) {
         setTimeout(() => {
             navigation.navigate('Login')
         }, 3000);
+        clearTimeout();
     });
     return (
         <View style={styles.container}>

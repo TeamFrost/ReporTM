@@ -19,7 +19,7 @@ export default function App() {
 				}}>
 				<Stack.Screen name="Landing" component={LandingScreen} />
 				<Stack.Screen name="Login" component={LoginScreen} />
-				<Stack.Screen name="Registration" component={RegisterScreen} />
+				<Stack.Screen name="Register" component={RegisterScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

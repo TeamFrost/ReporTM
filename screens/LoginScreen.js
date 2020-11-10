@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
 
 })
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -105,11 +105,11 @@ export default function LoginScreen() {
     const [textSecurity, setTextSecurity] = useState(true)
 
     const onFooterLinkPress = () => {
-        console.log("Mergi la register")
+        navigation.navigate('Register')
     }
 
     const handleEyeOnPress = () => {
-        setTextSecurity(false);
+        textSecurity ? setTextSecurity(false) : setTextSecurity(true);
     }
 
     const onLoginPress = () => {
@@ -130,7 +130,7 @@ export default function LoginScreen() {
                         }
                         const user = firestoreDocument.data()
                         console.log("Succes!")
-                        alert("Succes!")
+                        // alert("Succes!")
                         Toast.show({
                             type: 'success',
                             text1: 'Autentificare facuta cu succes!',

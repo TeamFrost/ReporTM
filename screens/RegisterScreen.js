@@ -76,12 +76,17 @@ const styles = StyleSheet.create({
         color: "#fff",
         marginLeft: '5%'
     },
+    text: {
+        fontSize: 20,
+        color: "#8F92A1",
+        fontWeight: "bold",
+    },
 
 })
 
 
 
-export default function RegisterScreen() {
+export default function RegisterScreen({ navigation }) {
 
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
@@ -94,7 +99,7 @@ export default function RegisterScreen() {
     const [textSecurity, setTextSecurity] = useState(true)
 
     const onFooterLinkPress = () => {
-        console.log("Mergi la login")
+        navigation.navigate('Login')
     }
 
     const handleOnTextChangeEmail = (text) => {
@@ -216,7 +221,7 @@ export default function RegisterScreen() {
                         labelStyle={styles.text}
                         autoCapitalize="none"
                         secureTextEntry={textSecurity}
-                        placeholder='Password'
+                        placeholder='Parola'
                         onChangeText={(text) => setPassword(text)}
                         value={password}
                         leftIcon={
