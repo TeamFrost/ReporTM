@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Animated, Image, StyleSheet, Text, View, Dimensions } from "react-native";
+import { Image, StyleSheet, Text, View, Dimensions } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { firebase } from '../config/firebaseConfig'
 
@@ -43,7 +43,8 @@ export default function LandingScreen({ navigation }) {
 
     if (loading) {
         return (
-            <></>
+            <>
+            </>
         )
     }
 

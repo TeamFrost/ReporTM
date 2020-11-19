@@ -2,10 +2,15 @@ import React from 'react';
 import { StatusBar } from "expo-status-bar";
 import { Image, Text, View, StyleSheet, TouchableHighlight, Dimensions } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 
-export default function HomeScreen({ navigation }) {
+
+
+export default function HomeScreen() {
+
+    const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
@@ -131,7 +136,10 @@ export default function HomeScreen({ navigation }) {
             <View style={styles.bottomMenu}>
 
                 <TouchableHighlight
-                    onPress={() => console.log('PressedMenu!')}
+                    // onPress={() => console.log('PressedMenu!')}
+                    // onPress={() => {
+                    //     navigation.dispatch(DrawerActions.openDrawer());
+                    // }}
                     style={{ flex: 1 }}>
                     <View style={styles.bottomMenuTouchable}>
                         <Icon
@@ -245,7 +253,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '8%',
         borderTopColor: '#593480',
-        borderTopWidth: 1,
+        borderTopWidth: 0.5,
     },
     bottomIcon: {
         width: screenHeight / 8.3,

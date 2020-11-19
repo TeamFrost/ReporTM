@@ -3,7 +3,7 @@ import 'react-native-gesture-handler';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem, } from '@react-navigation/drawer';
 
 import { firebase } from './config/firebaseConfig';
 import LandingScreen from './screens/LandingScreen';
@@ -23,35 +23,12 @@ const Drawer = createDrawerNavigator();
 
 export default function App() {
 
-	const [loading, setLoading] = useState(true)
-	const [user, setUser] = useState(null)
-
-
-	useEffect(() => {
-		const usersRef = firebase.firestore().collection('users');
-		firebase.auth().onAuthStateChanged(user => {
-			if (user) {
-				usersRef
-					.doc(user.uid)
-					.get()
-					.then((document) => {
-						const userData = document.data()
-						setLoading(false)
-						setUser(userData)
-					})
-					.catch((error) => {
-						setLoading(false)
-					});
-			} else {
-				setLoading(false)
-			}
-		});
-	}, []);
-
-	if (loading) {
-		return (
-			<></>
-		)
+	const handleLogout = (props) => {
+		firebase.auth().signOut()
+			.then(props.navigation.navigate("Login"))
+			.catch(error => {
+				alert(error)
+			});
 	}
 
 	const createHomeStack = () =>
@@ -59,33 +36,32 @@ export default function App() {
 			screenOptions={{
 				headerShown: false
 			}}>
+			{/* <Stack.Screen
+				name="Drawer"
+				children={createDrawer}
+			/> */}
 			<Stack.Screen name="Landing" component={LandingScreen} />
+			<Stack.Screen name="Home" component={HomeScreen} />
+			<Stack.Screen name="Map" component={MapScreen} />
+			<Stack.Screen name="Report" component={ReportScreen} />
+			<Stack.Screen name="Feed" component={FeedScreen} />
+			<Stack.Screen name="Profile" component={ProfileScreen} />
+			<Stack.Screen name="Settings" component={SettingsScreen} />
+			<Stack.Screen name="Help" component={HelpScreen} />
+			<Stack.Screen name="Login" component={LoginScreen} />
+			<Stack.Screen name="Register" component={RegisterScreen} />
 
-			{user ? (
-				<>
-					<Stack.Screen
-						name="Drawer"
-						children={createDrawer}
-					/>
-					<Stack.Screen name="Home" component={HomeScreen} />
-					<Stack.Screen name="Map" component={MapScreen} />
-					<Stack.Screen name="Report" component={ReportScreen} />
-					<Stack.Screen name="Feed" component={FeedScreen} />
-					<Stack.Screen name="Profile" component={ProfileScreen} />
-					<Stack.Screen name="Settings" component={SettingsScreen} />
-					<Stack.Screen name="Help" component={HelpScreen} />
-
-				</>
-			) : (
-					<>
-						<Stack.Screen name="Login" component={LoginScreen} />
-						<Stack.Screen name="Register" component={RegisterScreen} />
-					</>
-				)}
 		</Stack.Navigator>
 
 	createDrawer = () =>
-		<Drawer.Navigator>
+		<Drawer.Navigator drawerContent={props => {
+			return (
+				<DrawerContentScrollView {...props}>
+					<DrawerItemList {...props} />
+					<DrawerItem label="Deconectare" onPress={handleLogout(props)} />
+				</DrawerContentScrollView>
+			)
+		}}>
 			<Drawer.Screen
 				name="Home"
 				component={HomeScreen}
@@ -135,17 +111,11 @@ export default function App() {
 					title: "Ajutor"
 				}}
 			/>
-			{/* <Drawer.Screen
-				name="Logout"
-				options={{
-					title: "Deconectare"
-				}}
-			/> */}
 		</Drawer.Navigator>
 
 
 	return (
-		<NavigationContainer>
+		<NavigationContainer initialRouteName="Landing">
 			{createHomeStack()}
 		</NavigationContainer>
 	);
