@@ -1,6 +1,9 @@
 import React from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Image, Text, View, SafeAreaView, StyleSheet, TouchableHighlight } from "react-native";
+import { Image, Text, View, StyleSheet, TouchableHighlight, Dimensions } from "react-native";
+import Icon from 'react-native-vector-icons/Ionicons';
+
+const screenHeight = Math.round(Dimensions.get('window').height);
 
 export default function HomeScreen({ navigation }) {
 
@@ -38,6 +41,7 @@ export default function HomeScreen({ navigation }) {
                         <Text style={styles.titlePaper}>Hartă</Text>
                         <Text style={styles.descriptionPaper}>Vezi harta problemelor din oraș</Text>
                     </View>
+
                 </TouchableHighlight>
 
                 <TouchableHighlight
@@ -72,6 +76,7 @@ export default function HomeScreen({ navigation }) {
                         <Text style={styles.titlePaper}>Sesizări</Text>
                         <Text style={styles.descriptionPaper}>Toate sesizările utilizatorilor</Text>
                     </View>
+
                 </TouchableHighlight>
 
                 <TouchableHighlight
@@ -124,13 +129,42 @@ export default function HomeScreen({ navigation }) {
 
             </View>
             <View style={styles.bottomMenu}>
+
+                <TouchableHighlight
+                    onPress={() => console.log('PressedMenu!')}
+                    style={{ flex: 1 }}>
+                    <View style={styles.bottomMenuTouchable}>
+                        <Icon
+                            name='md-menu'
+                            size={30}
+                            color='#593480'
+                            style={{ marginRight: 25 }}
+                        />
+                    </View>
+                </TouchableHighlight>
+
+                <TouchableHighlight
+                    onPress={() => console.log('PressedHome!')}
+                    style={{ flex: 1 }}>
+                    <View style={styles.bottomMenuTouchable}>
+                        <Icon
+                            name='md-home'
+                            size={30}
+                            color='#593480'
+                            style={{ marginLeft: 25 }}
+                        />
+                    </View>
+                </TouchableHighlight>
+
             </View>
+
             <Image
                 source={require("../assets/Home.png")}
-                style={styles.icon}
+                style={styles.bottomIcon}
             />
+
             <StatusBar style="auto" />
-        </View>
+        </View >
     );
 }
 
@@ -165,10 +199,9 @@ const styles = StyleSheet.create({
     },
     textbox: {
         alignItems: "center",
-        marginTop: "15%",
+        marginTop: "9%",
         margin: "10%",
-        marginBottom: "0%"
-
+        marginBottom: "2%"
     },
     description: {
         marginTop: 10,
@@ -176,32 +209,21 @@ const styles = StyleSheet.create({
         lineHeight: 18,
         textAlign: 'center'
     },
-    bottomMenu: {
-        backgroundColor: "#cacaca",
-        width: '100%',
-        height: '10%',
-    },
-    icon: {
-        width: 100,
-        height: 100,
-        position: "absolute",
-        top: "87%",
-    },
-    paper: {
-        backgroundColor: "#ECDAF27F",
-        width: 140,
-        height: 130,
-        borderRadius: 20,
-        flexDirection: "column",
-        alignItems: "center",
-    },
     paperView: {
         flexDirection: "row",
         justifyContent: "space-evenly",
         width: '100%'
     },
+    paper: {
+        backgroundColor: "#ECDAF27F",
+        width: 150,
+        height: 130,
+        borderRadius: 20,
+        flexDirection: "column",
+        alignItems: "center",
+    },
     iconPaper: {
-        marginTop: 15,
+        marginTop: 13,
         width: 50,
         height: 50,
     },
@@ -214,10 +236,28 @@ const styles = StyleSheet.create({
         fontSize: 11,
         fontWeight: "400",
         textAlign: 'center',
-        marginLeft: 10,
-        marginRight: 10,
+        marginLeft: 15,
+        marginRight: 15,
         fontStyle: "italic"
-
+    },
+    bottomMenu: {
+        flexDirection: 'row',
+        width: '100%',
+        height: '8%',
+        borderTopColor: '#593480',
+        borderTopWidth: 1,
+    },
+    bottomIcon: {
+        width: screenHeight / 8.3,
+        height: screenHeight / 8.3,
+        position: "absolute",
+        top: "88%",
+    },
+    bottomMenuTouchable: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#fefefe"
     }
 
 })
