@@ -1,6 +1,8 @@
 import React from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Image, Text, View, SafeAreaView, StyleSheet, TouchableHighlight } from "react-native";
+import { Image, Text, View, SafeAreaView, StyleSheet, TouchableHighlight, Dimensions } from "react-native";
+
+const screenHeight = Math.round(Dimensions.get('window').height);
 
 export default function HomeScreen({ navigation }) {
 
@@ -26,7 +28,7 @@ export default function HomeScreen({ navigation }) {
             <View style={styles.paperView}>
 
                 <TouchableHighlight
-                    onPress={() => console.log('Pressed1!')}
+                    onPress={() => navigation.navigate('Map')}
                     underlayColor="#ECDAF2D0"
                     style={{ borderRadius: 20 }}
                 >
@@ -41,7 +43,7 @@ export default function HomeScreen({ navigation }) {
                 </TouchableHighlight>
 
                 <TouchableHighlight
-                    onPress={() => console.log('Pressed2!')}
+                    onPress={() => navigation.navigate('Report')}
                     underlayColor="#ECDAF2D0"
                     style={{ borderRadius: 20 }}
                 >
@@ -60,7 +62,7 @@ export default function HomeScreen({ navigation }) {
             <View style={styles.paperView}>
 
                 <TouchableHighlight
-                    onPress={() => console.log('Pressed3!')}
+                    onPress={() => navigation.navigate('Feed')}
                     underlayColor="#ECDAF2D0"
                     style={{ borderRadius: 20 }}
                 >
@@ -75,7 +77,7 @@ export default function HomeScreen({ navigation }) {
                 </TouchableHighlight>
 
                 <TouchableHighlight
-                    onPress={() => console.log('Pressed4!')}
+                    onPress={() => navigation.navigate('Profile')}
                     underlayColor="#ECDAF2D0"
                     style={{ borderRadius: 20 }}
                 >
@@ -93,7 +95,7 @@ export default function HomeScreen({ navigation }) {
             <View style={styles.paperView}>
 
                 <TouchableHighlight
-                    onPress={() => console.log('Pressed5!')}
+                    onPress={() => navigation.navigate('Settings')}
                     underlayColor="#ECDAF2D0"
                     style={{ borderRadius: 20 }}
                 >
@@ -108,7 +110,7 @@ export default function HomeScreen({ navigation }) {
                 </TouchableHighlight>
 
                 <TouchableHighlight
-                    onPress={() => console.log('Pressed6!')}
+                    onPress={() => navigation.navigate('Help')}
                     underlayColor="#ECDAF2D0"
                     style={{ borderRadius: 20 }}
                 >
@@ -130,7 +132,7 @@ export default function HomeScreen({ navigation }) {
                 style={styles.icon}
             />
             <StatusBar style="auto" />
-        </View>
+        </View >
     );
 }
 
@@ -165,9 +167,9 @@ const styles = StyleSheet.create({
     },
     textbox: {
         alignItems: "center",
-        marginTop: "15%",
+        marginTop: "9%",
         margin: "10%",
-        marginBottom: "0%"
+        marginBottom: "2%"
 
     },
     description: {
@@ -179,17 +181,17 @@ const styles = StyleSheet.create({
     bottomMenu: {
         backgroundColor: "#cacaca",
         width: '100%',
-        height: '10%',
+        height: '8%',
     },
     icon: {
-        width: 100,
-        height: 100,
+        width: screenHeight / 8.3,
+        height: screenHeight / 8.3,
         position: "absolute",
-        top: "87%",
+        top: "88%",
     },
     paper: {
         backgroundColor: "#ECDAF27F",
-        width: 140,
+        width: 150,
         height: 130,
         borderRadius: 20,
         flexDirection: "column",

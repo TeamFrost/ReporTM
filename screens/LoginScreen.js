@@ -135,7 +135,7 @@ export default function LoginScreen({ navigation }) {
                             type: 'success',
                             text1: 'Autentificare facuta cu succes!',
                         });
-                        // navigation.navigate('Home', {user})
+                        navigation.navigate('Home')
                     })
                     .catch(error => {
                         alert(error)

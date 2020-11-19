@@ -1,16 +1,52 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Animated, Image, StyleSheet, Text, View, Dimensions } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { firebase } from '../config/firebaseConfig'
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 
 export default function LandingScreen({ navigation }) {
+
+
+    const [loading, setLoading] = useState(true)
+    const [user, setUser] = useState(null)
+
     useEffect(() => {
-        setTimeout(() => {
-            navigation.navigate('Login')
-        }, 3000);
-        clearTimeout();
-    });
+        const usersRef = firebase.firestore().collection('users');
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                usersRef
+                    .doc(user.uid)
+                    .get()
+                    .then((document) => {
+                        const userData = document.data()
+                        setLoading(false)
+                        setUser(userData)
+                    })
+                    .catch((error) => {
+                        setLoading(false)
+
+                    });
+                setTimeout(() => {
+                    navigation.navigate('Home')
+                }, 3000);
+                clearTimeout();
+            } else {
+                setLoading(false)
+                setTimeout(() => {
+                    navigation.navigate('Login')
+                }, 3000);
+                clearTimeout();
+            }
+        });
+    }, []);
+
+    if (loading) {
+        return (
+            <></>
+        )
+    }
+
     return (
         <View style={styles.container}>
             <Image
