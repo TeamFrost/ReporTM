@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import 'react-native-gesture-handler';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -23,6 +23,28 @@ const Drawer = createDrawerNavigator();
 
 export default function App() {
 
+	const [user, setUser] = useState(null)
+
+	useEffect(() => {
+		const usersRef = firebase.firestore().collection('users');
+		firebase.auth().onAuthStateChanged(user => {
+			if (user) {
+				usersRef
+					.doc(user.uid)
+					.get()
+					.then((document) => {
+						const userData = document.data()
+						setUser(userData)
+					})
+					.catch((error) => {
+						setLoading(false)
+
+					})
+			}
+		})
+	}, []);
+
+
 	const createLandingStack = () =>
 		<Stack.Navigator
 			initialRouteName="Landing"
@@ -30,8 +52,13 @@ export default function App() {
 				headerShown: false
 			}}>
 			<Stack.Screen name="Landing" component={LandingScreen} />
-			<Stack.Screen name="LoginStack" component={createLoginStack} />
-			<Stack.Screen name="Drawer" component={createDrawer} />
+			{user ? (
+				<Stack.Screen name="Drawer" component={createDrawer} />
+			) : (
+					<Stack.Screen name="LoginStack" component={createLoginStack} />
+				)}
+
+
 		</Stack.Navigator>
 
 	const createLoginStack = () =>
@@ -39,9 +66,15 @@ export default function App() {
 			screenOptions={{
 				headerShown: false
 			}}>
-			<Stack.Screen name="Login" component={LoginScreen} />
-			<Stack.Screen name="Register" component={RegisterScreen} />
-			<Stack.Screen name="Drawer" component={createDrawer} />
+			{user ? (
+				<Stack.Screen name="Drawer" component={createDrawer} />
+			) : (
+					<>
+						<Stack.Screen name="Login" component={LoginScreen} />
+						<Stack.Screen name="Register" component={RegisterScreen} />
+					</>
+
+				)}
 		</Stack.Navigator>
 
 	const createHomeStack = () =>
@@ -132,7 +165,11 @@ export default function App() {
 				<DrawerItemList {...props} />
 				<DrawerItem label="Deconectare" onPress={() => {
 					firebase.auth().signOut()
-						.then(props.navigation.navigate("LoginStack"))
+						.then(
+							props.navigation.reset({
+								index: 0,
+								routes: [{ name: 'Login' }],
+							}))
 						.catch(error => {
 							alert(error)
 						});
