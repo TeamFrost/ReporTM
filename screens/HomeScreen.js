@@ -1,16 +1,13 @@
 import React from 'react';
 import { StatusBar } from "expo-status-bar";
 import { Image, Text, View, StyleSheet, TouchableHighlight, Dimensions } from "react-native";
-import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
+
+import NavBar from '../helpers/NavBar'
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 
+export default function HomeScreen({ navigation }) {
 
-
-export default function HomeScreen() {
-
-    const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
@@ -56,7 +53,7 @@ export default function HomeScreen() {
                 >
                     <View style={styles.paper}>
                         <Image
-                            source={require("../assets/Flag.png")}
+                            source={require("../assets/Report.png")}
                             style={styles.iconPaper}
                         />
                         <Text style={styles.titlePaper}>Raportează</Text>
@@ -75,7 +72,7 @@ export default function HomeScreen() {
                 >
                     <View style={styles.paper}>
                         <Image
-                            source={require("../assets/Sesizari.png")}
+                            source={require("../assets/Feed.png")}
                             style={styles.iconPaper}
                         />
                         <Text style={styles.titlePaper}>Sesizări</Text>
@@ -109,7 +106,7 @@ export default function HomeScreen() {
                 >
                     <View style={styles.paper}>
                         <Image
-                            source={require("../assets/Setari.png")}
+                            source={require("../assets/Settings.png")}
                             style={styles.iconPaper}
                         />
                         <Text style={styles.titlePaper}>Setări</Text>
@@ -124,7 +121,7 @@ export default function HomeScreen() {
                 >
                     <View style={styles.paper}>
                         <Image
-                            source={require("../assets/Ajutor.png")}
+                            source={require("../assets/Help.png")}
                             style={styles.iconPaper}
                         />
                         <Text style={styles.titlePaper}>Ajutor</Text>
@@ -133,39 +130,7 @@ export default function HomeScreen() {
                 </TouchableHighlight>
 
             </View>
-            <View style={styles.bottomMenu}>
-
-                <TouchableHighlight
-                    // onPress={() => console.log('PressedMenu!')}
-                    // onPress={() => {
-                    //     navigation.dispatch(DrawerActions.openDrawer());
-                    // }}
-                    style={{ flex: 1 }}>
-                    <View style={styles.bottomMenuTouchable}>
-                        <Icon
-                            name='md-menu'
-                            size={30}
-                            color='#593480'
-                            style={{ marginRight: 25 }}
-                        />
-                    </View>
-                </TouchableHighlight>
-
-                <TouchableHighlight
-                    onPress={() => console.log('PressedHome!')}
-                    style={{ flex: 1 }}>
-                    <View style={styles.bottomMenuTouchable}>
-                        <Icon
-                            name='md-home'
-                            size={30}
-                            color='#593480'
-                            style={{ marginLeft: 25 }}
-                        />
-                    </View>
-                </TouchableHighlight>
-
-            </View>
-
+            <NavBar />
             <Image
                 source={require("../assets/Home.png")}
                 style={styles.bottomIcon}
@@ -248,24 +213,11 @@ const styles = StyleSheet.create({
         marginRight: 15,
         fontStyle: "italic"
     },
-    bottomMenu: {
-        flexDirection: 'row',
-        width: '100%',
-        height: '8%',
-        borderTopColor: '#593480',
-        borderTopWidth: 0.5,
-    },
     bottomIcon: {
         width: screenHeight / 8.3,
         height: screenHeight / 8.3,
         position: "absolute",
         top: "88%",
     },
-    bottomMenuTouchable: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#fefefe"
-    }
 
 })

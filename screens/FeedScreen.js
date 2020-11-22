@@ -2,10 +2,13 @@ import React from 'react';
 import { StatusBar } from "expo-status-bar";
 import { Text, View, StyleSheet } from "react-native";
 
+import NavBar from '../helpers/NavBar'
+
 export default function FeedScreen() {
     return (
         <View style={styles.container}>
             <Text>Feed</Text>
+            <NavBar />
             <StatusBar style="auto" />
         </View>
     );

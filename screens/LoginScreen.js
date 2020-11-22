@@ -10,6 +10,132 @@ import { firebase } from '../config/firebaseConfig'
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 
+export default function LoginScreen({ navigation }) {
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const [textSecurity, setTextSecurity] = useState(true)
+
+    const onFooterLinkPress = () => {
+        navigation.navigate('Register')
+    }
+
+    const handleEyeOnPress = () => {
+        textSecurity ? setTextSecurity(false) : setTextSecurity(true);
+    }
+
+    const onLoginPress = () => {
+        console.log("Autentificare")
+        firebase
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .then((response) => {
+                const uid = response.user.uid
+                const usersRef = firebase.firestore().collection('users')
+                usersRef
+                    .doc(uid)
+                    .get()
+                    .then(firestoreDocument => {
+                        if (!firestoreDocument.exists) {
+                            alert("User does not exist anymore.")
+                            return;
+                        }
+                        const user = firestoreDocument.data()
+                        console.log("Succes!")
+                        // alert("Succes!")
+                        // Toast.show({
+                        //     type: 'success',
+                        //     text1: 'Autentificare facuta cu succes!',
+                        // });
+                        navigation.navigate('Drawer')
+                    })
+                    .catch(error => {
+                        alert(error)
+                    });
+            })
+            .catch(error => {
+                alert(error)
+            })
+    }
+
+    return (
+        <View style={styles.container}>
+            <KeyboardAwareScrollView
+                style={{ flex: 1, width: '100%' }}
+                keyboardShouldPersistTaps="always">
+                <Image source={require("../assets/Icon.png")} style={styles.icon} />
+                <Text style={styles.basetext}>
+                    Repor<Text style={styles.innertext}>TM</Text>
+                </Text>
+                <Image
+                    source={require("../assets/Ellipse_1.png")}
+                    style={styles.ellipse_1}
+                />
+                <Image
+                    source={require("../assets/Ellipse_2.png")}
+                    style={styles.ellipse_2}
+                />
+                <View style={styles.info}>
+                    <Input
+                        label='Email'
+                        labelStyle={styles.text}
+                        autoCapitalize="none"
+                        onChangeText={(text) => setEmail(text)}
+                        value={email}
+                        keyboardType="email-address"
+                        placeholder='Email'
+                        leftIcon={
+                            <Icon
+                                name='md-mail'
+                                size={30}
+                                color='black'
+                                style={{ marginRight: 5 }}
+                            />
+                        }
+                    />
+                    <Input
+                        label='Parola'
+                        labelStyle={styles.text}
+                        secureTextEntry={textSecurity}
+                        autoCapitalize="none"
+                        onChangeText={(text) => setPassword(text)}
+                        value={password}
+                        placeholder='Password'
+                        leftIcon={
+                            <Icon
+                                name='md-lock'
+                                size={30}
+                                color='black'
+                                style={{ marginRight: 7 }}
+                            />
+                        }
+                        rightIcon={
+                            <Icon
+                                name='md-eye'
+                                size={30}
+                                color='black'
+                                onPress={handleEyeOnPress}
+                            />
+                        }
+                    />
+                    <TouchableHighlight underlayColor='#593480' onPress={onLoginPress} style={styles.button}>
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <Text style={styles.buttonText}>Autentificare</Text>
+                            <Icon active name='md-arrow-forward' style={styles.icons2} />
+                        </View>
+                    </TouchableHighlight>
+
+                    <Text onPress={() => navigation.navigate('Home')} style={styles.outerText}>Daca nu ai cont, <Text onPress={onFooterLinkPress} style={styles.innerText}>inregistreaza-te</Text> acum.</Text>
+                </View>
+                {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
+                <StatusBar style="auto" />
+            </KeyboardAwareScrollView>
+        </View >
+
+    );
+}
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -96,128 +222,3 @@ const styles = StyleSheet.create({
     }
 
 })
-
-export default function LoginScreen({ navigation }) {
-
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-
-    const [textSecurity, setTextSecurity] = useState(true)
-
-    const onFooterLinkPress = () => {
-        navigation.navigate('Register')
-    }
-
-    const handleEyeOnPress = () => {
-        textSecurity ? setTextSecurity(false) : setTextSecurity(true);
-    }
-
-    const onLoginPress = () => {
-        console.log("Autentificare")
-        firebase
-            .auth()
-            .signInWithEmailAndPassword(email, password)
-            .then((response) => {
-                const uid = response.user.uid
-                const usersRef = firebase.firestore().collection('users')
-                usersRef
-                    .doc(uid)
-                    .get()
-                    .then(firestoreDocument => {
-                        if (!firestoreDocument.exists) {
-                            alert("User does not exist anymore.")
-                            return;
-                        }
-                        const user = firestoreDocument.data()
-                        console.log("Succes!")
-                        // alert("Succes!")
-                        Toast.show({
-                            type: 'success',
-                            text1: 'Autentificare facuta cu succes!',
-                        });
-                        navigation.navigate('Home')
-                    })
-                    .catch(error => {
-                        alert(error)
-                    });
-            })
-            .catch(error => {
-                alert(error)
-            })
-    }
-
-    return (
-        <View style={styles.container}>
-            <KeyboardAwareScrollView
-                style={{ flex: 1, width: '100%' }}
-                keyboardShouldPersistTaps="always">
-                <Image source={require("../assets/Icon.png")} style={styles.icon} />
-                <Text style={styles.basetext}>
-                    Repor<Text style={styles.innertext}>TM</Text>
-                </Text>
-                <Image
-                    source={require("../assets/Ellipse_1.png")}
-                    style={styles.ellipse_1}
-                />
-                <Image
-                    source={require("../assets/Ellipse_2.png")}
-                    style={styles.ellipse_2}
-                />
-                <View style={styles.info}>
-                    <Input
-                        label='Email'
-                        labelStyle={styles.text}
-                        autoCapitalize="none"
-                        onChangeText={(text) => setEmail(text)}
-                        value={email}
-                        placeholder='Email'
-                        leftIcon={
-                            <Icon
-                                name='md-mail'
-                                size={30}
-                                color='black'
-                                style={{ marginRight: 5 }}
-                            />
-                        }
-                    />
-                    <Input
-                        label='Parola'
-                        labelStyle={styles.text}
-                        secureTextEntry={textSecurity}
-                        autoCapitalize="none"
-                        onChangeText={(text) => setPassword(text)}
-                        value={password}
-                        placeholder='Password'
-                        leftIcon={
-                            <Icon
-                                name='md-lock'
-                                size={30}
-                                color='black'
-                                style={{ marginRight: 7 }}
-                            />
-                        }
-                        rightIcon={
-                            <Icon
-                                name='md-eye'
-                                size={30}
-                                color='black'
-                                onPress={handleEyeOnPress}
-                            />
-                        }
-                    />
-                    <TouchableHighlight underlayColor='#593480' onPress={onLoginPress} style={styles.button}>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <Text style={styles.buttonText}>Autentificare</Text>
-                            <Icon active name='md-arrow-forward' style={styles.icons2} />
-                        </View>
-                    </TouchableHighlight>
-
-                    <Text onPress={() => navigation.navigate('Home')} style={styles.outerText}>Daca nu ai cont, <Text onPress={onFooterLinkPress} style={styles.innerText}>inregistreaza-te</Text> acum.</Text>
-                </View>
-                <Toast ref={(ref) => Toast.setRef(ref)} />
-                <StatusBar style="auto" />
-            </KeyboardAwareScrollView>
-        </View >
-
-    );
-}

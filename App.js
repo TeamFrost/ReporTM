@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import 'react-native-gesture-handler';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -23,24 +23,32 @@ const Drawer = createDrawerNavigator();
 
 export default function App() {
 
-	const handleLogout = (props) => {
-		firebase.auth().signOut()
-			.then(props.navigation.navigate("Login"))
-			.catch(error => {
-				alert(error)
-			});
-	}
+	const createLandingStack = () =>
+		<Stack.Navigator
+			initialRouteName="Landing"
+			screenOptions={{
+				headerShown: false
+			}}>
+			<Stack.Screen name="Landing" component={LandingScreen} />
+			<Stack.Screen name="LoginStack" component={createLoginStack} />
+			<Stack.Screen name="Drawer" component={createDrawer} />
+		</Stack.Navigator>
+
+	const createLoginStack = () =>
+		<Stack.Navigator
+			screenOptions={{
+				headerShown: false
+			}}>
+			<Stack.Screen name="Login" component={LoginScreen} />
+			<Stack.Screen name="Register" component={RegisterScreen} />
+			<Stack.Screen name="Drawer" component={createDrawer} />
+		</Stack.Navigator>
 
 	const createHomeStack = () =>
 		<Stack.Navigator
 			screenOptions={{
 				headerShown: false
 			}}>
-			{/* <Stack.Screen
-				name="Drawer"
-				children={createDrawer}
-			/> */}
-			<Stack.Screen name="Landing" component={LandingScreen} />
 			<Stack.Screen name="Home" component={HomeScreen} />
 			<Stack.Screen name="Map" component={MapScreen} />
 			<Stack.Screen name="Report" component={ReportScreen} />
@@ -48,75 +56,150 @@ export default function App() {
 			<Stack.Screen name="Profile" component={ProfileScreen} />
 			<Stack.Screen name="Settings" component={SettingsScreen} />
 			<Stack.Screen name="Help" component={HelpScreen} />
+			<Stack.Screen name="Drawer" component={createDrawer} />
 			<Stack.Screen name="Login" component={LoginScreen} />
-			<Stack.Screen name="Register" component={RegisterScreen} />
-
 		</Stack.Navigator>
 
-	createDrawer = () =>
-		<Drawer.Navigator drawerContent={props => {
-			return (
-				<DrawerContentScrollView {...props}>
-					<DrawerItemList {...props} />
-					<DrawerItem label="Deconectare" onPress={handleLogout(props)} />
-				</DrawerContentScrollView>
-			)
-		}}>
+	const createMapStack = () =>
+		<Stack.Navigator
+			screenOptions={{
+				headerShown: false
+			}}>
+			<Stack.Screen name="Map" component={MapScreen} />
+			<Stack.Screen name="HomeStack" component={createHomeStack} />
+			<Stack.Screen name="Drawer" component={createDrawer} />
+			<Stack.Screen name="Login" component={LoginScreen} />
+		</Stack.Navigator>
+
+	const createReportStack = () =>
+		<Stack.Navigator
+			screenOptions={{
+				headerShown: false
+			}}>
+			<Stack.Screen name="Report" component={ReportScreen} />
+			<Stack.Screen name="HomeStack" component={createHomeStack} />
+			<Stack.Screen name="Drawer" component={createDrawer} />
+			<Stack.Screen name="Login" component={LoginScreen} />
+		</Stack.Navigator>
+
+	const createFeedStack = () =>
+		<Stack.Navigator
+			screenOptions={{
+				headerShown: false
+			}}>
+			<Stack.Screen name="Feed" component={FeedScreen} />
+			<Stack.Screen name="HomeStack" component={createHomeStack} />
+			<Stack.Screen name="Drawer" component={createDrawer} />
+			<Stack.Screen name="Login" component={LoginScreen} />
+		</Stack.Navigator>
+
+	const createProfileStack = () =>
+		<Stack.Navigator
+			screenOptions={{
+				headerShown: false
+			}}>
+			<Stack.Screen name="Profile" component={ProfileScreen} />
+			<Stack.Screen name="HomeStack" component={createHomeStack} />
+			<Stack.Screen name="Drawer" component={createDrawer} />
+			<Stack.Screen name="Login" component={LoginScreen} />
+		</Stack.Navigator>
+
+	const createSettingsStack = () =>
+		<Stack.Navigator
+			screenOptions={{
+				headerShown: false
+			}}>
+			<Stack.Screen name="Settings" component={SettingsScreen} />
+			<Stack.Screen name="HomeStack" component={createHomeStack} />
+			<Stack.Screen name="Drawer" component={createDrawer} />
+			<Stack.Screen name="Login" component={LoginScreen} />
+		</Stack.Navigator>
+
+	const createHelpStack = () =>
+		<Stack.Navigator
+			screenOptions={{
+				headerShown: false
+			}}>
+			<Stack.Screen name="Help" component={HelpScreen} />
+			<Stack.Screen name="HomeStack" component={createHomeStack} />
+			<Stack.Screen name="Drawer" component={createDrawer} />
+			<Stack.Screen name="Login" component={LoginScreen} />
+		</Stack.Navigator>
+
+	const DrawerContent = (props) => {
+		return (
+			<DrawerContentScrollView {...props}>
+				<DrawerItemList {...props} />
+				<DrawerItem label="Deconectare" onPress={() => {
+					firebase.auth().signOut()
+						.then(props.navigation.navigate("LoginStack"))
+						.catch(error => {
+							alert(error)
+						});
+				}} />
+			</DrawerContentScrollView>
+		);
+	}
+
+	const createDrawer = () =>
+		<Drawer.Navigator
+			initialRouteName="HomeStack"
+			drawerContent={props => <DrawerContent {...props} />}
+		>
 			<Drawer.Screen
-				name="Home"
-				component={HomeScreen}
+				name="HomeStack"
+				component={createHomeStack}
 				options={{
 					title: "Acasă"
 				}}
 			/>
 			<Drawer.Screen
-				name="Map"
-				component={MapScreen}
+				name="MapStack"
+				component={createMapStack}
 				options={{
 					title: "Hartă"
 				}} />
 
 			<Drawer.Screen
-				name="Report"
-				component={ReportScreen}
+				name="ReportStack"
+				component={createReportStack}
 				options={{
 					title: "Raportează problemă"
 				}}
 			/>
-
 			<Drawer.Screen
-				name="Feed"
-				component={FeedScreen}
+				name="FeedStack"
+				component={createFeedStack}
 				options={{
 					title: "Sesizări"
 				}}
 			/>
 			<Drawer.Screen
-				name="Profile"
-				component={ProfileScreen}
+				name="ProfileStack"
+				component={createProfileStack}
 				options={{
 					title: "Profilul meu"
 				}}
 			/>
 			<Drawer.Screen
-				name="Settings"
-				component={SettingsScreen}
+				name="SettingsStack"
+				component={createSettingsStack}
 				options={{
 					title: "Setări"
 				}}
 			/>
 			<Drawer.Screen
-				name="Help"
-				component={HelpScreen} options={{
+				name="HelpStack"
+				component={createHelpStack}
+				options={{
 					title: "Ajutor"
 				}}
 			/>
 		</Drawer.Navigator>
 
-
 	return (
-		<NavigationContainer initialRouteName="Landing">
-			{createHomeStack()}
+		<NavigationContainer initialRouteName="LandingStack">
+			{createLandingStack()}
 		</NavigationContainer>
 	);
 }

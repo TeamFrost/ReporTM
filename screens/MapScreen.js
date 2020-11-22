@@ -9,6 +9,8 @@ const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
 
 
+import NavBar from '../helpers/NavBar'
+
 export default function MapScreen() {
 
     const [search, setSearch] = useState('')
@@ -42,6 +44,8 @@ export default function MapScreen() {
                 />
                 <StatusBar style="auto" />
             </KeyboardAwareScrollView>
+            <NavBar />
+            <StatusBar style="auto" />
         </View>
     );
 }
