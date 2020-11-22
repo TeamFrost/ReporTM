@@ -131,11 +131,11 @@ export default function LoginScreen({ navigation }) {
                         const user = firestoreDocument.data()
                         console.log("Succes!")
                         // alert("Succes!")
-                        Toast.show({
-                            type: 'success',
-                            text1: 'Autentificare facuta cu succes!',
-                        });
-                        navigation.navigate('Home')
+                        // Toast.show({
+                        //     type: 'success',
+                        //     text1: 'Autentificare facuta cu succes!',
+                        // });
+                        navigation.navigate('Drawer')
                     })
                     .catch(error => {
                         alert(error)
@@ -170,6 +170,7 @@ export default function LoginScreen({ navigation }) {
                         autoCapitalize="none"
                         onChangeText={(text) => setEmail(text)}
                         value={email}
+                        keyboardType="email-address"
                         placeholder='Email'
                         leftIcon={
                             <Icon
@@ -214,7 +215,7 @@ export default function LoginScreen({ navigation }) {
 
                     <Text onPress={() => navigation.navigate('Home')} style={styles.outerText}>Daca nu ai cont, <Text onPress={onFooterLinkPress} style={styles.innerText}>inregistreaza-te</Text> acum.</Text>
                 </View>
-                <Toast ref={(ref) => Toast.setRef(ref)} />
+                {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
                 <StatusBar style="auto" />
             </KeyboardAwareScrollView>
         </View >

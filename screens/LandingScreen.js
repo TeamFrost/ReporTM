@@ -28,13 +28,13 @@ export default function LandingScreen({ navigation }) {
 
                     });
                 setTimeout(() => {
-                    navigation.navigate('Home')
+                    navigation.navigate('Drawer')
                 }, 3000);
                 clearTimeout();
             } else {
                 setLoading(false)
                 setTimeout(() => {
-                    navigation.navigate('Login')
+                    navigation.navigate('LoginStack')
                 }, 3000);
                 clearTimeout();
             }
