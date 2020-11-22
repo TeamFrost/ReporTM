@@ -3,11 +3,12 @@ import { StatusBar } from "expo-status-bar";
 import { Image, Text, View, StyleSheet, TouchableHighlight, Dimensions } from "react-native";
 
 import NavBar from '../helpers/NavBar'
+import { useNavigation } from '@react-navigation/native';
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 
-export default function HomeScreen({ navigation }) {
-
+export default function HomeScreen() {
+    const navigation = useNavigation();
 
     return (
         <View style={styles.container}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import 'react-native-gesture-handler';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -23,28 +23,6 @@ const Drawer = createDrawerNavigator();
 
 export default function App() {
 
-	const [user, setUser] = useState(null)
-
-	useEffect(() => {
-		const usersRef = firebase.firestore().collection('users');
-		firebase.auth().onAuthStateChanged(user => {
-			if (user) {
-				usersRef
-					.doc(user.uid)
-					.get()
-					.then((document) => {
-						const userData = document.data()
-						setUser(userData)
-					})
-					.catch((error) => {
-						setLoading(false)
-
-					})
-			}
-		})
-	}, []);
-
-
 	const createLandingStack = () =>
 		<Stack.Navigator
 			initialRouteName="Landing"
@@ -64,9 +42,9 @@ export default function App() {
 			screenOptions={{
 				headerShown: false
 			}}>
-			<Stack.Screen name="Drawer" component={createDrawer} />
 			<Stack.Screen name="Login" component={LoginScreen} />
 			<Stack.Screen name="Register" component={RegisterScreen} />
+			<Stack.Screen name="Drawer" component={createDrawer} />
 		</Stack.Navigator>
 
 	const createHomeStack = () =>
@@ -81,8 +59,6 @@ export default function App() {
 			<Stack.Screen name="Profile" component={ProfileScreen} />
 			<Stack.Screen name="Settings" component={SettingsScreen} />
 			<Stack.Screen name="Help" component={HelpScreen} />
-			<Stack.Screen name="Drawer" component={createDrawer} />
-			<Stack.Screen name="Login" component={LoginScreen} />
 		</Stack.Navigator>
 
 	const createMapStack = () =>
@@ -91,9 +67,6 @@ export default function App() {
 				headerShown: false
 			}}>
 			<Stack.Screen name="Map" component={MapScreen} />
-			<Stack.Screen name="HomeStack" component={createHomeStack} />
-			<Stack.Screen name="Drawer" component={createDrawer} />
-			<Stack.Screen name="Login" component={LoginScreen} />
 		</Stack.Navigator>
 
 	const createReportStack = () =>
@@ -102,9 +75,6 @@ export default function App() {
 				headerShown: false
 			}}>
 			<Stack.Screen name="Report" component={ReportScreen} />
-			<Stack.Screen name="HomeStack" component={createHomeStack} />
-			<Stack.Screen name="Drawer" component={createDrawer} />
-			<Stack.Screen name="Login" component={LoginScreen} />
 		</Stack.Navigator>
 
 	const createFeedStack = () =>
@@ -113,9 +83,6 @@ export default function App() {
 				headerShown: false
 			}}>
 			<Stack.Screen name="Feed" component={FeedScreen} />
-			<Stack.Screen name="HomeStack" component={createHomeStack} />
-			<Stack.Screen name="Drawer" component={createDrawer} />
-			<Stack.Screen name="Login" component={LoginScreen} />
 		</Stack.Navigator>
 
 	const createProfileStack = () =>
@@ -124,9 +91,6 @@ export default function App() {
 				headerShown: false
 			}}>
 			<Stack.Screen name="Profile" component={ProfileScreen} />
-			<Stack.Screen name="HomeStack" component={createHomeStack} />
-			<Stack.Screen name="Drawer" component={createDrawer} />
-			<Stack.Screen name="Login" component={LoginScreen} />
 		</Stack.Navigator>
 
 	const createSettingsStack = () =>
@@ -135,9 +99,6 @@ export default function App() {
 				headerShown: false
 			}}>
 			<Stack.Screen name="Settings" component={SettingsScreen} />
-			<Stack.Screen name="HomeStack" component={createHomeStack} />
-			<Stack.Screen name="Drawer" component={createDrawer} />
-			<Stack.Screen name="Login" component={LoginScreen} />
 		</Stack.Navigator>
 
 	const createHelpStack = () =>
@@ -146,9 +107,6 @@ export default function App() {
 				headerShown: false
 			}}>
 			<Stack.Screen name="Help" component={HelpScreen} />
-			<Stack.Screen name="HomeStack" component={createHomeStack} />
-			<Stack.Screen name="Drawer" component={createDrawer} />
-			<Stack.Screen name="Login" component={LoginScreen} />
 		</Stack.Navigator>
 
 	const DrawerContent = (props) => {
@@ -172,7 +130,6 @@ export default function App() {
 
 	const createDrawer = () =>
 		<Drawer.Navigator
-			initialRouteName="HomeStack"
 			drawerContent={props => <DrawerContent {...props} />}
 		>
 			<Drawer.Screen
