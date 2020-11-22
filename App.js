@@ -49,7 +49,8 @@ export default function App() {
 		<Stack.Navigator
 			initialRouteName="Landing"
 			screenOptions={{
-				headerShown: false
+				headerShown: false,
+				gestureEnabled: false
 			}}>
 			<Stack.Screen name="Landing" component={LandingScreen} />
 			{user ? (
