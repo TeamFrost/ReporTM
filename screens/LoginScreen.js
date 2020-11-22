@@ -10,93 +10,6 @@ import { firebase } from '../config/firebaseConfig'
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "flex-start",
-    },
-    ellipse_1: {
-        position: "absolute",
-        top: "5%",
-        right: "0%",
-        width: 59,
-        height: 124,
-    },
-    ellipse_2: {
-        position: "absolute",
-        top: "25%",
-        left: "-1%",
-        width: 52,
-        height: 103,
-
-    },
-    icon: {
-        width: screenHeight / 3.6,
-        height: screenHeight / 3.6,
-        marginBottom: 10,
-        marginTop: '15%',
-        alignSelf: "center"
-    },
-    basetext: {
-        fontSize: 48,
-        fontWeight: "bold",
-        alignSelf: "center"
-    },
-    innertext: {
-        fontWeight: "bold",
-        color: "#BB6BD9",
-    },
-    info: {
-        alignSelf: "flex-start",
-        marginLeft: "10%",
-        marginTop: '10%',
-        width: "80%",
-        flex: 1,
-        marginBottom: "5%",
-    },
-    text: {
-        fontSize: 20,
-        color: "#8F92A1",
-        fontWeight: "bold",
-    },
-    icons: {
-        fontSize: 30,
-    },
-    icons2: {
-        fontSize: 30,
-        alignSelf: "flex-end",
-        color: "#fff",
-        marginLeft: '5%'
-    },
-    button: {
-        marginTop: "10%",
-        backgroundColor: "#BB6BD9",
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 20,
-        marginBottom: "3%",
-        elevation: 10,
-    },
-    buttonText: {
-        fontSize: 20,
-        color: "#fff",
-        fontWeight: "bold",
-    },
-    outerText: {
-        alignSelf: "center",
-        color: "#8F92A1",
-        fontSize: 16,
-    },
-    innerText: {
-        color: "#FFC61B",
-        textDecorationLine: 'underline'
-    }
-
-})
-
 export default function LoginScreen({ navigation }) {
 
     const [email, setEmail] = useState('')
@@ -222,3 +135,90 @@ export default function LoginScreen({ navigation }) {
 
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "flex-start",
+    },
+    ellipse_1: {
+        position: "absolute",
+        top: "5%",
+        right: "0%",
+        width: 59,
+        height: 124,
+    },
+    ellipse_2: {
+        position: "absolute",
+        top: "25%",
+        left: "-1%",
+        width: 52,
+        height: 103,
+
+    },
+    icon: {
+        width: screenHeight / 3.6,
+        height: screenHeight / 3.6,
+        marginBottom: 10,
+        marginTop: '15%',
+        alignSelf: "center"
+    },
+    basetext: {
+        fontSize: 48,
+        fontWeight: "bold",
+        alignSelf: "center"
+    },
+    innertext: {
+        fontWeight: "bold",
+        color: "#BB6BD9",
+    },
+    info: {
+        alignSelf: "flex-start",
+        marginLeft: "10%",
+        marginTop: '10%',
+        width: "80%",
+        flex: 1,
+        marginBottom: "5%",
+    },
+    text: {
+        fontSize: 20,
+        color: "#8F92A1",
+        fontWeight: "bold",
+    },
+    icons: {
+        fontSize: 30,
+    },
+    icons2: {
+        fontSize: 30,
+        alignSelf: "flex-end",
+        color: "#fff",
+        marginLeft: '5%'
+    },
+    button: {
+        marginTop: "10%",
+        backgroundColor: "#BB6BD9",
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 20,
+        marginBottom: "3%",
+        elevation: 10,
+    },
+    buttonText: {
+        fontSize: 20,
+        color: "#fff",
+        fontWeight: "bold",
+    },
+    outerText: {
+        alignSelf: "center",
+        color: "#8F92A1",
+        fontSize: 16,
+    },
+    innerText: {
+        color: "#FFC61B",
+        textDecorationLine: 'underline'
+    }
+
+})
