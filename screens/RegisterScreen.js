@@ -207,8 +207,8 @@ const styles = StyleSheet.create({
         height: 103,
     },
     icon: {
-        width: screenHeight / 4,
-        height: screenHeight / 4,
+        width: screenHeight / 4.2,
+        height: screenHeight / 4.2,
         marginBottom: 10,
         marginTop: '15%',
         alignSelf: "center"
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     button: {
-        marginTop: "10%",
+        marginTop: "7%",
         backgroundColor: "#BB6BD9",
         height: 50,
         alignItems: "center",
