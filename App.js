@@ -60,18 +60,13 @@ export default function App() {
 
 	const createLoginStack = () =>
 		<Stack.Navigator
+			initialRouteName="Login"
 			screenOptions={{
 				headerShown: false
 			}}>
-			{user ? (
-				<Stack.Screen name="Drawer" component={createDrawer} />
-			) : (
-					<>
-						<Stack.Screen name="Login" component={LoginScreen} />
-						<Stack.Screen name="Register" component={RegisterScreen} />
-					</>
-
-				)}
+			<Stack.Screen name="Drawer" component={createDrawer} />
+			<Stack.Screen name="Login" component={LoginScreen} />
+			<Stack.Screen name="Register" component={RegisterScreen} />
 		</Stack.Navigator>
 
 	const createHomeStack = () =>
@@ -165,7 +160,7 @@ export default function App() {
 						.then(
 							props.navigation.reset({
 								index: 0,
-								routes: [{ name: 'Login' }],
+								routes: [{ name: 'LoginStack' }],
 							}))
 						.catch(error => {
 							alert(error)
