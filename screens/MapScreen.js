@@ -1,13 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Text, View, StyleSheet } from "react-native";
+import MapView from 'react-native-maps';
+import { View, StyleSheet, Dimensions } from "react-native";
+import { SearchBar } from 'react-native-elements';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+const screenHeight = Math.round(Dimensions.get('window').height);
+const screenWidth = Math.round(Dimensions.get('window').width);
+
 
 import NavBar from '../helpers/NavBar'
 
 export default function MapScreen() {
+
+    const [search, setSearch] = useState('')
+
     return (
         <View style={styles.container}>
-            <Text>Map</Text>
+            <KeyboardAwareScrollView>
+                <MapView
+                    style={{ height: screenHeight, width: screenWidth }}
+                    initialRegion={{
+                        latitude: 45.753256501696036,
+                        longitude: 21.227993167956523,
+                        latitudeDelta: 0.0722,
+                        longitudeDelta: 0.0321,
+                    }}
+                    onLongPress={e => console.log(e.nativeEvent.coordinate)}
+                />
+
+                <SearchBar
+                    platform='default'
+                    lightTheme={true}
+                    autoCapitalize="none"
+                    placeholder='Search'
+                    textAlign='center'
+                    round={true}
+                    containerStyle={styles.searchBar}
+                    inputContainerStyle={styles.searchBar2}
+                    value={search}
+                    onChangeText={(text) => setSearch(text)}
+                    inputStyle={{ marginRight: 22 }}
+                />
+                <StatusBar style="auto" />
+            </KeyboardAwareScrollView>
             <NavBar />
             <StatusBar style="auto" />
         </View>
@@ -21,5 +57,24 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    searchBar: {
+        position: "absolute",
+        top: 60,
+        width: "80%",
+        height: "7%",
+        backgroundColor: "#E4E0E9",
+        alignSelf: "center",
+        borderRadius: 20,
+        shadowColor: '#ccc',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        elevation: 5,
+    },
+    searchBar2: {
+        backgroundColor: '#fff',
+        height: "100%",
+
+    }
 
 })
