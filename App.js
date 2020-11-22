@@ -53,12 +53,8 @@ export default function App() {
 				gestureEnabled: false
 			}}>
 			<Stack.Screen name="Landing" component={LandingScreen} />
-			{user ? (
-				<Stack.Screen name="Drawer" component={createDrawer} />
-			) : (
-					<Stack.Screen name="LoginStack" component={createLoginStack} />
-				)}
-
+			<Stack.Screen name="Drawer" component={createDrawer} />
+			<Stack.Screen name="LoginStack" component={createLoginStack} />
 
 		</Stack.Navigator>
 

@@ -126,7 +126,7 @@ export default function LoginScreen({ navigation }) {
                         </View>
                     </TouchableHighlight>
 
-                    <Text onPress={() => navigation.navigate('Home')} style={styles.outerText}>Daca nu ai cont, <Text onPress={onFooterLinkPress} style={styles.innerText}>inregistreaza-te</Text> acum.</Text>
+                    <Text style={styles.outerText}>Daca nu ai cont, <Text onPress={onFooterLinkPress} style={styles.innerText}>inregistreaza-te</Text> acum.</Text>
                 </View>
                 {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
                 <StatusBar style="auto" />
