@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Image, StyleSheet, Text, View, TouchableHighlight, Dimensions } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableHighlight } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Toast from 'react-native-toast-message';
+
 import { firebase } from '../config/firebaseConfig'
-
-
-const screenHeight = Math.round(Dimensions.get('window').height);
+import { colors, screenHeight } from "../helpers/style";
 
 export default function RegisterScreen({ navigation }) {
 
@@ -92,11 +91,11 @@ export default function RegisterScreen({ navigation }) {
                 />
                 <Image
                     source={require("../assets/Ellipse_1.png")}
-                    style={styles.ellipse_1}
+                    style={styles.ellipse1}
                 />
                 <Image
                     source={require("../assets/Ellipse_2.png")}
-                    style={styles.ellipse_2}
+                    style={styles.ellipse2}
                 />
 
                 <View style={styles.info}>
@@ -114,7 +113,7 @@ export default function RegisterScreen({ navigation }) {
                             <Icon
                                 name='md-mail'
                                 size={30}
-                                color='black'
+                                color={colors.black}
                                 style={{ marginRight: 5 }}
                             />
                         }
@@ -136,7 +135,7 @@ export default function RegisterScreen({ navigation }) {
                             <Icon
                                 name='md-person'
                                 size={30}
-                                color='black'
+                                color={colors.black}
                                 style={{ marginRight: 7, marginLeft: 3 }}
                             />
                         }
@@ -153,7 +152,7 @@ export default function RegisterScreen({ navigation }) {
                             <Icon
                                 name='md-lock'
                                 size={30}
-                                color='black'
+                                color={colors.black}
                                 style={{ marginRight: 8, marginLeft: 4 }}
                             />
                         }
@@ -161,7 +160,7 @@ export default function RegisterScreen({ navigation }) {
                             <Icon
                                 name='md-eye'
                                 size={30}
-                                color='black'
+                                color={colors.black}
                                 onPress={handleEyeOnPress}
                             />
                         }
@@ -170,11 +169,11 @@ export default function RegisterScreen({ navigation }) {
                     <TouchableHighlight underlayColor='#593480' onPress={onRegisterPress} style={styles.button}>
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <Text style={styles.buttonText}>Inregistrare</Text>
-                            <Icon active name='md-arrow-forward' style={styles.icons2} />
+                            <Icon active name='md-arrow-forward' style={styles.arrowIcon} />
                         </View>
                     </TouchableHighlight>
 
-                    <Text style={styles.outerText}>Daca ai deja cont, <Text onPress={onFooterLinkPress} style={styles.innerText}>autentifica-te</Text> acum.</Text>
+                    <Text style={styles.footerOuterText}>Daca ai deja cont, <Text onPress={onFooterLinkPress} style={styles.footerInnerText}>autentifica-te</Text> acum.</Text>
                 </View>
 
                 <StatusBar style="auto" />
@@ -186,25 +185,55 @@ export default function RegisterScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+    arrowIcon: {
+        fontSize: 30,
+        alignSelf: "flex-end",
+        color: colors.white,
+        marginLeft: '5%'
+    },
+    button: {
+        marginTop: "7%",
+        backgroundColor: colors.purple,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 20,
+        marginBottom: "5%",
+        elevation: 10,
+    },
+    buttonText: {
+        fontSize: 20,
+        color: colors.white,
+        fontWeight: "bold",
+    },
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: colors.white,
         alignItems: "center",
         justifyContent: "flex-start",
     },
-    ellipse_1: {
+    ellipse1: {
         position: "absolute",
         top: "5%",
         right: "0%",
         width: 59,
         height: 124,
     },
-    ellipse_2: {
+    ellipse2: {
         position: "absolute",
         top: "20%",
         left: "-1%",
         width: 52,
         height: 103,
+    },
+    footerInnerText: {
+        color: colors.textYellow,
+        textDecorationLine: 'underline'
+    },
+    footerOuterText: {
+        alignSelf: "center",
+        color: colors.textGray,
+        fontSize: 16,
     },
     icon: {
         width: screenHeight / 4.2,
@@ -220,40 +249,9 @@ const styles = StyleSheet.create({
         width: "80%",
         marginBottom: "5%",
     },
-    buttonText: {
-        fontSize: 20,
-        color: "#fff",
-        fontWeight: "bold",
-    },
-    button: {
-        marginTop: "7%",
-        backgroundColor: "#BB6BD9",
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 20,
-        marginBottom: "5%",
-        elevation: 10,
-    },
-    outerText: {
-        alignSelf: "center",
-        color: "#8F92A1",
-        fontSize: 16,
-    },
-    innerText: {
-        color: "#FFC61B",
-        textDecorationLine: 'underline'
-    },
-    icons2: {
-        fontSize: 30,
-        alignSelf: "flex-end",
-        color: "#fff",
-        marginLeft: '5%'
-    },
     text: {
         fontSize: 20,
-        color: "#8F92A1",
+        color: colors.textGray,
         fontWeight: "bold",
     },
-
 })

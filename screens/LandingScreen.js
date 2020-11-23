@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Image, StyleSheet, Text, View, Dimensions } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { firebase } from '../config/firebaseConfig'
 
-const screenHeight = Math.round(Dimensions.get('window').height);
+import { firebase } from '../config/firebaseConfig'
+import { colors, screenHeight } from "../helpers/style";
 
 export default function LandingScreen({ navigation }) {
-
 
     const [loading, setLoading] = useState(true)
     const [user, setUser] = useState(null)
@@ -54,16 +53,16 @@ export default function LandingScreen({ navigation }) {
                 source={require("../assets/Icon.png")}
                 style={styles.icon}
             />
-            <Text style={styles.basetext}>
-                Repor<Text style={styles.innertext}>TM</Text>
+            <Text style={styles.titleBaseText}>
+                Repor<Text style={styles.titleInnerText}>TM</Text>
             </Text>
             <Image
                 source={require("../assets/Ellipse_1.png")}
-                style={styles.ellipse_1}
+                style={styles.ellipse1}
             />
             <Image
                 source={require("../assets/Ellipse_2.png")}
-                style={styles.ellipse_2}
+                style={styles.ellipse2}
             />
             <StatusBar style="auto" />
         </View>
@@ -77,14 +76,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    ellipse_1: {
+    ellipse1: {
         position: "absolute",
         top: "20%",
         right: "0%",
         width: 59,
         height: 124,
     },
-    ellipse_2: {
+    ellipse2: {
         position: "absolute",
         top: "75%",
         left: "-1%",
@@ -96,12 +95,12 @@ const styles = StyleSheet.create({
         height: screenHeight / 3,
         marginBottom: "6%",
     },
-    basetext: {
+    titleBaseText: {
         fontSize: 52,
         fontWeight: "bold",
     },
-    innertext: {
+    titleInnerText: {
         fontWeight: "bold",
-        color: "#BB6BD9",
+        color: colors.purple,
     },
 });

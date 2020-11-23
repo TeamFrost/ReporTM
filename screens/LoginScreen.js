@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Image, StyleSheet, Text, View, TouchableHighlight, Dimensions } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableHighlight } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-toast-message';
+
 import { firebase } from '../config/firebaseConfig'
-
-
-const screenHeight = Math.round(Dimensions.get('window').height);
+import { colors, screenHeight } from "../helpers/style";
 
 export default function LoginScreen({ navigation }) {
 
@@ -65,16 +64,16 @@ export default function LoginScreen({ navigation }) {
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
                 <Image source={require("../assets/Icon.png")} style={styles.icon} />
-                <Text style={styles.basetext}>
-                    Repor<Text style={styles.innertext}>TM</Text>
+                <Text style={styles.titleBaseText}>
+                    Repor<Text style={styles.titleInnerText}>TM</Text>
                 </Text>
                 <Image
                     source={require("../assets/Ellipse_1.png")}
-                    style={styles.ellipse_1}
+                    style={styles.ellipse1}
                 />
                 <Image
                     source={require("../assets/Ellipse_2.png")}
-                    style={styles.ellipse_2}
+                    style={styles.ellipse2}
                 />
                 <View style={styles.info}>
                     <Input
@@ -89,7 +88,7 @@ export default function LoginScreen({ navigation }) {
                             <Icon
                                 name='md-mail'
                                 size={30}
-                                color='black'
+                                color={colors.black}
                                 style={{ marginRight: 5 }}
                             />
                         }
@@ -106,7 +105,7 @@ export default function LoginScreen({ navigation }) {
                             <Icon
                                 name='md-lock'
                                 size={30}
-                                color='black'
+                                color={colors.black}
                                 style={{ marginRight: 7 }}
                             />
                         }
@@ -114,7 +113,7 @@ export default function LoginScreen({ navigation }) {
                             <Icon
                                 name='md-eye'
                                 size={30}
-                                color='black'
+                                color={colors.black}
                                 onPress={handleEyeOnPress}
                             />
                         }
@@ -122,11 +121,11 @@ export default function LoginScreen({ navigation }) {
                     <TouchableHighlight underlayColor='#593480' onPress={onLoginPress} style={styles.button}>
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <Text style={styles.buttonText}>Autentificare</Text>
-                            <Icon active name='md-arrow-forward' style={styles.icons2} />
+                            <Icon active name='md-arrow-forward' style={styles.arrowIcon} />
                         </View>
                     </TouchableHighlight>
 
-                    <Text style={styles.outerText}>Daca nu ai cont, <Text onPress={onFooterLinkPress} style={styles.innerText}>inregistreaza-te</Text> acum.</Text>
+                    <Text style={styles.footerOuterText}>Daca nu ai cont, <Text onPress={onFooterLinkPress} style={styles.footerInnerText}>inregistreaza-te</Text> acum.</Text>
                 </View>
                 {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
                 <StatusBar style="auto" />
@@ -137,26 +136,55 @@ export default function LoginScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+    arrowIcon: {
+        fontSize: 30,
+        alignSelf: "flex-end",
+        color: colors.white,
+        marginLeft: '5%'
+    },
+    button: {
+        marginTop: "10%",
+        backgroundColor: colors.purple,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 20,
+        marginBottom: "3%",
+        elevation: 10,
+    },
+    buttonText: {
+        fontSize: 20,
+        color: colors.white,
+        fontWeight: "bold",
+    },
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: colors.white,
         alignItems: "center",
         justifyContent: "flex-start",
     },
-    ellipse_1: {
+    ellipse1: {
         position: "absolute",
         top: "5%",
         right: "0%",
         width: 59,
         height: 124,
     },
-    ellipse_2: {
+    ellipse2: {
         position: "absolute",
         top: "25%",
         left: "-1%",
         width: 52,
         height: 103,
-
+    },
+    footerInnerText: {
+        color: colors.textYellow,
+        textDecorationLine: 'underline'
+    },
+    footerOuterText: {
+        alignSelf: "center",
+        color: colors.textGray,
+        fontSize: 16,
     },
     icon: {
         width: screenHeight / 3.6,
@@ -164,15 +192,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginTop: '15%',
         alignSelf: "center"
-    },
-    basetext: {
-        fontSize: 48,
-        fontWeight: "bold",
-        alignSelf: "center"
-    },
-    innertext: {
-        fontWeight: "bold",
-        color: "#BB6BD9",
     },
     info: {
         alignSelf: "flex-start",
@@ -184,41 +203,16 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 20,
-        color: "#8F92A1",
+        color: colors.textGray,
         fontWeight: "bold",
     },
-    icons: {
-        fontSize: 30,
-    },
-    icons2: {
-        fontSize: 30,
-        alignSelf: "flex-end",
-        color: "#fff",
-        marginLeft: '5%'
-    },
-    button: {
-        marginTop: "10%",
-        backgroundColor: "#BB6BD9",
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 20,
-        marginBottom: "3%",
-        elevation: 10,
-    },
-    buttonText: {
-        fontSize: 20,
-        color: "#fff",
+    titleBaseText: {
+        fontSize: 48,
         fontWeight: "bold",
+        alignSelf: "center"
     },
-    outerText: {
-        alignSelf: "center",
-        color: "#8F92A1",
-        fontSize: 16,
+    titleInnerText: {
+        fontWeight: "bold",
+        color: colors.purple,
     },
-    innerText: {
-        color: "#FFC61B",
-        textDecorationLine: 'underline'
-    }
-
 })
