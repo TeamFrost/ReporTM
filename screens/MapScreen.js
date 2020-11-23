@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar } from "expo-status-bar";
 import MapView from 'react-native-maps';
-import { View, StyleSheet, Dimensions } from "react-native";
+import { Image, View, StyleSheet, Dimensions } from "react-native";
 import { SearchBar } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -45,6 +45,10 @@ export default function MapScreen() {
                 <StatusBar style="auto" />
             </KeyboardAwareScrollView>
             <NavBar />
+            <Image
+                source={require("../assets/Map.png")}
+                style={styles.bottomIcon}
+            />
             <StatusBar style="auto" />
         </View>
     );
@@ -75,6 +79,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         height: "100%",
 
-    }
+    },
+    bottomIcon: {
+        width: screenHeight / 8.3,
+        height: screenHeight / 8.3,
+        position: "absolute",
+        top: "88%",
+    },
 
 })
