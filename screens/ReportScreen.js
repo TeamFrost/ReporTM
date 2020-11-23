@@ -7,7 +7,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Toast from 'react-native-toast-message';
 import { Picker } from '@react-native-picker/picker';
 
-import NavBar from '../helpers/NavBar'
+import NavBar from '../helpers/navbar'
 import { colors, screenHeight } from "../helpers/style";
 import { firebase } from '../config/firebaseConfig'
 
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 18,
-        color: colors.textGray,
+        color: colors.darkPurple,
         textAlign: 'center',
         fontWeight: 'bold',
         marginBottom: '5%'
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
         marginTop: "5%",
         marginBottom: "5%",
         width: "100%",
-        height: "35%",
+        height: 150,
         alignItems: "center",
         justifyContent: "center",
         borderWidth: 1,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     },
     picker: {
         width: "100%",
-        height: "10%"
+        height: 50,
     },
     section: {
         fontSize: 16,

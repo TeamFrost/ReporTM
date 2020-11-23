@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { DrawerActions } from '@react-navigation/native';
 
-import { colors } from "../helpers/style";
+import { colors } from "./style";
 
 export default function NavBar() {
     const navigation = useNavigation();
