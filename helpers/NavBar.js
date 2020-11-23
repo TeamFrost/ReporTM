@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { DrawerActions } from '@react-navigation/native';
 
+import { colors } from "./style";
+
 export default function NavBar() {
     const navigation = useNavigation();
 
@@ -17,7 +19,7 @@ export default function NavBar() {
                     <Icon
                         name='md-menu'
                         size={30}
-                        color='#593480'
+                        color={colors.darkPurple}
                         style={{ marginRight: 25 }}
                     />
                 </View>
@@ -30,7 +32,7 @@ export default function NavBar() {
                     <Icon
                         name='md-home'
                         size={30}
-                        color='#593480'
+                        color={colors.darkPurple}
                         style={{ marginLeft: 25 }}
                     />
                 </View>
@@ -44,14 +46,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         height: '8%',
-        borderTopColor: '#593480',
+        borderTopColor: colors.darkPurple,
         borderTopWidth: 0.5,
     },
     bottomMenuTouchable: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#fefefe"
+        backgroundColor: colors.pressedWhite,
     }
 
 })

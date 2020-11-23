@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { StatusBar } from "expo-status-bar";
 import MapView from 'react-native-maps';
-import { Image, View, StyleSheet, Dimensions } from "react-native";
+import { Image, View, StyleSheet } from "react-native";
 import { SearchBar } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-const screenHeight = Math.round(Dimensions.get('window').height);
-const screenWidth = Math.round(Dimensions.get('window').width);
-
-
 import NavBar from '../helpers/NavBar'
+import { colors, screenHeight, screenWidth } from "../helpers/style";
 
 export default function MapScreen() {
 
@@ -36,8 +33,8 @@ export default function MapScreen() {
                     placeholder='Search'
                     textAlign='center'
                     round={true}
-                    containerStyle={styles.searchBar}
-                    inputContainerStyle={styles.searchBar2}
+                    containerStyle={styles.searchBarContainer}
+                    inputContainerStyle={styles.searchBarInput}
                     value={search}
                     onChangeText={(text) => setSearch(text)}
                     inputStyle={{ marginRight: 22 }}
@@ -57,26 +54,26 @@ export default function MapScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: colors.white,
         alignItems: "center",
         justifyContent: "center",
     },
-    searchBar: {
+    searchBarContainer: {
         position: "absolute",
         top: 60,
         width: "80%",
         height: "7%",
-        backgroundColor: "#E4E0E9",
+        backgroundColor: colors.searchBarGray,
         alignSelf: "center",
         borderRadius: 20,
-        shadowColor: '#ccc',
+        shadowColor: colors.shadowGray,
         shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.5,
         shadowRadius: 5,
         elevation: 5,
     },
-    searchBar2: {
-        backgroundColor: '#fff',
+    searchBarInput: {
+        backgroundColor: colors.white,
         height: "100%",
 
     },

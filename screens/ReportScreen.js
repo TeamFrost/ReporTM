@@ -6,7 +6,9 @@ import { Input, Divider } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Toast from 'react-native-toast-message';
 import { Picker } from '@react-native-picker/picker';
-import NavBar from '../helpers/NavBar'
+
+import NavBar from '../helpers/navbar'
+import { colors, screenHeight } from "../helpers/style";
 import { firebase } from '../config/firebaseConfig'
 
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -32,7 +34,7 @@ export default function ReportScreen() {
                 <View style={styles.form}>
                     <Text style={styles.header}>COMPLETEAZĂ FORMULARUL PENTRU A SEMNALA O PROBLEMĂ</Text>
                     <Text style={styles.section}>Locație</Text>
-                    <Divider style={{ backgroundColor: '#8F92A1' }} />
+                    <Divider style={{ backgroundColor: colors.textGray }} />
                     <View style={styles.help}>
                         <Image
                             source={require("../assets/Info.png")}
@@ -56,7 +58,7 @@ export default function ReportScreen() {
                         <Icon style={styles.searchIcon}
                             name="md-locate"
                             size={35}
-                            color="#000"
+                            color={colors.black}
                             onPress={() => console.log("Locatie curenta!")}
                         />
                     </View>
@@ -64,7 +66,7 @@ export default function ReportScreen() {
                         <Text>Map here :D</Text>
                     </View>
                     <Text style={styles.section}>Alege o categorie</Text>
-                    <Divider style={{ backgroundColor: '#8F92A1' }} />
+                    <Divider style={{ backgroundColor: colors.textGray }} />
                     <Picker
                         selectedValue={pickerState.category}
                         style={styles.picker}
@@ -144,7 +146,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: colors.white,
         alignItems: "center",
         justifyContent: "space-between",
     },
@@ -163,7 +165,7 @@ const styles = StyleSheet.create({
         width: 29,
         height: 61,
     },
-    ellipse_2: {
+    ellipse2: {
         position: "absolute",
         top: "10%",
         left: "-1%",
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 18,
-        color: "#593480",
+        color: colors.darkPurple,
         textAlign: 'center',
         fontWeight: 'bold',
         marginBottom: '5%'
@@ -200,7 +202,7 @@ const styles = StyleSheet.create({
     locationInput: {
         flex: 8.9,
         height: 40,
-        borderColor: '#8F92A1',
+        borderColor: colors.textGray,
         borderWidth: 0.5,
         marginTop: "5%",
         paddingLeft: 10,
@@ -215,7 +217,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderWidth: 0.5,
-        borderColor: "black",
+        borderColor: colors.black,
     },
     picker: {
         flex: 1,
@@ -241,7 +243,7 @@ const styles = StyleSheet.create({
         marginLeft: '1%',
         marginRight: '1%',
         marginTop: '1.5%',
-        color: "#ADADAD",
+        color: colors.textHelpGray,
         fontSize: 11
     },
     uploadIcon: {

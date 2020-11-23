@@ -3,6 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { Text, View, StyleSheet } from "react-native";
 
 import NavBar from '../helpers/NavBar'
+import { colors, screenHeight } from "../helpers/style";
 
 export default function SettingsScreen() {
     return (
@@ -17,7 +18,7 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: colors.white,
         alignItems: "center",
         justifyContent: "center",
     },
