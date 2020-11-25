@@ -121,10 +121,9 @@ export default function ReportScreen() {
 }
 
 const styles = StyleSheet.create({
-
     bottomIcon: {
-        width: screenHeight / 8.3,
-        height: screenHeight / 8.3,
+        width: screenHeight / 8.5,
+        height: screenHeight / 8.5,
         position: "absolute",
         top: "88%",
     },

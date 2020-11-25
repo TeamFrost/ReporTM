@@ -16,6 +16,7 @@ export default function MapScreen() {
         <View style={styles.container}>
             <KeyboardAwareScrollView>
                 <MapView
+                    provider="google"
                     style={{ height: screenHeight, width: screenWidth }}
                     initialRegion={{
                         latitude: 45.753256501696036,
@@ -52,6 +53,12 @@ export default function MapScreen() {
 }
 
 const styles = StyleSheet.create({
+    bottomIcon: {
+        width: screenHeight / 8.5,
+        height: screenHeight / 8.5,
+        position: "absolute",
+        top: "88%",
+    },
     container: {
         flex: 1,
         backgroundColor: colors.white,
@@ -77,11 +84,4 @@ const styles = StyleSheet.create({
         height: "100%",
 
     },
-    bottomIcon: {
-        width: screenHeight / 8.3,
-        height: screenHeight / 8.3,
-        position: "absolute",
-        top: "88%",
-    },
-
 })
