@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StatusBar } from "expo-status-bar";
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { Image, View, StyleSheet } from "react-native";
 import { SearchBar } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -10,6 +10,18 @@ import { colors, screenHeight, screenWidth } from "../helpers/style";
 
 export default function MapScreen() {
 
+    const markers = [
+        {
+            latlng: { latitude: 45.73338232083366, longitude: 21.2227313965559 },
+            title: "Test",
+            description: "E un test"
+        },
+        {
+            latlng: { latitude: 45.74309947816705, longitude: 21.228644996881485 },
+            title: "Test2",
+            description: "E un test2"
+        }
+    ]
     const [search, setSearch] = useState('')
 
     return (
@@ -24,7 +36,17 @@ export default function MapScreen() {
                         longitudeDelta: 0.0321,
                     }}
                     onLongPress={e => console.log(e.nativeEvent.coordinate)}
-                />
+                >
+                    {markers.map((marker, index) => (
+                        <Marker
+                            key={index}
+                            coordinate={marker.latlng}
+                            title={marker.title}
+                            description={marker.description}
+                            pinColor={colors.purple}
+                        />
+                    ))}
+                </MapView>
 
                 <SearchBar
                     platform='default'
