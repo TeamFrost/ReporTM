@@ -11,7 +11,6 @@ import NavBar from '../helpers/navbar'
 import { colors, screenHeight } from "../helpers/style";
 import { firebase } from '../config/firebaseConfig'
 
-const screenHeight = Math.round(Dimensions.get('window').height);
 export default function ReportScreen() {
 
     const [pickerState, setPickerState] = useState({ category: '' })
@@ -24,11 +23,11 @@ export default function ReportScreen() {
                 keyboardShouldPersistTaps="always">
                 <Image
                     source={require("../assets/Ellipse_1.png")}
-                    style={styles.ellipse_1}
+                    style={styles.ellipse1}
                 />
                 <Image
                     source={require("../assets/Ellipse_2.png")}
-                    style={styles.ellipse_2}
+                    style={styles.ellipse2}
                 />
 
                 <View style={styles.form}>
@@ -85,13 +84,13 @@ export default function ReportScreen() {
                         <Icon style={styles.uploadIcon}
                             name="md-cloud-upload"
                             size={30}
-                            color="#000"
+                            color={colors.black}
                             onPress={() => console.log("Poza pentru incarcat!")}
                         />
                     </View>
-                    <Divider style={{ backgroundColor: '#8F92A1', marginBottom: "6%" }} />
+                    <Divider style={{ backgroundColor: colors.textGray, marginBottom: "6%" }} />
                     <Text style={styles.section}>Descriere</Text>
-                    <Divider style={{ backgroundColor: '#8F92A1', marginBottom: "4%" }} />
+                    <Divider style={{ backgroundColor: colors.textGray, marginBottom: "4%" }} />
                     <View>
                         <TextInput
                             style={styles.descriptionInput}
@@ -103,7 +102,7 @@ export default function ReportScreen() {
                             value={value}
                         />
                     </View>
-                    <TouchableHighlight underlayColor='#593480' style={styles.button}>
+                    <TouchableHighlight underlayColor={colors.darkPurple} style={styles.button}>
                         <View style={{ alignItems: "center" }}>
                             <Text style={styles.buttonText}>Trimite</Text>
                         </View>
@@ -131,7 +130,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: "5%",
-        backgroundColor: "#BB6BD9",
+        backgroundColor: colors.purple,
         height: 50,
         alignItems: "center",
         justifyContent: "center",
@@ -141,7 +140,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 20,
-        color: "#fff",
+        color: colors.white,
         fontWeight: "bold",
     },
     container: {
@@ -158,7 +157,7 @@ const styles = StyleSheet.create({
         elevation: 1,
         textAlignVertical: 'top'
     },
-    ellipse_1: {
+    ellipse1: {
         position: "absolute",
         top: "7%",
         right: "0%",

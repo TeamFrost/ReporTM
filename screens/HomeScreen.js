@@ -2,7 +2,7 @@ import React from 'react';
 import { StatusBar } from "expo-status-bar";
 import { Image, Text, View, StyleSheet, TouchableHighlight, Dimensions } from "react-native";
 
-import NavBar from '../helpers/NavBar'
+import NavBar from '../helpers/navbar'
 import { colors, screenHeight } from "../helpers/style";
 
 export default function HomeScreen({ navigation }) {

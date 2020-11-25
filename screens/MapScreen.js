@@ -5,7 +5,7 @@ import { Image, View, StyleSheet } from "react-native";
 import { SearchBar } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import NavBar from '../helpers/NavBar'
+import NavBar from '../helpers/navbar'
 import { colors, screenHeight, screenWidth } from "../helpers/style";
 
 export default function MapScreen() {
