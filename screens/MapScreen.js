@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
 import MapView, { Marker } from 'react-native-maps';
 import { Image, View, StyleSheet } from "react-native";
@@ -7,22 +7,33 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight, screenWidth } from "../helpers/style";
+import { firebase } from '../config/firebaseConfig'
 
 export default function MapScreen() {
 
-    const markers = [
-        {
-            latlng: { latitude: 45.73338232083366, longitude: 21.2227313965559 },
-            title: "Test",
-            description: "E un test"
-        },
-        {
-            latlng: { latitude: 45.74309947816705, longitude: 21.228644996881485 },
-            title: "Test2",
-            description: "E un test2"
-        }
-    ]
     const [search, setSearch] = useState('')
+    const [reports, setReports] = useState([]);
+
+    const reportsRef = firebase.firestore().collection('reports');
+
+    useEffect(() => {
+        reportsRef
+            .onSnapshot(
+                querySnapshot => {
+                    const newReports = []
+                    querySnapshot.forEach(doc => {
+                        const report = doc.data()
+                        report.id = doc.id
+                        newReports.push(report)
+                    });
+                    setReports(newReports)
+                    console.log(reports)
+                },
+                error => {
+                    console.log(error)
+                }
+            )
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -38,11 +49,11 @@ export default function MapScreen() {
                     }}
                     onLongPress={e => console.log(e.nativeEvent.coordinate)}
                 >
-                    {markers.map((marker, index) => (
+                    {reports.map((marker, index) => (
                         <Marker
                             key={index}
-                            coordinate={marker.latlng}
-                            title={marker.title}
+                            coordinate={marker.coordinates}
+                            title={marker.category}
                             description={marker.description}
                             pinColor={colors.purple}
                         />
