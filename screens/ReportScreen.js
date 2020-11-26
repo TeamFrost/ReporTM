@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Image, StyleSheet, Text, View, TouchableHighlight, Dimensions, TextInput } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableHighlight, Modal, TextInput } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Input, Divider } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Toast from 'react-native-toast-message';
 import { Picker } from '@react-native-picker/picker';
 
-import NavBar from '../helpers/navbar'
+import NavBar from '../helpers/navbar';
 import { colors, screenHeight } from "../helpers/style";
-import { firebase } from '../config/firebaseConfig'
+import { category } from '../helpers/category';
+import { firebase } from '../config/firebaseConfig';
 
 export default function ReportScreen() {
 
-    const [pickerState, setPickerState] = useState({ category: '' })
-    const [value, setValueState] = React.useState('');
+    const [pickerVisibility, setPickerVisibility] = useState(false)
+    const [value, setValueState] = useState('');
+    const [title, setTitle] = useState('Alege o categorie')
+
+    const togglePicker = () => {
+        setPickerVisibility(!pickerVisibility)
+    }
 
     return (
         <View style={styles.container}>
@@ -64,21 +70,51 @@ export default function ReportScreen() {
                     <View style={styles.map}>
                         <Text>Map here :D</Text>
                     </View>
-                    <Text style={styles.section}>Alege o categorie</Text>
-                    <Divider style={{ backgroundColor: colors.textGray }} />
-                    <Picker
-                        selectedValue={pickerState.category}
-                        style={styles.picker}
-                        mode="dropdown"
-                        onValueChange={(itemValue) =>
-                            setPickerState({ category: itemValue })
-                        }>
-                        <Picker.Item label="Gropi" value="gropi" />
-                        <Picker.Item label="Graffiti" value="graffiti" />
-                        <Picker.Item label="Gunoi" value="gunoi" />
-                        <Picker.Item label="Iluminat Stradal" value="iluminat" />
-                        <Picker.Item label="Poluare" value="poluare" />
-                    </Picker>
+                    <View style={styles.category}>
+                        <Text style={styles.categorySection}>{title}</Text>
+
+                        <Icon style={styles.searchIcon}
+                            name="md-arrow-dropdown"
+                            size={35}
+                            color={colors.black}
+                            onPress={() => togglePicker()}
+                        />
+                    </View>
+                    <Divider style={styles.divider} />
+                    <Modal visible={pickerVisibility} animationType={"slide"} transparent={true}>
+                        <View style={{
+                            margin: 20, padding: 20,
+                            backgroundColor: '#efefef',
+                            bottom: 20,
+                            left: 20,
+                            right: 20,
+                            alignItems: 'center',
+                            position: 'absolute'
+                        }}>
+                            <Text>Selectează o categorie</Text>
+                            {category.map((value, index) => {
+                                return <TouchableHighlight key={index} onPress={() => { setValueState(value.value), setTitle(value.value), togglePicker() }} style={{ paddingTop: 4, paddingBottom: 4 }}>
+                                    <Text>{value.title}</Text>
+                                </TouchableHighlight>
+                            })}
+                            <TouchableHighlight onPress={() => togglePicker()} style={{ paddingTop: 4, paddingBottom: 4 }}>
+                                <Text style={{ color: '#999' }}>Cancel</Text>
+                            </TouchableHighlight>
+                        </View>
+                    </Modal>
+                    {/* <Picker
+                            selectedValue={pickerState.category}
+                            style={styles.picker}
+                            mode="dropdown"
+                            onValueChange={(itemValue) =>
+                                setPickerState({ category: itemValue })
+                            }>
+                            <Picker.Item label="Gropi" value="gropi" />
+                            <Picker.Item label="Graffiti" value="graffiti" />
+                            <Picker.Item label="Gunoi" value="gunoi" />
+                            <Picker.Item label="Iluminat Stradal" value="iluminat" />
+                            <Picker.Item label="Poluare" value="poluare" />
+                        </Picker> */}
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.section}>Incarca o fotografie</Text>
                         <Icon style={styles.uploadIcon}
@@ -88,7 +124,7 @@ export default function ReportScreen() {
                             onPress={() => console.log("Poza pentru incarcat!")}
                         />
                     </View>
-                    <Divider style={{ backgroundColor: colors.textGray, marginBottom: "6%" }} />
+                    <Divider style={styles.divider} />
                     <Text style={styles.section}>Descriere</Text>
                     <Divider style={{ backgroundColor: colors.textGray, marginBottom: "4%" }} />
                     <View>
@@ -142,6 +178,16 @@ const styles = StyleSheet.create({
         color: colors.white,
         fontWeight: "bold",
     },
+    category: {
+        flexDirection: 'row',
+
+    },
+    categorySection: {
+        flex: 8.9,
+        fontSize: 18,
+        alignSelf: "flex-end",
+        marginBottom: '2%'
+    },
     container: {
         flex: 1,
         backgroundColor: colors.white,
@@ -155,6 +201,10 @@ const styles = StyleSheet.create({
         padding: 10,
         elevation: 1,
         textAlignVertical: 'top'
+    },
+    divider: {
+        backgroundColor: colors.textGray,
+        marginBottom: "7%"
     },
     ellipse1: {
         position: "absolute",
@@ -195,7 +245,6 @@ const styles = StyleSheet.create({
     },
     location: {
         flexDirection: 'row',
-
     },
     locationInput: {
         flex: 8.9,
@@ -209,7 +258,7 @@ const styles = StyleSheet.create({
     },
     map: {
         marginTop: "5%",
-        marginBottom: "5%",
+        marginBottom: "2%",
         width: "100%",
         height: 150,
         alignItems: "center",
