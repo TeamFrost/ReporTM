@@ -11,6 +11,7 @@ export const colors = {
     pressedLightPurple: '#ECDAF2D0',
     pressedWhite: '#FEFEFE',
     purple: '#BB6BD9',
+    purple2: '#B269CD',
     searchBarGray: '#E4E0E9',
     shadowGray: '#CCC',
     textGray: '#8F92A1',

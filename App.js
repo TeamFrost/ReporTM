@@ -16,6 +16,7 @@ import FeedScreen from './screens/FeedScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import HelpScreen from './screens/HelpScreen';
+import DrawerContent from './screens/DrawerContent';
 
 
 const Stack = createStackNavigator();
@@ -109,24 +110,24 @@ export default function App() {
 			<Stack.Screen name="Help" component={HelpScreen} />
 		</Stack.Navigator>
 
-	const DrawerContent = (props) => {
-		return (
-			<DrawerContentScrollView {...props}>
-				<DrawerItemList {...props} />
-				<DrawerItem label="Deconectare" onPress={() => {
-					firebase.auth().signOut()
-						.then(
-							props.navigation.reset({
-								index: 0,
-								routes: [{ name: 'LoginStack' }],
-							}))
-						.catch(error => {
-							alert(error)
-						});
-				}} />
-			</DrawerContentScrollView>
-		);
-	}
+	// const DrawerContent = (props) => {
+	// 	return (
+	// 		<DrawerContentScrollView {...props}>
+	// 			<DrawerItemList {...props} />
+	// 			<DrawerItem label="Deconectare" onPress={() => {
+	// 				firebase.auth().signOut()
+	// 					.then(
+	// 						props.navigation.reset({
+	// 							index: 0,
+	// 							routes: [{ name: 'LoginStack' }],
+	// 						}))
+	// 					.catch(error => {
+	// 						alert(error)
+	// 					});
+	// 			}} />
+	// 		</DrawerContentScrollView>
+	// 	);
+	// }
 
 	const createDrawer = () =>
 		<Drawer.Navigator
