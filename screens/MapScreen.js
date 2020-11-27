@@ -27,7 +27,6 @@ export default function MapScreen() {
                         newReports.push(report)
                     });
                     setReports(newReports)
-                    console.log(reports)
                 },
                 error => {
                     console.log(error)
