@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { StatusBar } from "expo-status-bar";
 import { Image, StyleSheet, Text, View, TouchableHighlight, Modal, TextInput } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Input, Divider } from 'react-native-elements';
+import { Divider } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Toast from 'react-native-toast-message';
-import { Picker } from '@react-native-picker/picker';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 
 import NavBar from '../helpers/navbar';
 import { colors, screenHeight } from "../helpers/style";
@@ -20,6 +21,21 @@ export default function ReportScreen() {
 
     const togglePicker = () => {
         setPickerVisibility(!pickerVisibility)
+    }
+
+    const [location, setLocation] = useState(null);
+
+    const getCurrentLocation = () => {
+        (async () => {
+            let { status } = await Location.requestPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+            console.log(location.coords.latitude)
+        })();
     }
 
     return (
@@ -55,16 +71,16 @@ export default function ReportScreen() {
                     <View style={styles.location}>
                         <TextInput
                             style={styles.locationInput}
-                            placeholder='Adaugă locația problemei'
-                        // onChangeText={text => onChangeText(text)}
-                        // value={value}
-                        />
-
+                            placeholder="Adaugă locația problemei"
+                        >
+                            {location ? location.coords.latitude : ""}
+                        </TextInput>
                         <Icon style={styles.searchIcon}
                             name="md-locate"
                             size={35}
                             color={colors.black}
-                            onPress={() => console.log("Locatie curenta!")}
+                            // onPress={() => console.log("Locatie curenta!")}
+                            onPress={getCurrentLocation()}
                         />
                     </View>
                     <View style={styles.map}>
@@ -102,19 +118,6 @@ export default function ReportScreen() {
                             </TouchableHighlight>
                         </View>
                     </Modal>
-                    {/* <Picker
-                            selectedValue={pickerState.category}
-                            style={styles.picker}
-                            mode="dropdown"
-                            onValueChange={(itemValue) =>
-                                setPickerState({ category: itemValue })
-                            }>
-                            <Picker.Item label="Gropi" value="gropi" />
-                            <Picker.Item label="Graffiti" value="graffiti" />
-                            <Picker.Item label="Gunoi" value="gunoi" />
-                            <Picker.Item label="Iluminat Stradal" value="iluminat" />
-                            <Picker.Item label="Poluare" value="poluare" />
-                        </Picker> */}
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.section}>Incarca o fotografie</Text>
                         <Icon style={styles.uploadIcon}
