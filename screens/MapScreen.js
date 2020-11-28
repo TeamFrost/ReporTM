@@ -4,34 +4,31 @@ import MapView, { Marker } from 'react-native-maps';
 import { Image, View, StyleSheet } from "react-native";
 import { SearchBar } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { connect } from 'react-redux';
 
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight, screenWidth } from "../helpers/style";
-import { firebase } from '../config/firebaseConfig'
+import { watchReportsData } from '../redux/actions/reports'
 
-export default function MapScreen() {
+
+const mapStateToProps = (state) => {
+    return {
+        reportsData: state.reportsData
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        watchReportsData: () => dispatch(watchReportsData())
+    };
+}
+
+function MapScreen({ ...props }) {
 
     const [search, setSearch] = useState('')
-    const [reports, setReports] = useState([]);
-
-    const reportsRef = firebase.firestore().collection('reports');
 
     useEffect(() => {
-        reportsRef
-            .onSnapshot(
-                querySnapshot => {
-                    const newReports = []
-                    querySnapshot.forEach(doc => {
-                        const report = doc.data()
-                        report.id = doc.id
-                        newReports.push(report)
-                    });
-                    setReports(newReports)
-                },
-                error => {
-                    console.log(error)
-                }
-            )
+        props.watchReportsData()
     }, [])
 
     return (
@@ -48,7 +45,7 @@ export default function MapScreen() {
                     }}
                     onLongPress={e => console.log(e.nativeEvent.coordinate)}
                 >
-                    {reports.map((marker, index) => (
+                    {props.reportsData.map((marker, index) => (
                         <Marker
                             key={index}
                             coordinate={marker.coordinates}
@@ -117,3 +114,5 @@ const styles = StyleSheet.create({
 
     },
 })
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapScreen);
