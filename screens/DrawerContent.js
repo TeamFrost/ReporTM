@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { firebase } from '../config/firebaseConfig';
-import { View, Text, StyleSheet, Switch } from "react-native";
+import { View, Text, StyleSheet, Switch, Platform } from "react-native";
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { colors, screenHeight, screenWidth } from "../helpers/style";
 import { Avatar, Caption, Drawer } from 'react-native-paper';
@@ -89,10 +89,10 @@ export default function DrawerContent(props) {
                         color={colors.darkPurple}
                         style={{ marginRight: 15 }} />
                     <Switch
-                        style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
+                        style={{ transform: Platform.OS ? 'andriod'[{ scaleX: 1.3 }, { scaleY: 1.3 }] : [{ scaleX: 1 }, { scaleY: 1 }] }}
                         trackColor={{ false: "#767577", true: "#34C759" }}
                         thumbColor={isSwitch ? colors.white : colors.white}
-                        ios_backgroundColor="#34C759"
+                        ios_backgroundColor="#767577"
                         onValueChange={toggleSwitch}
                         value={isSwitch}
                     />
@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.lightPurple,
-
     },
     avatarDiv: {
         flexDirection: "row",
@@ -117,7 +116,7 @@ const styles = StyleSheet.create({
         width: '80%',
         backgroundColor: colors.purple,
         borderBottomRightRadius: 55,
-        marginBottom: '25%',
+        marginBottom: '20%',
         marginTop: "-10%",
         paddingTop: "10%"
     },
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     itemText: {
-        fontSize: 18,
+        fontSize: screenHeight > 700 ? 18 : 16,
         fontWeight: 'bold',
         letterSpacing: 1,
         color: "#1B1D28",
