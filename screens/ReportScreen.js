@@ -34,7 +34,7 @@ export default function ReportScreen() {
 
             let location = await Location.getCurrentPositionAsync({});
             setLocation(location);
-            console.log(location.coords.latitude)
+            //console.log(location.coords.latitude)
         })();
     }
 
@@ -79,8 +79,8 @@ export default function ReportScreen() {
                             name="md-locate"
                             size={35}
                             color={colors.black}
-                            // onPress={() => console.log("Locatie curenta!")}
-                            onPress={getCurrentLocation()}
+                        // onPress={() => console.log("Locatie curenta!")}
+                        // onPress={getCurrentLocation()}
                         />
                     </View>
                     <View style={styles.map}>
@@ -99,22 +99,47 @@ export default function ReportScreen() {
                     <Divider style={styles.divider} />
                     <Modal visible={pickerVisibility} animationType={"slide"} transparent={true}>
                         <View style={{
+                            alignSelf: "center",
                             margin: 20, padding: 20,
-                            backgroundColor: '#efefef',
-                            bottom: 20,
-                            left: 20,
-                            right: 20,
+                            backgroundColor: "#fcfcfc",
                             alignItems: 'center',
-                            position: 'absolute'
+                            justifyContent: 'center',
+                            position: 'absolute',
+                            top: "48%",
+                            width: "80%",
+
                         }}>
-                            <Text>Selectează o categorie</Text>
+                            <Text style={{ color: colors.textHelpGray }}>Selectează o categorie</Text>
                             {category.map((value, index) => {
-                                return <TouchableHighlight key={index} onPress={() => { setValueState(value.value), setTitle(value.value), togglePicker() }} style={{ paddingTop: 4, paddingBottom: 4 }}>
-                                    <Text>{value.title}</Text>
+                                return <TouchableHighlight
+                                    key={index}
+                                    underlayColor={colors.lightPurple}
+                                    onPress={() => {
+                                        setValueState(value.value),
+                                            setTitle(value.value),
+                                            togglePicker()
+                                    }}
+                                    style={{
+                                        padding: 6,
+                                        width: "80%",
+                                        alignItems: "center",
+                                        borderRadius: 20,
+                                    }}
+                                >
+                                    <Text style={{ fontSize: 18, }}>{value.title}</Text>
                                 </TouchableHighlight>
                             })}
-                            <TouchableHighlight onPress={() => togglePicker()} style={{ paddingTop: 4, paddingBottom: 4 }}>
-                                <Text style={{ color: '#999' }}>Cancel</Text>
+                            <TouchableHighlight
+                                underlayColor='none'
+                                onPress={() =>
+                                    togglePicker()
+                                }
+                                style={{
+                                    paddingTop: 4,
+                                    paddingBottom: 4
+                                }}
+                            >
+                                <Text style={{ color: colors.red, fontSize: 18 }}>Cancel</Text>
                             </TouchableHighlight>
                         </View>
                     </Modal>

@@ -17,5 +17,6 @@ export const colors = {
     textGray: '#8F92A1',
     textHelpGray: '#ADADAD',
     textYellow: '#FFC61B',
+    red: "#D35933",
 }
 
