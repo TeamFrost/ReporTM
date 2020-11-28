@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, TouchableHighlight } from "react-native";
-import Icon from 'react-native-vector-icons/Ionicons';
+// import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { DrawerActions } from '@react-navigation/native';
-
+import { Icon } from 'react-native-elements';
 import { colors } from "./style";
 
 export default function NavBar() {
@@ -17,8 +17,10 @@ export default function NavBar() {
                 style={{ flex: 1 }}>
                 <View style={styles.bottomMenuTouchable}>
                     <Icon
-                        name='md-menu'
+                        name='bars'
+                        type="font-awesome"
                         size={30}
+
                         color={colors.darkPurple}
                         style={{ marginRight: 25 }}
                     />
@@ -30,8 +32,9 @@ export default function NavBar() {
                 style={{ flex: 1 }}>
                 <View style={styles.bottomMenuTouchable}>
                     <Icon
-                        name='md-home'
-                        size={30}
+                        name='home'
+                        type="font-awesome"
+                        size={32}
                         color={colors.darkPurple}
                         style={{ marginLeft: 25 }}
                     />
