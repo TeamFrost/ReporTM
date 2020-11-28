@@ -25,44 +25,42 @@ export default function DrawerContent(props) {
                     </View>
                 </View>
                 <View style={{ flex: 1, shadowColor: 'transparent' }}>
-                    <Drawer.Section >
-                        <DrawerItem
-                            label="Hartă"
-                            style={styles.itemDrawer}
-                            labelStyle={styles.itemText}
-                            onPress={() => { props.navigation.navigate("Map") }}
-                        />
-                        <DrawerItem
-                            label="Raportează"
-                            style={styles.itemDrawer}
-                            labelStyle={styles.itemText}
-                            onPress={() => { props.navigation.navigate("Report") }}
-                        />
-                        <DrawerItem
-                            label="Sesizări"
-                            style={styles.itemDrawer}
-                            labelStyle={styles.itemText}
-                            onPress={() => { props.navigation.navigate("Feed") }}
-                        />
-                        <DrawerItem
-                            label="Profilul meu"
-                            style={styles.itemDrawer}
-                            labelStyle={styles.itemText}
-                            onPress={() => { props.navigation.navigate("Profile") }}
-                        />
-                        <DrawerItem
-                            label="Setări"
-                            style={styles.itemDrawer}
-                            labelStyle={styles.itemText}
-                            onPress={() => { props.navigation.navigate("Settings") }}
-                        />
-                        <DrawerItem
-                            label="Ajutor"
-                            style={styles.itemDrawer}
-                            labelStyle={styles.itemText}
-                            onPress={() => { props.navigation.navigate("Help") }}
-                        />
-                    </Drawer.Section>
+                    <DrawerItem
+                        label="Hartă"
+                        style={styles.itemDrawer}
+                        labelStyle={styles.itemText}
+                        onPress={() => { props.navigation.navigate("Map") }}
+                    />
+                    <DrawerItem
+                        label="Raportează"
+                        style={styles.itemDrawer}
+                        labelStyle={styles.itemText}
+                        onPress={() => { props.navigation.navigate("Report") }}
+                    />
+                    <DrawerItem
+                        label="Sesizări"
+                        style={styles.itemDrawer}
+                        labelStyle={styles.itemText}
+                        onPress={() => { props.navigation.navigate("Feed") }}
+                    />
+                    <DrawerItem
+                        label="Profilul meu"
+                        style={styles.itemDrawer}
+                        labelStyle={styles.itemText}
+                        onPress={() => { props.navigation.navigate("Profile") }}
+                    />
+                    <DrawerItem
+                        label="Setări"
+                        style={styles.itemDrawer}
+                        labelStyle={styles.itemText}
+                        onPress={() => { props.navigation.navigate("Settings") }}
+                    />
+                    <DrawerItem
+                        label="Ajutor"
+                        style={styles.itemDrawer}
+                        labelStyle={styles.itemText}
+                        onPress={() => { props.navigation.navigate("Help") }}
+                    />
                 </View>
                 <View style={styles.switchView}>
                     <Icon
@@ -80,35 +78,33 @@ export default function DrawerContent(props) {
                         value={isSwitch}
                     />
                 </View>
-                <Drawer.Section>
-                    <View style={styles.bottomItemDrawer}>
-                        <DrawerItem
-                            label="Deconectare"
-                            labelStyle={styles.bottomItemText}
-                            icon={() => <Icon
-                                name="sign-out"
-                                type="font-awesome"
-                                size={35}
-                                color={colors.darkPurple}
-                                style={{ marginLeft: 12 }}
-                            />}
-                            onPress={
-                                () => {
-                                    firebase.auth().signOut()
-                                        .then(
-                                            props.navigation.reset({
-                                                index: 0,
-                                                routes: [{ name: 'LoginStack' }],
-                                            }))
-                                        .catch(error => {
-                                            alert(error)
-                                        });
-                                }
+                <View style={styles.bottomItemDrawer}>
+                    <DrawerItem
+                        label="Deconectare"
+                        labelStyle={styles.bottomItemText}
+                        icon={() => <Icon
+                            name="sign-out"
+                            type="font-awesome"
+                            size={35}
+                            color={colors.darkPurple}
+                            style={{ marginLeft: 12 }}
+                        />}
+                        onPress={
+                            () => {
+                                firebase.auth().signOut()
+                                    .then(
+                                        props.navigation.reset({
+                                            index: 0,
+                                            routes: [{ name: 'LoginStack' }],
+                                        }))
+                                    .catch(error => {
+                                        alert(error)
+                                    });
                             }
+                        }
 
-                        />
-                    </View>
-                </Drawer.Section>
+                    />
+                </View>
             </DrawerContentScrollView>
             <StatusBar style="auto" />
         </View>
@@ -165,18 +161,18 @@ const styles = StyleSheet.create({
     switchView: {
         flex: 1,
         flexDirection: 'row',
-        height: screenHeight / 6,
+        height: screenHeight / 6.2,
         alignItems: "flex-end",
         justifyContent: "flex-start",
         padding: 30,
         paddingBottom: 25,
-
+        marginBottom: screenHeight > 750 ? 20 : -10
     },
     bottomItemDrawer: {
         flex: 1,
-        height: screenHeight / 9.5,
+        height: screenHeight / 10,
         justifyContent: "flex-end",
-        paddingBottom: 20,
+        paddingBottom: screenHeight > 700 ? 20 : 10,
         borderTopWidth: 1,
         borderColor: colors.textGray
     },
