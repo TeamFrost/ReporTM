@@ -29,13 +29,14 @@ const mapDispatchToProps = (dispatch) => {
 
 function MapScreen({ ...props }) {
 
-    const reportsRef = firebase.firestore().collectionGroup('sub_reports');
-
     const [search, setSearch] = useState('')
+    const [categoryFilter, setCategoryFilter] = useState('')
 
     useEffect(() => {
+        let reportsRef = firebase.firestore().collectionGroup('sub_reports');
+        categoryFilter === '' ? reportsRef = firebase.firestore().collectionGroup('sub_reports') : reportsRef = firebase.firestore().collection('reports').doc(categoryFilter).collection('sub_reports')
         props.watchReportsData(reportsRef)
-    }, [])
+    })
 
     return (
         <View style={styles.container}>
@@ -55,16 +56,8 @@ function MapScreen({ ...props }) {
                         <Marker
                             key={index}
                             coordinate={marker.coordinates}
-                            title={marker.category}
                             description={marker.description}
-                            pinColor={
-                                (marker.category === "groapa") ? colors.groapa :
-                                    (marker.category === "graffiti") ? colors.graffiti :
-                                        (marker.category === "gunoi") ? "aqua" :
-                                            (marker.category === "iluminat") ? colors.iluminat :
-                                                (marker.category === "poluare") ? colors.poluare :
-                                                    (marker.category === "parcare") ? colors.parcare : colors.black
-                            }
+                            pinColor={marker.color}
                         >
                             <Callout tooltip>
                                 <View>
@@ -112,7 +105,9 @@ function MapScreen({ ...props }) {
                     contentContainerStyle={styles.scrollContainter}
                 >
                     {category.map((category, index) => (
-                        <TouchableOpacity key={index} style={styles.tagButton}>
+                        <TouchableOpacity key={index} style={styles.tagButton} onPress={() => {
+                            category.value === categoryFilter ? setCategoryFilter('') : setCategoryFilter(category.value)
+                        }}>
                             <Icon
                                 type="font-awesome"
                                 name={category.icon}
@@ -184,7 +179,8 @@ const styles = StyleSheet.create({
         marginRight: 10,
         borderWidth: 1,
         borderColor: colors.searchBarGray,
-        elevation: 3
+        elevation: 3,
+        alignItems: 'center'
     },
     scrollContainter: {
         paddingLeft: "10%",
