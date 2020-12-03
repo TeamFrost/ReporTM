@@ -6,6 +6,7 @@ import { SearchBar } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 
+import { firebase } from '../config/firebaseConfig';
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight, screenWidth } from "../helpers/style";
 import { watchReportsData } from '../redux/actions/reports'
@@ -19,16 +20,18 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        watchReportsData: () => dispatch(watchReportsData())
+        watchReportsData: (reportsRef) => dispatch(watchReportsData(reportsRef))
     };
 }
 
 function MapScreen({ ...props }) {
 
+    const reportsRef = firebase.firestore().collectionGroup('sub_reports');
+
     const [search, setSearch] = useState('')
 
     useEffect(() => {
-        props.watchReportsData()
+        props.watchReportsData(reportsRef)
     }, [])
 
     return (
