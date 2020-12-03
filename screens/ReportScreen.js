@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
 import { Image, StyleSheet, Text, View, TouchableHighlight, Modal, TextInput } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -24,19 +24,23 @@ export default function ReportScreen() {
     }
 
     const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+    const [input, setInput] = useState("");
 
-    const getCurrentLocation = () => {
+    useEffect(() => {
         (async () => {
             let { status } = await Location.requestPermissionsAsync();
             if (status !== 'granted') {
                 setErrorMsg('Permission to access location was denied');
             }
-
             let location = await Location.getCurrentPositionAsync({});
             setLocation(location);
-            console.log(location.coords.latitude)
+            // console.log(location)
         })();
-    }
+    }, []);
+
+    console.log(location.coords.latitude)
+
 
     return (
         <View style={styles.container}>
@@ -73,14 +77,14 @@ export default function ReportScreen() {
                             style={styles.locationInput}
                             placeholder="Adaugă locația problemei"
                         >
-                            {location ? location.coords.latitude : ""}
+                            {/* {input} */}
                         </TextInput>
                         <Icon style={styles.searchIcon}
                             name="md-locate"
                             size={35}
                             color={colors.black}
-                            // onPress={() => console.log("Locatie curenta!")}
-                            onPress={getCurrentLocation()}
+                        // onPress={() => console.log("Locatie curenta!")}
+                        // onPress={setInput(lat)}
                         />
                     </View>
                     <View style={styles.map}>
