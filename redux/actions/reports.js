@@ -2,8 +2,7 @@ import { firebase } from '../../config/firebaseConfig';
 
 import { types } from './types';
 
-// const reportsRef = firebase.firestore().collectionGroup('sub_reports');
-// const reportsRef = firebase.firestore().collection('reports').doc('gunoi').collection('sub_reports');
+const reportsRef = firebase.firestore().collectionGroup('sub_reports');
 
 const setReportsData = (reportsData) => {
     return {
