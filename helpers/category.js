@@ -2,37 +2,37 @@ import { colors } from "./style";
 
 export const category = [
     {
-        value: 'Groapa',
+        value: 'groapa',
         title: 'Groapă',
         icon: "exclamation-triangle",
         color: colors.groapa,
     },
     {
-        value: 'Graffiti',
+        value: 'graffiti',
         title: 'Graffiti',
         icon: "spray-can",
         color: colors.graffiti,
     },
     {
-        value: 'Gunoi',
+        value: 'gunoi',
         title: 'Gunoi',
         icon: "trash",
         color: colors.gunoi,
     },
     {
-        value: 'Iluminat Stradal',
+        value: 'iluminat',
         title: 'Iluminat Stradal',
         icon: "lightbulb",
         color: colors.iluminat,
     },
     {
-        value: 'Poluare',
+        value: 'poluare',
         title: 'Poluare',
         icon: "smog",
         color: colors.poluare,
     },
     {
-        value: 'Parcare',
+        value: 'parcare',
         title: 'Parcare',
         icon: "parking",
         color: colors.parcare,
