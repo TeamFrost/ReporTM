@@ -6,7 +6,6 @@ import { Divider } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Toast from 'react-native-toast-message';
 import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
 
 import NavBar from '../helpers/navbar';
 import { colors, screenHeight } from "../helpers/style";
@@ -25,7 +24,8 @@ export default function ReportScreen() {
 
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
-    const [input, setInput] = useState("");
+    const [coords, setCoords] = useState(null);
+    const [adress, setAdress] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -33,14 +33,33 @@ export default function ReportScreen() {
             if (status !== 'granted') {
                 setErrorMsg('Permission to access location was denied');
             }
+
             let location = await Location.getCurrentPositionAsync({});
             setLocation(location);
-            // console.log(location)
+
+            let coords = {
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude
+            };
+
+            setCoords(coords);
+            console.log(coords)
+
+            let adress = await Location.reverseGeocodeAsync(coords);
+            setAdress(adress);
+
         })();
     }, []);
 
-    console.log(location.coords.latitude)
+    let street = adress.map(res => res.name)
 
+    let text = 'Waiting..';
+    if (errorMsg) {
+        text = errorMsg;
+    } else if (coords) {
+        text = street;
+        console.log(text)
+    }
 
     return (
         <View style={styles.container}>
@@ -77,7 +96,7 @@ export default function ReportScreen() {
                             style={styles.locationInput}
                             placeholder="Adaugă locația problemei"
                         >
-                            {/* {input} */}
+                            {text}
                         </TextInput>
                         <Icon style={styles.searchIcon}
                             name="md-locate"
