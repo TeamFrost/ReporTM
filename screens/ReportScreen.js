@@ -39,7 +39,7 @@ export default function ReportScreen() {
         })();
     }, []);
 
-    console.log(location.coords.latitude)
+    // console.log(location.coords.latitude)
 
 
     return (
@@ -164,7 +164,7 @@ export default function ReportScreen() {
                             style={styles.descriptionInput}
                             multiline
                             numberOfLines={6}
-                            maxLength={280}
+                            maxLength={240}
                             placeholder='Adauga o descriere'
                             onChangeText={text => setValueState(text)}
                             value={value}
