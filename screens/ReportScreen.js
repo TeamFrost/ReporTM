@@ -188,7 +188,7 @@ export default function ReportScreen() {
                             style={styles.descriptionInput}
                             multiline
                             numberOfLines={6}
-                            maxLength={280}
+                            maxLength={240}
                             placeholder='Adauga o descriere'
                             onChangeText={text => setDescriptionState(text)}
                             value={description}
