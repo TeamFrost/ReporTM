@@ -16,6 +16,7 @@ export default function ReportScreen() {
 
     const [pickerVisibility, setPickerVisibility] = useState(false)
     const [value, setValueState] = useState('');
+    const [description, setDescriptionState] = useState('');
     const [title, setTitle] = useState('Alege o categorie')
 
     const togglePicker = () => {
@@ -47,19 +48,22 @@ export default function ReportScreen() {
 
             let adress = await Location.reverseGeocodeAsync(coords);
             setAdress(adress);
+            console.log(adress)
 
         })();
     }, []);
 
-    let street = adress.map(res => res.name)
+
 
     let text = 'Waiting..';
     if (errorMsg) {
         text = errorMsg;
-    } else if (coords) {
+    } else if (adress) {
+        let street = adress.map(res => res.name)
         text = street;
         console.log(text)
     }
+
 
     return (
         <View style={styles.container}>
@@ -102,8 +106,7 @@ export default function ReportScreen() {
                             name="md-locate"
                             size={35}
                             color={colors.black}
-                        // onPress={() => console.log("Locatie curenta!")}
-                        // onPress={setInput(lat)}
+                            onPress={() => console.log("Locatie curenta!")}
                         />
                     </View>
                     <View style={styles.map}>
@@ -139,7 +142,7 @@ export default function ReportScreen() {
                                     underlayColor={colors.lightPurple}
                                     onPress={() => {
                                         setValueState(value.value),
-                                            setTitle(value.value),
+                                            setTitle(value.title),
                                             togglePicker()
                                     }}
                                     style={{
@@ -172,8 +175,10 @@ export default function ReportScreen() {
                             name="md-cloud-upload"
                             size={30}
                             color={colors.black}
-                            onPress={() => console.log("Poza pentru incarcat!")}
+                        // onPress={() => console.log("Poza pentru incarcat!")}
+                        // onPress={chooseFile}
                         />
+
                     </View>
                     <Divider style={styles.divider} />
                     <Text style={styles.section}>Descriere</Text>
@@ -185,8 +190,8 @@ export default function ReportScreen() {
                             numberOfLines={6}
                             maxLength={280}
                             placeholder='Adauga o descriere'
-                            onChangeText={text => setValueState(text)}
-                            value={value}
+                            onChangeText={text => setDescriptionState(text)}
+                            value={description}
                         />
                     </View>
                     <TouchableHighlight underlayColor={colors.darkPurple} style={styles.button}>
