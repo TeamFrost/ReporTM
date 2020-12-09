@@ -3,7 +3,7 @@ import { firebase } from '../config/firebaseConfig';
 import { View, Text, StyleSheet, Switch, Platform } from "react-native";
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { colors, screenHeight } from "../helpers/style";
-import { Avatar, Caption, Drawer } from 'react-native-paper';
+import { Avatar, Caption } from 'react-native-paper';
 import { Icon } from 'react-native-elements';
 import { StatusBar } from "expo-status-bar";
 
