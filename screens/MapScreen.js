@@ -6,37 +6,36 @@ import { SearchBar } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
-import { firebase } from '../config/firebaseConfig';
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight, screenWidth } from "../helpers/style";
 import { watchReportsData } from '../redux/actions/reports';
 import { category } from '../helpers/category';
 import { Callout } from 'react-native-maps';
-import { color } from 'react-native-reanimated';
 
-const mapStateToProps = (state) => {
-    return {
-        reportsData: state.reportsData
-    };
-}
+const mapStateToProps = (state) => ({ reportsData: state.reports.reportsData });
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        watchReportsData: (reportsRef) => dispatch(watchReportsData(reportsRef))
-    };
-}
+const mapDispatchToProps = (dispatch) => ({ watchReportsData: () => dispatch(watchReportsData()) });
 
 function MapScreen({ ...props }) {
-
     const [search, setSearch] = useState('')
     const [categoryFilter, setCategoryFilter] = useState('')
+    const { reportsData } = props;
+    const [mapData, setMapData] = useState(reportsData)
+
+    const applyFilter = (filter) => {
+        if (filter === '') {
+            setMapData(reportsData)
+        } else {
+            let mapData = reportsData.filter(function (data) {
+                return data.parent === filter
+            });
+            setMapData(mapData);
+        }
+    }
 
     useEffect(() => {
-        let reportsRef = firebase.firestore().collectionGroup('sub_reports');
-        categoryFilter === '' ? reportsRef = firebase.firestore().collectionGroup('sub_reports') : reportsRef = firebase.firestore().collection('reports').doc(categoryFilter).collection('sub_reports')
-        props.watchReportsData(reportsRef)
-    })
+        props.watchReportsData()
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -52,7 +51,7 @@ function MapScreen({ ...props }) {
                     }}
                     onLongPress={e => console.log(e.nativeEvent.coordinate)}
                 >
-                    {props.reportsData.map((marker, index) => (
+                    {mapData.map((marker, index) => (
                         <Marker
                             key={index}
                             coordinate={marker.coordinates}
@@ -106,7 +105,15 @@ function MapScreen({ ...props }) {
                 >
                     {category.map((category, index) => (
                         <TouchableOpacity key={index} style={styles.tagButton} onPress={() => {
-                            category.value === categoryFilter ? setCategoryFilter('') : setCategoryFilter(category.value)
+                            category.value === categoryFilter
+                                ? (
+                                    applyFilter(''),
+                                    setCategoryFilter('')
+                                ) :
+                                (
+                                    applyFilter(category.value),
+                                    setCategoryFilter(category.value)
+                                )
                         }}>
                             <Icon
                                 type="font-awesome"

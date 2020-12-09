@@ -11,7 +11,7 @@ const setReportsData = (reportsData) => {
     };
 };
 
-export const watchReportsData = (reportsRef) => {
+export const watchReportsData = () => {
     return function (dispatch) {
         reportsRef
             .onSnapshot(
@@ -20,7 +20,9 @@ export const watchReportsData = (reportsRef) => {
                     querySnapshot.forEach(doc => {
                         const report = doc.data()
                         report.id = doc.id
-                        reportsData.push(report)
+                        const parent = doc.ref.parent.parent.id
+                        const reportFinal = { ...report, parent };
+                        reportsData.push(reportFinal)
                     });
                     const actionSetReportsData = setReportsData(reportsData)
                     dispatch(actionSetReportsData);
