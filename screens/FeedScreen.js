@@ -1,16 +1,203 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, OpaqueColorValue } from "react-native";
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight, screenWidth } from "../helpers/style";
 import { Input, Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Avatar } from 'react-native-paper';
+import { LogBox } from 'react-native';
 
+const DATA = [
+    {
+        id: "1",
+        userName: "Edi One",
+        userAvatar: require("../assets/Profile.png"),
+        adress: 'Str. Episcop Augustin  nr. 3',
+        time: '35 min ago',
+        photo: require("../assets/Test.png"),
+        description: 'jXx bQQq FMw oCah andjj Lw UeBkWUB qtakf pdg exYQFdMn YqalF n RZMe NVleV O HwtXT fqOJnFV oIvg ha hM lGmfLX ls gyd lung kdujbH ymmT ZMySdP kCy xcrv Dc mGek NVxDBGK C by Oh Jos XdoSx rTyiZa Pdl OG UiP GAuGjkU mAncA WZsNs eyucM MWtEYCC GrXw cFBCIp dtXdE CCb QFGfN ohKXyMH faAPLAyeF dVz TbP',
+        upvotes: '15',
+        tag: 'Gunoi',
+        color: "#C0EAFF",
+    },
+    {
+        id: "2",
+        userName: "Simo Rad",
+        userAvatar: require("../assets/ProfileWhite.png"),
+        adress: 'Str. Episcop Augustin  nr. 8',
+        time: '52 min ago',
+        photo: require("../assets/Test.png"),
+        description: 'fuabf afi auwfa fuwa fff FdMn YqalF n RZMe NVleV O HwtXT fqOJnFV oIvg ha hM lGmfLX ls gyd lung kdujbH ymmT ZMySdP kCy xcrv Dc mGek NVxDBGK C by Oh Jos XdoSx rTyiZa Pdl OG UiP GAuGjkU mAncA WZsNs eyucM MWtEYCC GrXw cFBCIp dtXdE CCb QFGfN ohKXyMH faAPLAyeF dVz TbP',
+        upvotes: '92',
+        tag: 'Poluare',
+        color: "#83b1cb",
+    },
+    {
+        id: "3",
+        userName: "Simo Rad",
+        userAvatar: require("../assets/ProfileWhite.png"),
+        adress: 'Str. Episcop Augustin  nr. 8',
+        time: '52 min ago',
+        photo: require("../assets/Test.png"),
+        description: 'fuabf afi auwfa fuwa fff FdMn YqalF n RZMe NVleV O HwtXT fqOJnFV oIvg ha hM lGmfLX ls gyd lung kdujbH ymmT ZMySdP kCy xcrv Dc mGek NVxDBGK C by Oh Jos XdoSx rTyiZa Pdl OG UiP GAuGjkU mAncA WZsNs eyucM MWtEYCC GrXw cFBCIp dtXdE CCb QFGfN ohKXyMH faAPLAyeF dVz TbP',
+        upvotes: '92',
+        tag: 'Iluminat',
+        color: "#FFCE3C",
+    },
+    {
+        id: "4",
+        userName: "Simo Rad",
+        userAvatar: require("../assets/ProfileWhite.png"),
+        adress: 'Str. Episcop Augustin  nr. 8',
+        time: '56 min ago',
+        photo: require("../assets/Test.png"),
+        description: 'fuabf afi auwfa fuwa fff FdMn YqalF n RZMe NVleV O HwtXT fqOJnFV oIvg ha hM lGmfLX ls gyd lung kdujbH ymmT ZMySdP kCy xcrv Dc mGek NVxDBGK C by Oh Jos XdoSx rTyiZa Pdl OG UiP GAuGjkU mAncA WZsNs eyucM MWtEYCC GrXw cFBCIp dtXdE CCb QFGfN ohKXyMH faAPLAyeF dVz TbP',
+        upvotes: '92',
+        tag: 'Parcare',
+        color: "#9c280e"
+    }
+]
+const iconSelector = (tag) => {
+    if (tag === 'Groapa') return 'exclamation-triangle'
+    if (tag === 'Graffiti') return 'spray-can'
+    if (tag === 'Gunoi') return 'trash'
+    if (tag === 'Iluminat') return 'lightbulb'
+    if (tag === 'Poluare') return 'smog'
+    if (tag === 'Parcare') return 'parking'
+
+}
+const Item = ({ userName, userAvatar, adress, time, photo, description, upvotes, tag, color }) => (
+    <View style={styles.card}>
+        <View style={styles.cardHeader}>
+            <View style={styles.cardHeaderLeft}>
+                <Avatar.Image size={50} source={userAvatar} />
+                <View style={styles.cardHeaderText}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', }}>{userName}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: "center" }}>
+                        <Icon name='map-marker-alt' type="font-awesome-5" size={10} style={{ paddingRight: 7 }} />
+                        <Text style={{ fontSize: 12, }}>{adress}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: "center" }}>
+                        <Icon name='clock' type="font-awesome-5" size={10} style={{ paddingRight: 5, marginLeft: -1, color: colors.textGray }} />
+                        <Text style={{ fontSize: 12, color: colors.textGray }}>{time}</Text>
+                    </View>
+                </View>
+            </View>
+            <View style={styles.cardHeaderRight}>
+                <TouchableOpacity>
+                    <Icon name='ellipsis-h' size={20} style={{ color: colors.textGray, paddingRight: 10 }} />
+                </TouchableOpacity>
+            </View>
+        </View>
+        <View style={styles.cardContent}>
+            <Image
+                source={photo}
+                style={{ width: 190, height: 130 }}
+            />
+            <Text numberOfLines={10} style={styles.cardDescription}>
+                {description}
+            </Text>
+        </View>
+        <Divider style={{ height: 1, backgroundColor: colors.textGray, width: '90%', alignSelf: "center" }} />
+        <View style={styles.cardFooter}>
+            <View style={styles.cardFooterLeft}>
+                <TouchableOpacity>
+                    <Icon name='arrow-alt-circle-up' size={25} color={colors.darkPurple} style={{ paddingLeft: 15, paddingRight: 5 }} />
+                </TouchableOpacity>
+                <Text>{upvotes}</Text>
+                <Text> Aprobări</Text>
+            </View>
+            <View style={styles.rightBottomTag}>
+
+                <TouchableOpacity style={styles.tagButton2} >
+
+                    <Icon
+                        type="font-awesome"
+                        name={iconSelector(tag)}
+                        size={16}
+                        style={{ marginRight: 5, paddingTop: 2, color: color }}
+                    />
+                    <Text>{tag}</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    </View>
+
+);
+
+const renderItem = ({ item }) => (
+    <Item userName={item.userName}
+        userName={item.userName}
+        userAvatar={item.userAvatar}
+        adress={item.adress}
+        time={item.time}
+        photo={item.photo}
+        description={item.description}
+        upvotes={item.upvotes}
+        tag={item.tag}
+        color={item.color}
+    />
+);
+
+const getHeader = () => {
+    return (
+        <View>
+            <View style={styles.searchBar}>
+                <Input
+                    style={{ padding: 5 }}
+                    placeholder='Caută'
+                    rightIcon={
+                        <Icon
+                            name='search'
+                            size={24}
+                            color={colors.textHelpGray}
+                        />
+                    }
+                    onChangeText={value => setSearch({ value })}
+
+                />
+            </View>
+            <View style={styles.tagsContainer}>
+                <TouchableOpacity style={styles.tagButton}>
+                    <Icon
+                        type="font-awesome-5"
+                        name='clock'
+                        size={16}
+                        style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
+                    />
+                    <Text style={{ fontSize: 14 }}> Recente</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.tagButton}>
+                    <Icon
+                        type="font-awesome-5"
+                        name='fire'
+                        size={16}
+                        style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
+                    />
+                    <Text style={{ fontSize: 14 }}> Populare</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.tagButton}>
+                    <Icon
+                        type="font-awesome-5"
+                        name='tag'
+                        size={16}
+                        style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
+                    />
+                    <Text style={{ fontSize: 14 }}> Categorie</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+};
 
 
 export default function FeedScreen() {
+
+    useEffect(() => {
+        LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    }, [])
 
     const [search, setSearch] = useState('')
 
@@ -18,108 +205,12 @@ export default function FeedScreen() {
         <View style={styles.container}>
             <KeyboardAwareScrollView>
                 <View style={styles.mainPage}>
-                    <View style={styles.searchBar}>
-                        <Input
-                            style={{ padding: 5 }}
-                            placeholder='Caută'
-                            rightIcon={
-                                <Icon
-                                    name='search'
-                                    size={24}
-                                    color={colors.textHelpGray}
-                                />
-                            }
-                            onChangeText={value => setSearch({ value })}
-
-                        />
-                    </View>
-                    <View style={styles.tagsContainer}>
-                        <TouchableOpacity style={styles.tagButton}>
-                            <Icon
-                                type="font-awesome-5"
-                                name='clock'
-                                size={16}
-                                style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
-                            />
-                            <Text style={{ fontSize: 14 }}> Recente</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.tagButton}>
-                            <Icon
-                                type="font-awesome-5"
-                                name='fire'
-                                size={16}
-                                style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
-                            />
-                            <Text style={{ fontSize: 14 }}> Populare</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.tagButton}>
-                            <Icon
-                                type="font-awesome-5"
-                                name='tag'
-                                size={16}
-                                style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
-                            />
-                            <Text style={{ fontSize: 14 }}> Categorie</Text>
-                        </TouchableOpacity>
-                    </View>
-
-
-                    <View style={styles.card}>
-                        <View style={styles.cardHeader}>
-                            <View style={styles.cardHeaderLeft}>
-                                <Avatar.Image size={50} source={require('../assets/Profile.png')} />
-                                <View style={styles.cardHeaderText}>
-                                    <Text style={{ fontSize: 18, fontWeight: 'bold', }}>Edi One</Text>
-                                    <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                                        <Icon name='map-marker-alt' type="font-awesome-5" size={10} style={{ paddingRight: 7 }} />
-                                        <Text style={{ fontSize: 12, }}>Str. Episcop Augustin  nr. 3</Text>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                                        <Icon name='clock' type="font-awesome-5" size={10} style={{ paddingRight: 5, marginLeft: -1, color: colors.textGray }} />
-                                        <Text style={{ fontSize: 12, color: colors.textGray }}>35 min ago</Text>
-                                    </View>
-                                </View>
-                            </View>
-                            <View style={styles.cardHeaderRight}>
-                                <TouchableOpacity>
-                                    <Icon name='ellipsis-h' size={20} style={{ color: colors.textGray, paddingRight: 10 }} />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.cardContent}>
-                            <Image
-                                source={require("../assets/Test.png")}
-                                style={{ width: 190, height: 130 }}
-                            />
-                            <Text numberOfLines={10} style={styles.cardDescription}>
-                                jXx bQQq FMw oCah andjj Lw UeBkWUB qtakf pdg exYQFdMn YqalF n RZMe NVleV O HwtXT fqOJnFV oIvg ha hM lGmfLX ls gyd lung kdujbH ymmT ZMySdP kCy xcrv Dc mGek NVxDBGK C by Oh Jos XdoSx rTyiZa Pdl OG UiP GAuGjkU mAncA WZsNs eyucM MWtEYCC GrXw cFBCIp dtXdE CCb QFGfN ohKXyMH faAPLAyeF dVz TbPpOn PCbs xv
-                            </Text>
-                        </View>
-                        <Divider style={{ height: 1, backgroundColor: colors.textGray, width: '90%', alignSelf: "center" }} />
-                        <View style={styles.cardFooter}>
-                            <View style={styles.cardFooterLeft}>
-                                <TouchableOpacity>
-                                    <Icon name='arrow-alt-circle-up' size={25} color={colors.darkPurple} style={{ paddingLeft: 15, paddingRight: 5 }} />
-                                </TouchableOpacity>
-                                <Text>15</Text>
-                                <Text> Aprobări</Text>
-                            </View>
-                            <View style={styles.rightBottomTag}>
-
-                                <TouchableOpacity style={styles.tagButton2} >
-                                    <Icon
-                                        type="font-awesome"
-                                        name="trash"
-                                        size={16}
-                                        style={{ marginRight: 5, paddingTop: 2, color: colors.gunoi }}
-                                    />
-                                    <Text>Gunoi</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
-
-
+                    <FlatList
+                        data={DATA}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
+                        ListHeaderComponent={getHeader}
+                    />
                 </View>
             </KeyboardAwareScrollView>
             <NavBar />
@@ -140,7 +231,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     mainPage: {
-        height: screenHeight,
         width: screenWidth,
     },
     bottomIcon: {
@@ -152,7 +242,7 @@ const styles = StyleSheet.create({
     searchBar: {
         marginTop: 50,
         width: "85%",
-        height: "7%",
+        height: 50,
         alignSelf: "center",
 
     },
@@ -163,7 +253,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         width: "85%",
         height: 50,
-        // backgroundColor: "#CA239166"
+        //backgroundColor: "#CA239166"
     },
     tagButton: {
         flexDirection: "row",
