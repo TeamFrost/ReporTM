@@ -6,11 +6,13 @@ import { Divider } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Toast from 'react-native-toast-message';
 import * as Location from 'expo-location';
+import { LogBox } from 'react-native';
 
 import NavBar from '../helpers/navbar';
 import { colors, screenHeight } from "../helpers/style";
 import { category } from '../helpers/category';
 import { firebase } from '../config/firebaseConfig';
+import MapView, { Marker } from 'react-native-maps';
 
 export default function ReportScreen() {
 
@@ -25,7 +27,7 @@ export default function ReportScreen() {
 
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
-    const [coords, setCoords] = useState(null);
+    const [coords, setCoords] = useState({});
     const [adress, setAdress] = useState(null);
 
     useEffect(() => {
@@ -35,7 +37,7 @@ export default function ReportScreen() {
                 setErrorMsg('Permission to access location was denied');
             }
 
-            let location = await Location.getCurrentPositionAsync({});
+            let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
             setLocation(location);
 
             let coords = {
@@ -50,6 +52,7 @@ export default function ReportScreen() {
             setAdress(adress);
             console.log(adress)
 
+            LogBox.ignoreLogs(['Failed prop type']);
         })();
     }, []);
 
@@ -59,8 +62,9 @@ export default function ReportScreen() {
     if (errorMsg) {
         text = errorMsg;
     } else if (adress) {
-        let street = adress.map(res => res.name)
-        text = street;
+        let street = adress.map(res => res.street)
+        let number = adress.map(res => res.name)
+        text = street + " " + number;
         console.log(text)
     }
 
@@ -110,7 +114,25 @@ export default function ReportScreen() {
                         />
                     </View>
                     <View style={styles.map}>
-                        <Text>Map here :D</Text>
+                        <MapView
+                            provider="google"
+                            style={{ height: 150, width: "100%" }}
+                            zoomEnabled={false}
+                            scrollEnabled={false}
+                            initialRegion={{
+                                latitude: coords.latitude,
+                                longitude: coords.longitude,
+                                latitudeDelta: 0.0025,
+                                longitudeDelta: 0.0025,
+                            }}
+                        >
+                            {/* <Marker
+                                coordinate={{
+                                    latitude: coords.latitude,
+                                    longitude: coords.longitude
+                                }}
+                            /> */}
+                        </MapView>
                     </View>
                     <View style={styles.category}>
                         <Text style={styles.categorySection}>{title}</Text>
