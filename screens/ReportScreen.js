@@ -131,8 +131,8 @@ export default function ReportScreen({ ...props }) {
                         <MapView
                             provider="google"
                             style={{ height: 150, width: "100%" }}
-                            zoomEnabled={false}
-                            scrollEnabled={false}
+                            // zoomEnabled={false}
+                            // scrollEnabled={false}
                             initialRegion={{
                                 latitude: coords.latitude,
                                 longitude: coords.longitude,
@@ -140,12 +140,12 @@ export default function ReportScreen({ ...props }) {
                                 longitudeDelta: 0.0025,
                             }}
                         >
-                            {/* <Marker
+                            <Marker
                                 coordinate={{
                                     latitude: coords.latitude,
                                     longitude: coords.longitude
                                 }}
-                            /> */}
+                            />
                         </MapView>
                     </View>
                     <View style={styles.category}>
