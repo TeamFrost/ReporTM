@@ -1,4 +1,4 @@
-import { types } from '../actions/types';
+import * as types from '../actions/auth/actionTypes';
 
 const initialState = {
     loggedIn: false,
@@ -10,13 +10,13 @@ const initialState = {
 
 export default auth = (state = initialState, action) => {
     switch (action.type) {
-        case types.LOGIN_START: {
+        case types.SESSION_START: {
             return {
                 ...state,
                 isFetching: true
             };
         }
-        case types.LOGIN_FINISHED: {
+        case types.SESSION_SUCCESS: {
             const { user } = action;
             return {
                 ...state,
@@ -25,7 +25,17 @@ export default auth = (state = initialState, action) => {
                 user
             };
         }
-        case types.LOGIN_ERROR: {
+        case types.SIGNUP_SUCCESS: {
+            const { user } = action;
+            return {
+                ...state,
+                isFetching: false,
+                user,
+                hasError: false,
+                loggedIn: false,
+            };
+        }
+        case types.SESSION_ERROR: {
             const { error } = action;
             return {
                 ...state,
@@ -36,25 +46,9 @@ export default auth = (state = initialState, action) => {
                 errorMessage: error
             };
         }
-        case types.LOGOUT_START: {
-            return {
-                ...state,
-                isFetching: true
-            };
-        }
-        case types.LOGOUT_FINISHED: {
+        case types.SESSION_LOGOUT: {
             return {
                 ...initialState
-            };
-        }
-        case types.LOGOUT_ERROR: {
-            const { error } = action;
-            return {
-                ...state,
-                isFetching: false,
-                loggedIn: true,
-                hasError: true,
-                errorMessage: error
             };
         }
         default: {

@@ -1,13 +1,18 @@
-import { types } from '../actions/types';
+import * as types from '../actions/auth/actionTypes'
 
 const initialState = {
     reportsData: [],
-}
+};
 
 export default reports = (state = initialState, action) => {
     switch (action.type) {
-        case types.setReportsData:
-            return { ...state, reportsData: action.value };
+        case "setReportsData": {
+            const { reportsData } = action;
+            return {
+                ...state,
+                reportsData
+            };
+        }
         default:
             return state;
     }
