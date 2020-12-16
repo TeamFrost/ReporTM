@@ -1,18 +1,10 @@
-import { firebase } from '../../config/firebaseConfig';
+import { firebase } from '../../../config/firebaseConfig';
 
-import { types } from './types';
-
-const reportsRef = firebase.firestore().collectionGroup('sub_reports');
-
-const setReportsData = (reportsData) => {
-    return {
-        type: types.setReportsData,
-        value: reportsData
-    };
-};
+import * as types from './actionTypes';
 
 export const watchReportsData = () => {
     return function (dispatch) {
+        const reportsRef = firebase.firestore().collectionGroup('sub_reports');
         reportsRef
             .onSnapshot(
                 querySnapshot => {
@@ -33,3 +25,8 @@ export const watchReportsData = () => {
             )
     }
 };
+
+const setReportsData = (reportsData) => ({
+    type: "setReportsData",
+    reportsData
+});

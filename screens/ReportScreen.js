@@ -11,8 +11,9 @@ import NavBar from '../helpers/navbar';
 import { colors, screenHeight } from "../helpers/style";
 import { category } from '../helpers/category';
 import { firebase } from '../config/firebaseConfig';
+import { set } from 'react-native-reanimated';
 
-export default function ReportScreen() {
+export default function ReportScreen({ ...props }) {
 
     const [pickerVisibility, setPickerVisibility] = useState(false)
     const [value, setValueState] = useState('');
@@ -29,31 +30,44 @@ export default function ReportScreen() {
     const [adress, setAdress] = useState(null);
 
     useEffect(() => {
-        (async () => {
-            let { status } = await Location.requestPermissionsAsync();
-            if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
-            }
+        if (props.route.params) {
+            let coords = props.route.params.coords;
+            setCoords(props.route.params.coords);
+            console.log(coords);
+            (async () => {
+                let { status } = await Location.requestPermissionsAsync();
+                if (status !== 'granted') {
+                    setErrorMsg('Permission to access location was denied');
+                }
 
-            let location = await Location.getCurrentPositionAsync({});
-            setLocation(location);
+                let adress = await Location.reverseGeocodeAsync(coords);
+                setAdress(adress);
+                console.log(adress)
 
-            let coords = {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude
-            };
-
-            setCoords(coords);
-            console.log(coords)
-
-            let adress = await Location.reverseGeocodeAsync(coords);
-            setAdress(adress);
-            console.log(adress)
-
-        })();
+            })();
+        }
     }, []);
 
+    const getCurrentLocation = async () => {
+        let { status } = await Location.requestPermissionsAsync();
+        if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+        }
 
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+
+        let coords = {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude
+        };
+
+        setCoords(coords);
+
+        let adress = await Location.reverseGeocodeAsync(coords);
+        setAdress(adress);
+        // console.log(adress)
+    }
 
     let text = 'Waiting..';
     if (errorMsg) {
@@ -61,7 +75,7 @@ export default function ReportScreen() {
     } else if (adress) {
         let street = adress.map(res => res.name)
         text = street;
-        console.log(text)
+        // console.log(text)
     }
 
 
@@ -106,7 +120,7 @@ export default function ReportScreen() {
                             name="md-locate"
                             size={35}
                             color={colors.black}
-                            onPress={() => console.log("Locatie curenta!")}
+                            onPress={() => getCurrentLocation()}
                         />
                     </View>
                     <View style={styles.map}>

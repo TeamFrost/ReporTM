@@ -1,9 +1,0 @@
-export const types = {
-    setReportsData: "setReportsData",
-    LOGIN_START: 'LOGIN_START',
-    LOGIN_FINISHED: 'LOGIN_FINISHED',
-    LOGIN_ERROR: 'LOGIN_ERROR',
-    LOGOUT_START: 'LOGOUT_START',
-    LOGOUT_FINISHED: 'LOGOUT_FINISHED',
-    LOGOUT_ERROR: 'LOGOUT_ERROR',
-};
