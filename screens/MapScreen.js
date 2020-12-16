@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight, screenWidth } from "../helpers/style";
-import { watchReportsData } from '../redux/actions/reports';
+import { watchReportsData } from '../redux/actions/reports/reports';
 import { category } from '../helpers/category';
 import { Callout } from 'react-native-maps';
 
@@ -21,6 +21,7 @@ function MapScreen({ ...props }) {
     const [categoryFilter, setCategoryFilter] = useState('')
     const { reportsData } = props;
     const [mapData, setMapData] = useState(reportsData)
+    // console.log(mapData)
 
     const applyFilter = (filter) => {
         if (filter === '') {
@@ -32,6 +33,7 @@ function MapScreen({ ...props }) {
             setMapData(mapData);
         }
     }
+    //fix fisrt render!!
 
     useEffect(() => {
         props.watchReportsData()
@@ -49,7 +51,10 @@ function MapScreen({ ...props }) {
                         latitudeDelta: 0.0722,
                         longitudeDelta: 0.0321,
                     }}
-                    onLongPress={e => console.log(e.nativeEvent.coordinate)}
+                    onLongPress={e => {
+                        const coords = e.nativeEvent.coordinate;
+                        props.navigation.navigate('Report', { coords })
+                    }}
                 >
                     {mapData.map((marker, index) => (
                         <Marker
