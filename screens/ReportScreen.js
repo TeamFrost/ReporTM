@@ -4,7 +4,6 @@ import { Image, StyleSheet, Text, View, TouchableHighlight, Modal, TextInput } f
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Divider } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import Toast from 'react-native-toast-message';
 import * as Location from 'expo-location';
 import { LogBox } from 'react-native';
 
@@ -13,28 +12,32 @@ import { colors, screenHeight } from "../helpers/style";
 import { category } from '../helpers/category';
 import { firebase } from '../config/firebaseConfig';
 import MapView, { Marker } from 'react-native-maps';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function ReportScreen({ ...props }) {
 
     const [pickerVisibility, setPickerVisibility] = useState(false)
     const [value, setValueState] = useState('');
+    const [color, setColor] = useState('');
     const [description, setDescriptionState] = useState('');
-    const [title, setTitle] = useState('Alege o categorie')
-
-    const togglePicker = () => {
-        setPickerVisibility(!pickerVisibility)
-    }
+    const [title, setTitle] = useState('Alege o categorie');
+    const [imageRef, setImageRef] = useState("");
+    const [imageURL, setImageURL] = useState("");
 
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
-    const [coords, setCoords] = useState({});
+    const [coords, setCoords] = useState({
+        "latitude": 45.73893889978378,
+        "longitude": 21.228619515895844,
+    });
     const [adress, setAdress] = useState(null);
+
+    const [image, setImage] = useState(null);
 
     useEffect(() => {
         if (props.route.params) {
             let coords = props.route.params.coords;
             setCoords(props.route.params.coords);
-            console.log(coords);
             (async () => {
                 let { status } = await Location.requestPermissionsAsync();
                 if (status !== 'granted') {
@@ -43,7 +46,6 @@ export default function ReportScreen({ ...props }) {
 
                 let adress = await Location.reverseGeocodeAsync(coords);
                 setAdress(adress);
-                console.log(adress)
 
             })();
         }
@@ -79,9 +81,60 @@ export default function ReportScreen({ ...props }) {
         let street = adress.map(res => res.street)
         let number = adress.map(res => res.name)
         text = street + " " + number;
-        console.log(text)
+        // console.log(text)
     }
 
+    const togglePicker = () => {
+        setPickerVisibility(!pickerVisibility)
+    }
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        console.log("Poza!!")
+        console.log(result);
+
+        if (!result.cancelled) {
+            let image = result.uri;
+            setImage(image);
+            uploadImage(image, 'test')
+        }
+    };
+
+    const uploadImage = async (uri, imageName) => {
+        const response = await fetch(uri);
+        const blob = await response.blob();
+
+        const ref = firebase.storage().ref().child(`images/reports/${imageName}`);
+        setImageRef(ref);
+        return ref.put(blob);
+    }
+
+    const submitForm = () => {
+        const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+        imageRef.getDownloadURL().then(function (url) {
+            let imageURL = url;
+            setImageURL(imageURL)
+        }).catch(function (error) {
+            alert(error)
+        });
+        const data = {
+            color: color,
+            coordinates: coords,
+            description: description,
+            image: imageURL,
+            timestamp: timestamp,
+            upvotes: [],
+        }
+        const reportRef = firebase.firestore().collection('reports').doc(value).collection('sub_reports').doc("test")
+        reportRef
+            .set(data)
+    }
 
     return (
         <View style={styles.container}>
@@ -177,9 +230,10 @@ export default function ReportScreen({ ...props }) {
                                     key={index}
                                     underlayColor={colors.lightPurple}
                                     onPress={() => {
-                                        setValueState(value.value),
-                                            setTitle(value.title),
-                                            togglePicker()
+                                        setValueState(value.value);
+                                        setTitle(value.title);
+                                        setColor(value.color);
+                                        togglePicker()
                                     }}
                                     style={{
                                         padding: 6,
@@ -211,8 +265,8 @@ export default function ReportScreen({ ...props }) {
                             name="md-cloud-upload"
                             size={30}
                             color={colors.black}
-                        // onPress={() => console.log("Poza pentru incarcat!")}
-                        // onPress={chooseFile}
+                            // onPress={() => console.log("Poza pentru incarcat!")}
+                            onPress={pickImage}
                         />
 
                     </View>
@@ -230,7 +284,7 @@ export default function ReportScreen({ ...props }) {
                             value={description}
                         />
                     </View>
-                    <TouchableHighlight underlayColor={colors.darkPurple} style={styles.button}>
+                    <TouchableHighlight underlayColor={colors.darkPurple} style={styles.button} onPress={submitForm}>
                         <View style={{ alignItems: "center" }}>
                             <Text style={styles.buttonText}>Trimite</Text>
                         </View>
