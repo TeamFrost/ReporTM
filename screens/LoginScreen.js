@@ -4,58 +4,36 @@ import { Image, StyleSheet, Text, View, TouchableHighlight } from "react-native"
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import Toast from 'react-native-toast-message';
+import { connect } from 'react-redux';
 
-import { firebase } from '../config/firebaseConfig'
 import { colors, screenHeight } from "../helpers/style";
+import { loginUser } from '../redux/actions/auth/auth';
 
-export default function LoginScreen({ navigation }) {
+const mapStateToProps = (state) => ({
+    loggedIn: state.auth.loggedIn,
+    isFetching: state.auth.isFetching,
+    hasError: state.auth.hasError,
+    errorMessage: state.auth.errorMessage,
+    user: state.auth.user
+});
+
+const mapDispatchToProps = (dispatch) => ({ loginUser: (email, password) => dispatch(loginUser(email, password)) });
+
+function LoginScreen({ ...props }) {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
     const [textSecurity, setTextSecurity] = useState(true)
 
+    const onLoginPress = () => { props.loginUser(email, password) }
+
     const onFooterLinkPress = () => {
-        navigation.navigate('Register')
+        props.navigation.navigate('Register')
     }
 
     const handleEyeOnPress = () => {
         textSecurity ? setTextSecurity(false) : setTextSecurity(true);
-    }
-
-    const onLoginPress = () => {
-        console.log("Autentificare")
-        firebase
-            .auth()
-            .signInWithEmailAndPassword(email, password)
-            .then((response) => {
-                const uid = response.user.uid
-                const usersRef = firebase.firestore().collection('users')
-                usersRef
-                    .doc(uid)
-                    .get()
-                    .then(firestoreDocument => {
-                        if (!firestoreDocument.exists) {
-                            alert("User does not exist anymore.")
-                            return;
-                        }
-                        const user = firestoreDocument.data()
-                        console.log("Succes!")
-                        // alert("Succes!")
-                        // Toast.show({
-                        //     type: 'success',
-                        //     text1: 'Autentificare facuta cu succes!',
-                        // });
-                        navigation.navigate('Drawer')
-                    })
-                    .catch(error => {
-                        alert(error)
-                    });
-            })
-            .catch(error => {
-                alert(error)
-            })
     }
 
     return (
@@ -127,7 +105,6 @@ export default function LoginScreen({ navigation }) {
 
                     <Text style={styles.footerOuterText}>Daca nu ai cont, <Text onPress={onFooterLinkPress} style={styles.footerInnerText}>inregistreaza-te</Text> acum.</Text>
                 </View>
-                {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
                 <StatusBar style="auto" />
             </KeyboardAwareScrollView>
         </View >
@@ -216,3 +193,5 @@ const styles = StyleSheet.create({
         color: colors.purple,
     },
 })
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

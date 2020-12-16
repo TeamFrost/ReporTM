@@ -4,13 +4,22 @@ import { Image, StyleSheet, Text, View, TouchableHighlight } from "react-native"
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import Toast from 'react-native-toast-message';
+import { connect } from 'react-redux';
 
-import { firebase } from '../config/firebaseConfig'
 import { colors, screenHeight } from "../helpers/style";
+import { signupUser } from '../redux/actions/auth/auth';
 
-export default function RegisterScreen({ navigation }) {
+const mapStateToProps = (state) => ({
+    loggedIn: state.auth.loggedIn,
+    isFetching: state.auth.isFetching,
+    hasError: state.auth.hasError,
+    errorMessage: state.auth.errorMessage,
+    user: state.auth.user
+});
 
+const mapDispatchToProps = (dispatch) => ({ signupUser: (email, password, username) => dispatch(signupUser(email, password, username)) });
+
+function RegisterScreen({ ...props }) {
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -22,7 +31,7 @@ export default function RegisterScreen({ navigation }) {
     const [textSecurity, setTextSecurity] = useState(true)
 
     const onFooterLinkPress = () => {
-        navigation.navigate('Login')
+        props.navigation.navigate('Login')
     }
 
     const handleOnTextChangeEmail = (text) => {
@@ -44,39 +53,41 @@ export default function RegisterScreen({ navigation }) {
         setTextSecurity(false);
     }
 
-    const onRegisterPress = () => {
-        console.log("Inregistrare")
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then((response) => {
-                const uid = response.user.uid
-                const data = {
-                    id: uid,
-                    email,
-                    username,
-                };
-                const usersRef = firebase.firestore().collection('users')
-                usersRef
-                    .doc(uid)
-                    .set(data)
-                    .then(() => {
-                        alert("Cont creat!")
-                        navigation.navigate('LoginStack')
-                        // Toast.show({
-                        //     type: 'success',
-                        //     text1: 'Cont creat cu succes!',
-                        // });
-                    })
-                    .catch((error) => {
-                        alert(error)
-                    });
-            })
-            .catch((error) => {
-                // console.log(error)
-                alert(error)
-            });
-    }
+    const onRegisterPress = () => { props.signupUser(email, password, username) }
+    console.log(props)
+    // const onRegisterPress = () => {
+    //     console.log("Inregistrare")
+    //     firebase
+    //         .auth()
+    //         .createUserWithEmailAndPassword(email, password)
+    //         .then((response) => {
+    //             const uid = response.user.uid
+    //             const data = {
+    //                 id: uid,
+    //                 email,
+    //                 username,
+    //             };
+    //             const usersRef = firebase.firestore().collection('users')
+    //             usersRef
+    //                 .doc(uid)
+    //                 .set(data)
+    //                 .then(() => {
+    //                     alert("Cont creat!")
+    //                     navigation.navigate('LoginStack')
+    //                     // Toast.show({
+    //                     //     type: 'success',
+    //                     //     text1: 'Cont creat cu succes!',
+    //                     // });
+    //                 })
+    //                 .catch((error) => {
+    //                     alert(error)
+    //                 });
+    //         })
+    //         .catch((error) => {
+    //             // console.log(error)
+    //             alert(error)
+    //         });
+    // }
 
     return (
 
@@ -177,7 +188,6 @@ export default function RegisterScreen({ navigation }) {
                 </View>
 
                 <StatusBar style="auto" />
-                {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
             </KeyboardAwareScrollView>
         </View>
     );
@@ -255,3 +265,5 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
 })
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
