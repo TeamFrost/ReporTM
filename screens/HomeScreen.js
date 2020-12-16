@@ -1,12 +1,11 @@
 import React from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Image, Text, View, StyleSheet, TouchableHighlight, Dimensions } from "react-native";
+import { Image, Text, View, StyleSheet, TouchableHighlight } from "react-native";
 
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight } from "../helpers/style";
 
-export default function HomeScreen({ navigation }) {
-
+export default function HomeScreen({ ...props }) {
     return (
         <View style={styles.container}>
             <Image
@@ -29,7 +28,7 @@ export default function HomeScreen({ navigation }) {
             <View style={styles.paperView}>
 
                 <TouchableHighlight
-                    onPress={() => navigation.navigate('Map')}
+                    onPress={() => props.navigation.navigate('Map')}
                     underlayColor={colors.pressedLightPurple}
                     style={{ borderRadius: 20 }}
                 >
@@ -45,7 +44,7 @@ export default function HomeScreen({ navigation }) {
                 </TouchableHighlight>
 
                 <TouchableHighlight
-                    onPress={() => navigation.navigate('Report')}
+                    onPress={() => props.navigation.navigate('Report')}
                     underlayColor={colors.pressedLightPurple}
                     style={{ borderRadius: 20 }}
                 >
@@ -64,7 +63,7 @@ export default function HomeScreen({ navigation }) {
             <View style={styles.paperView}>
 
                 <TouchableHighlight
-                    onPress={() => navigation.navigate('Feed')}
+                    onPress={() => props.navigation.navigate('Feed')}
                     underlayColor={colors.pressedLightPurple}
                     style={{ borderRadius: 20 }}
                 >
@@ -80,7 +79,7 @@ export default function HomeScreen({ navigation }) {
                 </TouchableHighlight>
 
                 <TouchableHighlight
-                    onPress={() => navigation.navigate('Profile')}
+                    onPress={() => props.navigation.navigate('Profile')}
                     underlayColor={colors.pressedLightPurple}
                     style={{ borderRadius: 20 }}
                 >
@@ -98,7 +97,7 @@ export default function HomeScreen({ navigation }) {
             <View style={styles.paperView}>
 
                 <TouchableHighlight
-                    onPress={() => navigation.navigate('Settings')}
+                    onPress={() => props.navigation.navigate('Settings')}
                     underlayColor={colors.pressedLightPurple}
                     style={{ borderRadius: 20 }}
                 >
@@ -113,7 +112,7 @@ export default function HomeScreen({ navigation }) {
                 </TouchableHighlight>
 
                 <TouchableHighlight
-                    onPress={() => navigation.navigate('Help')}
+                    onPress={() => props.navigation.navigate('Help')}
                     underlayColor={colors.pressedLightPurple}
                     style={{ borderRadius: 20 }}
                 >
