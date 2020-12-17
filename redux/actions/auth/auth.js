@@ -1,10 +1,10 @@
 import { firebase } from '../../../config/firebaseConfig';
-
 import * as types from './actionTypes';
+
+import * as RootNavigation from '../../../helpers/rootnav';
 
 export const restoreSession = () => dispatch => {
     dispatch(sessionStart());
-
     firebase.auth().onAuthStateChanged(user => {
         if (user) {
             usersRef
@@ -25,7 +25,6 @@ export const restoreSession = () => dispatch => {
 
 export const loginUser = (email, password) => dispatch => {
     dispatch(sessionStart());
-
     firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
@@ -43,7 +42,8 @@ export const loginUser = (email, password) => dispatch => {
                     const user = firestoreDocument.data()
                     console.log("Succes!")
                     dispatch(sessionSuccess(user));
-                    navigation.navigate('Drawer')
+                    RootNavigation.navigate('Drawer');
+                    // navigation.navigate('Drawer')
                 })
                 .catch(error => {
                     dispatch(sessionError(error));
@@ -56,7 +56,6 @@ export const loginUser = (email, password) => dispatch => {
 
 export const signupUser = (email, password, username) => dispatch => {
     dispatch(sessionStart());
-
     firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
@@ -74,11 +73,12 @@ export const signupUser = (email, password, username) => dispatch => {
                 .then(() => {
                     console.log("!!!!!!!!!!!")
                     alert("Cont creat!")
-                    navigation.navigate('Login')
+                    RootNavigation.navigate('Login');
+                    // navigation.navigate('Login')
                 })
-            // .catch((error) => {
-            //     dispatch(sessionError(error.message));
-            // });
+                .catch((error) => {
+                    dispatch(sessionError(error.message));
+                });
         })
         .catch((error) => {
             dispatch(sessionError(error.message));
@@ -87,14 +87,14 @@ export const signupUser = (email, password, username) => dispatch => {
 
 export const logoutUser = () => dispatch => {
     dispatch(sessionStart());
-
     firebase.auth().signOut()
         .then(() => {
             dispatch(sessionLogout())
-            props.navigation.reset({
-                index: 0,
-                routes: [{ name: 'LoginStack' }],
-            })
+            RootNavigation.navigate('Login');
+            // navigation.reset({
+            //     index: 0,
+            //     routes: [{ name: 'LoginStack' }],
+            // })
         })
         .catch(error => {
             dispatch(sessionError(error.message));
@@ -107,11 +107,6 @@ const sessionStart = () => ({
 
 const sessionSuccess = user => ({
     type: types.SESSION_SUCCESS,
-    user
-});
-
-const signupSuccess = user => ({
-    type: types.SIGNUP_SUCCESS,
     user
 });
 
