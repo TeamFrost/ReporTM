@@ -28,11 +28,11 @@ const DATA = [
         userAvatar: require("../assets/ProfileWhite.png"),
         adress: 'Str. Episcop Augustin  nr. 8',
         time: '52 min ago',
-        photo: require("../assets/Test.png"),
+        photo: require("../assets/Test2.png"),
         description: 'fuabf afi auwfa fuwa fff FdMn YqalF n RZMe NVleV O HwtXT fqOJnFV oIvg ha hM lGmfLX ls gyd lung kdujbH ymmT ZMySdP kCy xcrv Dc mGek NVxDBGK C by Oh Jos XdoSx rTyiZa Pdl OG UiP GAuGjkU mAncA WZsNs eyucM MWtEYCC GrXw cFBCIp dtXdE CCb QFGfN ohKXyMH faAPLAyeF dVz TbP',
         upvotes: '92',
-        tag: 'Poluare',
-        color: "#83b1cb",
+        tag: 'Groapa',
+        color: "#d37e53",
     },
     {
         id: "3",
@@ -40,7 +40,7 @@ const DATA = [
         userAvatar: require("../assets/ProfileWhite.png"),
         adress: 'Str. Episcop Augustin  nr. 8',
         time: '52 min ago',
-        photo: require("../assets/Test.png"),
+        photo: require("../assets/Test3.png"),
         description: 'fuabf afi auwfa fuwa fff FdMn YqalF n RZMe NVleV O HwtXT fqOJnFV oIvg ha hM lGmfLX ls gyd lung kdujbH ymmT ZMySdP kCy xcrv Dc mGek NVxDBGK C by Oh Jos XdoSx rTyiZa Pdl OG UiP GAuGjkU mAncA WZsNs eyucM MWtEYCC GrXw cFBCIp dtXdE CCb QFGfN ohKXyMH faAPLAyeF dVz TbP',
         upvotes: '92',
         tag: 'Iluminat',
@@ -52,11 +52,11 @@ const DATA = [
         userAvatar: require("../assets/ProfileWhite.png"),
         adress: 'Str. Episcop Augustin  nr. 8',
         time: '56 min ago',
-        photo: require("../assets/Test.png"),
+        photo: require("../assets/Test4.png"),
         description: 'fuabf afi auwfa fuwa fff FdMn YqalF n RZMe NVleV O HwtXT fqOJnFV oIvg ha hM lGmfLX ls gyd lung kdujbH ymmT ZMySdP kCy xcrv Dc mGek NVxDBGK C by Oh Jos XdoSx rTyiZa Pdl OG UiP GAuGjkU mAncA WZsNs eyucM MWtEYCC GrXw cFBCIp dtXdE CCb QFGfN ohKXyMH faAPLAyeF dVz TbP',
         upvotes: '92',
-        tag: 'Parcare',
-        color: "#9c280e"
+        tag: 'Graffiti',
+        color: "#593480"
     }
 ]
 const iconSelector = (tag) => {
