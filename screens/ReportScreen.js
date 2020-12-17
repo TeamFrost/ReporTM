@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Image, StyleSheet, Text, View, TouchableHighlight, Modal, TextInput } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableHighlight, Modal, TextInput, Platform } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Divider } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as Location from 'expo-location';
 import { LogBox } from 'react-native';
+import { connect } from 'react-redux';
 
 import NavBar from '../helpers/navbar';
 import { colors, screenHeight } from "../helpers/style";
@@ -14,7 +15,11 @@ import { firebase } from '../config/firebaseConfig';
 import MapView, { Marker } from 'react-native-maps';
 import * as ImagePicker from 'expo-image-picker';
 
-export default function ReportScreen({ ...props }) {
+const mapStateToProps = (state) => ({ currentUser: state.auth.user });
+
+function ReportScreen({ ...props }) {
+
+    const { currentUser } = props;
 
     const [pickerVisibility, setPickerVisibility] = useState(false)
     const [value, setValueState] = useState('');
@@ -78,9 +83,16 @@ export default function ReportScreen({ ...props }) {
     if (errorMsg) {
         text = errorMsg;
     } else if (adress) {
-        let street = adress.map(res => res.street)
-        let number = adress.map(res => res.name)
-        text = street + " " + number;
+        if (Platform.OS === 'ios') {
+            let name = adress.map(res => res.name)
+            text = name;
+        }
+        else {
+            let street = adress.map(res => res.street)
+            let number = adress.map(res => res.name)
+            text = street + " " + number;
+        }
+
         // console.log(text)
     }
 
@@ -124,6 +136,8 @@ export default function ReportScreen({ ...props }) {
             alert(error)
         });
         const data = {
+            adress: text,
+            author: currentUser.id,
             color: color,
             coordinates: coords,
             description: description,
@@ -131,9 +145,9 @@ export default function ReportScreen({ ...props }) {
             timestamp: timestamp,
             upvotes: [],
         }
-        const reportRef = firebase.firestore().collection('reports').doc(value).collection('sub_reports').doc("test")
+        const reportRef = firebase.firestore().collection('reports').doc(value).collection('sub_reports');
         reportRef
-            .set(data)
+            .add(data)
     }
 
     return (
@@ -442,6 +456,6 @@ const styles = StyleSheet.create({
     uploadIcon: {
         flex: 0.15
     }
-
-
 })
+
+export default connect(mapStateToProps)(ReportScreen);

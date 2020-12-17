@@ -8,66 +8,28 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Avatar } from 'react-native-paper';
 import { LogBox } from 'react-native';
+import { connect } from 'react-redux';
 
-const DATA = [
-    {
-        id: "1",
-        userName: "Edi One",
-        userAvatar: require("../assets/Profile.png"),
-        adress: 'Str. Episcop Augustin  nr. 3',
-        time: '35 min ago',
-        photo: require("../assets/Test.png"),
-        description: 'jXx bQQq FMw oCah andjj Lw UeBkWUB qtakf pdg exYQFdMn YqalF n RZMe NVleV O HwtXT fqOJnFV oIvg ha hM lGmfLX ls gyd lung kdujbH ymmT ZMySdP kCy xcrv Dc mGek NVxDBGK C by Oh Jos XdoSx rTyiZa Pdl OG UiP GAuGjkU mAncA WZsNs eyucM MWtEYCC GrXw cFBCIp dtXdE CCb QFGfN ohKXyMH faAPLAyeF dVz TbP',
-        upvotes: '15',
-        tag: 'Gunoi',
-        color: "#C0EAFF",
-    },
-    {
-        id: "2",
-        userName: "Simo Rad",
-        userAvatar: require("../assets/ProfileWhite.png"),
-        adress: 'Str. Episcop Augustin  nr. 8',
-        time: '52 min ago',
-        photo: require("../assets/Test.png"),
-        description: 'fuabf afi auwfa fuwa fff FdMn YqalF n RZMe NVleV O HwtXT fqOJnFV oIvg ha hM lGmfLX ls gyd lung kdujbH ymmT ZMySdP kCy xcrv Dc mGek NVxDBGK C by Oh Jos XdoSx rTyiZa Pdl OG UiP GAuGjkU mAncA WZsNs eyucM MWtEYCC GrXw cFBCIp dtXdE CCb QFGfN ohKXyMH faAPLAyeF dVz TbP',
-        upvotes: '92',
-        tag: 'Poluare',
-        color: "#83b1cb",
-    },
-    {
-        id: "3",
-        userName: "Simo Rad",
-        userAvatar: require("../assets/ProfileWhite.png"),
-        adress: 'Str. Episcop Augustin  nr. 8',
-        time: '52 min ago',
-        photo: require("../assets/Test.png"),
-        description: 'fuabf afi auwfa fuwa fff FdMn YqalF n RZMe NVleV O HwtXT fqOJnFV oIvg ha hM lGmfLX ls gyd lung kdujbH ymmT ZMySdP kCy xcrv Dc mGek NVxDBGK C by Oh Jos XdoSx rTyiZa Pdl OG UiP GAuGjkU mAncA WZsNs eyucM MWtEYCC GrXw cFBCIp dtXdE CCb QFGfN ohKXyMH faAPLAyeF dVz TbP',
-        upvotes: '92',
-        tag: 'Iluminat',
-        color: "#FFCE3C",
-    },
-    {
-        id: "4",
-        userName: "Simo Rad",
-        userAvatar: require("../assets/ProfileWhite.png"),
-        adress: 'Str. Episcop Augustin  nr. 8',
-        time: '56 min ago',
-        photo: require("../assets/Test.png"),
-        description: 'fuabf afi auwfa fuwa fff FdMn YqalF n RZMe NVleV O HwtXT fqOJnFV oIvg ha hM lGmfLX ls gyd lung kdujbH ymmT ZMySdP kCy xcrv Dc mGek NVxDBGK C by Oh Jos XdoSx rTyiZa Pdl OG UiP GAuGjkU mAncA WZsNs eyucM MWtEYCC GrXw cFBCIp dtXdE CCb QFGfN ohKXyMH faAPLAyeF dVz TbP',
-        upvotes: '92',
-        tag: 'Parcare',
-        color: "#9c280e"
-    }
-]
+import { watchReportsData } from '../redux/actions/reports/reports';
+import moment from 'moment';
+
+const mapStateToProps = (state) => ({
+    reportsData: state.reports.reportsData,
+    currentUser: state.auth.user
+});
+
+const mapDispatchToProps = (dispatch) => ({ watchReportsData: () => dispatch(watchReportsData()) });
+
 const iconSelector = (tag) => {
-    if (tag === 'Groapa') return 'exclamation-triangle'
-    if (tag === 'Graffiti') return 'spray-can'
-    if (tag === 'Gunoi') return 'trash'
-    if (tag === 'Iluminat') return 'lightbulb'
-    if (tag === 'Poluare') return 'smog'
-    if (tag === 'Parcare') return 'parking'
+    if (tag === 'groapa') return 'exclamation-triangle'
+    if (tag === 'graffiti') return 'spray-can'
+    if (tag === 'gunoi') return 'trash'
+    if (tag === 'iluminat') return 'lightbulb'
+    if (tag === 'poluare') return 'smog'
+    if (tag === 'parcare') return 'parking'
 
 }
+
 const Item = ({ userName, userAvatar, adress, time, photo, description, upvotes, tag, color }) => (
     <View style={styles.card}>
         <View style={styles.cardHeader}>
@@ -127,19 +89,6 @@ const Item = ({ userName, userAvatar, adress, time, photo, description, upvotes,
 
 );
 
-const renderItem = ({ item }) => (
-    <Item userName={item.userName}
-        userName={item.userName}
-        userAvatar={item.userAvatar}
-        adress={item.adress}
-        time={item.time}
-        photo={item.photo}
-        description={item.description}
-        upvotes={item.upvotes}
-        tag={item.tag}
-        color={item.color}
-    />
-);
 
 const getHeader = () => {
     return (
@@ -193,9 +142,32 @@ const getHeader = () => {
 };
 
 
-export default function FeedScreen() {
+function FeedScreen({ ...props }) {
+    // console.log(props)
+    const { reportsData } = props;
+
+    const renderItem = ({ item }) => {
+
+        let time = item.timestamp.toDate();
+        let relativeTime = moment(time).fromNow();
+
+        return (
+            <Item userName={item.author}
+                userAvatar={require("../assets/ProfileWhite.png")}
+                adress={item.adress}
+                time={relativeTime}
+                photo={require("../assets/Test.png")}
+                description={item.description}
+                upvotes={item.upvotes.length}
+                tag={item.parent}
+                color={item.color}
+            />
+        );
+
+    }
 
     useEffect(() => {
+        props.watchReportsData();
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     }, [])
 
@@ -206,7 +178,7 @@ export default function FeedScreen() {
             <KeyboardAwareScrollView>
                 <View style={styles.mainPage}>
                     <FlatList
-                        data={DATA}
+                        data={reportsData}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id}
                         ListHeaderComponent={getHeader}
@@ -347,6 +319,6 @@ const styles = StyleSheet.create({
         width: 110,
         alignItems: "center"
     }
-
-
 })
+
+export default connect(mapStateToProps, mapDispatchToProps)(FeedScreen);
