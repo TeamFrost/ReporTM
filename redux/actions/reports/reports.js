@@ -1,7 +1,5 @@
 import { firebase } from '../../../config/firebaseConfig';
 
-import * as types from './actionTypes';
-
 export const watchReportsData = () => {
     return function (dispatch) {
         const reportsRef = firebase.firestore().collectionGroup('sub_reports');
@@ -13,8 +11,20 @@ export const watchReportsData = () => {
                         const report = doc.data()
                         report.id = doc.id
                         const parent = doc.ref.parent.parent.id
-                        const reportFinal = { ...report, parent };
-                        reportsData.push(reportFinal)
+                        const authorId = report.author
+                        firebase.firestore().collection("users").where("id", "==", authorId)
+                            .get()
+                            .then(function (querySnapshot) {
+                                querySnapshot.forEach(function (doc) {
+                                    // doc.data() is never undefined for query doc snapshots
+                                    const author = doc.data().username;
+                                    const reportFinal = { ...report, parent, author };
+                                    reportsData.push(reportFinal)
+                                });
+                            })
+                            .catch(function (error) {
+                                console.log("Error getting documents: ", error);
+                            });
                     });
                     const actionSetReportsData = setReportsData(reportsData)
                     dispatch(actionSetReportsData);
