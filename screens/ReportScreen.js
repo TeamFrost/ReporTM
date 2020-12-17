@@ -6,6 +6,7 @@ import { Divider } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as Location from 'expo-location';
 import { LogBox } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import NavBar from '../helpers/navbar';
 import { colors, screenHeight } from "../helpers/style";
@@ -28,7 +29,7 @@ export default function ReportScreen({ ...props }) {
     const [errorMsg, setErrorMsg] = useState(null);
     const [coords, setCoords] = useState({
         "latitude": 45.73893889978378,
-        "longitude": 21.228619515895844,
+        "longitude": 21.221619515895844,
     });
     const [adress, setAdress] = useState(null);
 
@@ -284,10 +285,12 @@ export default function ReportScreen({ ...props }) {
                             value={description}
                         />
                     </View>
-                    <TouchableHighlight underlayColor={colors.darkPurple} style={styles.button} onPress={submitForm}>
-                        <View style={{ alignItems: "center" }}>
-                            <Text style={styles.buttonText}>Trimite</Text>
-                        </View>
+                    <TouchableHighlight onPress={submitForm} style={styles.touchButton}>
+                        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.button}>
+                            <View style={{ alignItems: "center" }}>
+                                <Text style={styles.buttonText}>Trimite</Text>
+                            </View>
+                        </LinearGradient>
                     </TouchableHighlight>
                 </View>
 
@@ -313,6 +316,7 @@ const styles = StyleSheet.create({
         marginTop: "5%",
         backgroundColor: colors.purple,
         height: 50,
+        width: '100%',
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 20,
@@ -441,6 +445,15 @@ const styles = StyleSheet.create({
     },
     uploadIcon: {
         flex: 0.15
+    },
+    touchButton: {
+        marginTop: "5%",
+        height: 50,
+        width: "100%",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: "5%",
+        borderRadius: 20,
     }
 
 
