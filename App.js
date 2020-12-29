@@ -12,7 +12,7 @@ import { store } from './redux/store';
 export default function App() {
 	return (
 		<Provider store={store}>
-			<NavigationContainer initialRouteName="LandingStack">
+			<NavigationContainer>
 				{createLandingStack()}
 			</NavigationContainer>
 		</Provider>
