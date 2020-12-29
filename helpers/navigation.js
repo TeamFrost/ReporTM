@@ -18,6 +18,62 @@ import DrawerContent from '../screens/DrawerContent';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
+const createDrawer = () =>
+    <Drawer.Navigator
+        // initialRouteName="HomeStack"
+        drawerContent={props => <DrawerContent {...props} />}
+    >
+        <Drawer.Screen
+            name="HomeStack"
+            component={createHomeStack}
+            options={{
+                title: "Acasă"
+            }}
+        />
+        <Drawer.Screen
+            name="MapStack"
+            component={createMapStack}
+            options={{
+                title: "Hartă"
+            }} />
+
+        <Drawer.Screen
+            name="ReportStack"
+            component={createReportStack}
+            options={{
+                title: "Raportează problemă"
+            }}
+        />
+        <Drawer.Screen
+            name="FeedStack"
+            component={createFeedStack}
+            options={{
+                title: "Sesizări"
+            }}
+        />
+        <Drawer.Screen
+            name="ProfileStack"
+            component={createProfileStack}
+            options={{
+                title: "Profilul meu"
+            }}
+        />
+        <Drawer.Screen
+            name="SettingsStack"
+            component={createSettingsStack}
+            options={{
+                title: "Setări"
+            }}
+        />
+        <Drawer.Screen
+            name="HelpStack"
+            component={createHelpStack}
+            options={{
+                title: "Ajutor"
+            }}
+        />
+    </Drawer.Navigator>
+
 export const createLandingStack = () =>
     <Stack.Navigator
         initialRouteName="Landing"
@@ -26,24 +82,14 @@ export const createLandingStack = () =>
             gestureEnabled: false
         }}>
         <Stack.Screen name="Landing" component={LandingScreen} />
-        <Stack.Screen name="Drawer" component={createDrawer} />
-        <Stack.Screen name="LoginStack" component={createLoginStack} />
-
-    </Stack.Navigator>
-
-const createLoginStack = () =>
-    <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{
-            headerShown: false
-        }}>
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Drawer" component={createDrawer} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
     </Stack.Navigator>
 
 const createHomeStack = () =>
     <Stack.Navigator
+        initialRouteName="Home"
         screenOptions={{
             headerShown: false
         }}>
@@ -103,58 +149,3 @@ const createHelpStack = () =>
         }}>
         <Stack.Screen name="Help" component={HelpScreen} />
     </Stack.Navigator>
-
-const createDrawer = () =>
-    <Drawer.Navigator
-        drawerContent={props => <DrawerContent {...props} />}
-    >
-        <Drawer.Screen
-            name="HomeStack"
-            component={createHomeStack}
-            options={{
-                title: "Acasă"
-            }}
-        />
-        <Drawer.Screen
-            name="MapStack"
-            component={createMapStack}
-            options={{
-                title: "Hartă"
-            }} />
-
-        <Drawer.Screen
-            name="ReportStack"
-            component={createReportStack}
-            options={{
-                title: "Raportează problemă"
-            }}
-        />
-        <Drawer.Screen
-            name="FeedStack"
-            component={createFeedStack}
-            options={{
-                title: "Sesizări"
-            }}
-        />
-        <Drawer.Screen
-            name="ProfileStack"
-            component={createProfileStack}
-            options={{
-                title: "Profilul meu"
-            }}
-        />
-        <Drawer.Screen
-            name="SettingsStack"
-            component={createSettingsStack}
-            options={{
-                title: "Setări"
-            }}
-        />
-        <Drawer.Screen
-            name="HelpStack"
-            component={createHelpStack}
-            options={{
-                title: "Ajutor"
-            }}
-        />
-    </Drawer.Navigator>
