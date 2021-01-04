@@ -8,17 +8,24 @@ import { Divider } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { LogBox } from 'react-native';
 import { connect } from 'react-redux';
+import { VictoryPie, VictoryContainer } from "victory-native";
 
-import NavBar from '../helpers/navbar'
-import { colors, screenHeight } from "../helpers/style";
+import NavBar from '../helpers/navbar';
+import { colors, screenHeight, screenWidth } from "../helpers/style";
 
-const mapStateToProps = (state) => ({
-    reportsData: state.reports.reportsData,
-    user: state.auth.user
-});
+
+const chartData = [
+    { label: "8%", y: 15, title: "Groapă", color: "#d37e53" },
+    { label: "20%", y: 38, title: "Graffiti", color: "#593480" },
+    { label: "27%", y: 50, title: "Gunoi", color: "#C0EAFF" },
+    { label: "15%", y: 28, title: "Iluminat", color: "#FFCE3C" },
+    { label: "4%", y: 9, title: "Poluare", color: "#83b1cb" },
+    { label: "24%", y: 44, title: "Parcare", color: "#9c280e" },
+];
+
 
 const Item = ({ photo, title, upvotes }) => (
-    <View style={{ flexDirection: 'row', flex: 1, height: 45, alignItems: 'center', justifyContent: "space-between" }}>
+    <View style={{ height: 45, alignItems: 'center', ...styles.flatListItem }}>
         <View style={{ flex: 1 }}>
             <Avatar.Image size={35} source={{ uri: photo }} />
         </View>
@@ -38,6 +45,34 @@ const renderItem = ({ item }) => (
         upvotes={item.upvotes.length}
     />
 );
+
+const ItemLegend = ({ color, title, number }) => (
+    <View style={{ height: 30, alignItems: 'flex-start', ...styles.flatListItem }}>
+        <View
+            style={{ width: 18, height: 18, borderRadius: 20, backgroundColor: color, elevation: 4 }}
+        >
+        </View>
+        <View style={{ width: '40%', justifyContent: 'flex-start' }}>
+            <Text style={styles.textLegend}>{title}</Text>
+        </View>
+        <View style={{ width: '30%', alignItems: 'center' }}>
+            <Text style={styles.textLegend}>{number}</Text>
+        </View>
+    </View>
+);
+
+const renderItemLegend = ({ item }) => (
+    <ItemLegend
+        color={item.color}
+        title={item.title}
+        number={item.y}
+    />
+);
+
+const mapStateToProps = (state) => ({
+    reportsData: state.reports.reportsData,
+    user: state.auth.user
+});
 
 function ProfileScreen({ ...props }) {
 
@@ -79,8 +114,8 @@ function ProfileScreen({ ...props }) {
 
                 <View style={styles.reportsList}>
                     <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                        <Text style={{ fontSize: 24, fontWeight: "bold" }}>Sesizarile mele</Text>
-                        <Icon name="pencil-alt" type="font-awesome-5" size={20} style={{ marginLeft: 5 }} />
+                        <Icon name="list-ul" type="font-awesome-5" size={20} style={{ marginLeft: 5 }} />
+                        <Text style={{ fontSize: 24, fontWeight: "bold", marginLeft: 5 }}>Sesizările mele</Text>
                     </View>
                     <View style={{ flex: 1 }}>
                         <FlatList
@@ -89,14 +124,16 @@ function ProfileScreen({ ...props }) {
                             keyExtractor={(item) => item.id}
                             ItemSeparatorComponent={() => <Divider style={{ flexDirection: 'column', backgroundColor: colors.textGray }} />}
                             style={{ flex: 1, marginTop: 10 }}
+                            nestedScrollEnabled
+
                         />
                     </View>
                 </View>
 
                 <View style={styles.statisticsView}>
-                    <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                        <Text style={{ fontSize: 24, fontWeight: "bold" }}>Statistici</Text>
+                    <View style={{ flexDirection: 'row', alignItems: "center", marginBottom: 5 }}>
                         <Icon name="chart-bar" type="font-awesome-5" size={24} style={{ marginLeft: 5, marginTop: 3 }} />
+                        <Text style={{ fontSize: 24, fontWeight: "bold", marginLeft: 5, }}>Statisticile mele</Text>
                     </View>
                     <View style={styles.statisticsCards}>
                         <View style={styles.statisticsCardsRow}>
@@ -150,7 +187,139 @@ function ProfileScreen({ ...props }) {
 
                     </View>
                 </View>
-                <View style={{ flex: 1, height: screenHeight / 8.5, width: '100%', backgroundColor: 'pink' }}>
+                <View style={{ flex: 1, width: '100%', flexDirection: 'row' }}>
+                    <VictoryPie
+                        data={chartData}
+                        colorScale={["#d37e53", "#593480", "#C0EAFF", "#FFCE3C", "#83b1cb", "#9c280e"]}
+                        labelRadius={screenWidth / 7.5}
+                        padding={{ top: 20 }}
+                        height={160}
+                        origin={{ x: screenWidth / 3.4 }}
+                        radius={screenWidth / 4.7}
+                        containerComponent={<VictoryContainer height={200} style={{ flex: 1 }} />}
+                        style={{
+                            labels: { fill: "white", fontSize: 14, fontWeight: "bold" },
+                            data: { strokeWidth: 0.5, stroke: 'grey' }
+                        }}
+                    />
+
+                    <View style={styles.statisticsLegend}>
+                        <FlatList
+                            data={chartData}
+                            renderItem={renderItemLegend}
+                            keyExtractor={(item) => item.label}
+                        />
+                    </View>
+                </View>
+
+                <View style={{ ...styles.reportsList, height: 500, marginBottom: 40 }}>
+                    <View style={{ flexDirection: 'row', alignItems: "center" }}>
+                        <Icon name="medal" type="font-awesome-5" size={20} style={{ marginLeft: 5 }} />
+                        <Text style={{ fontSize: 24, fontWeight: "bold", marginLeft: 5 }}>Realizările mele</Text>
+                    </View>
+
+                    <View style={styles.achievementsContainer}>
+
+                        <View style={styles.achievementsCardView}>
+
+                            <View style={styles.achievementsCard}>
+                                <Image source={require("../assets/Achievement1.png")} />
+                                <View style={styles.achievementsCardText}>
+                                    <Text style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>Bine ai venit</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>Te-ai înregistrat pe aplicație</Text>
+                                </View>
+                            </View>
+
+                            <View style={styles.achievementsCard}>
+                                <Image source={require("../assets/Achievement2.png")} />
+                                <View style={styles.achievementsCardText}>
+                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>Sesizarea #1</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>Ai adăugat prima sesizare în aplicație</Text>
+                                </View>
+                            </View>
+
+                        </View>
+
+                        <View style={styles.achievementsCardView}>
+
+                            <View style={styles.achievementsCard}>
+                                <Image source={require("../assets/Achievement3.png")} />
+                                <View style={styles.achievementsCardText}>
+                                    <Text style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>Probleme++</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>Ai descoperit pagina de sesizări</Text>
+                                </View>
+                            </View>
+
+                            <View style={styles.achievementsCard}>
+                                <Image source={require("../assets/Achievement4.png")} />
+                                <View style={styles.achievementsCardText}>
+                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>Votat!</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>Ai votat prima problemă în aplicație</Text>
+                                </View>
+                            </View>
+
+                        </View>
+
+                        <View style={styles.achievementsCardView}>
+
+                            <View style={styles.achievementsCard}>
+                                <Image source={require("../assets/Achievement5.png")} />
+                                <View style={styles.achievementsCardText}>
+                                    <Text style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>fotograf</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>Ai adaugat 5 poze pentru probleme</Text>
+                                </View>
+                            </View>
+
+                            <View style={styles.achievementsCard}>
+                                <Image source={require("../assets/Achievement6.png")} />
+                                <View style={styles.achievementsCardText}>
+                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>selfie</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>Ți-ai schimbat poza de profil</Text>
+                                </View>
+                            </View>
+
+                        </View>
+
+                        <View style={styles.achievementsCardView}>
+
+                            <View style={styles.achievementsCard}>
+                                <Image source={require("../assets/Achievement7.png")} />
+                                <View style={styles.achievementsCardText}>
+                                    <Text style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>Influencer</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>Ai primit 50 de voturi la problema sesizată</Text>
+                                </View>
+                            </View>
+
+                            <View style={styles.achievementsCard}>
+                                <Image source={require("../assets/Achievement8.png")} />
+                                <View style={styles.achievementsCardText}>
+                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>inspector</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>Ai adăugat 10 (Z-E-C-E) probleme în aplicație</Text>
+                                </View>
+                            </View>
+
+                        </View>
+
+                        <View style={styles.achievementsCardView}>
+
+                            <View style={styles.achievementsCard}>
+                                <Image source={require("../assets/Achievement9.png")} />
+                                <View style={styles.achievementsCardText}>
+                                    <Text style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>UNDE SUNT?</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>Ai folosit locația curentă în sesizare</Text>
+                                </View>
+                            </View>
+
+                            <View style={styles.achievementsCard}>
+                                <Image source={require("../assets/Achievement10.png")} />
+                                <View style={styles.achievementsCardText}>
+                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>specialist</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>Ai adăugat 5 categorii diferite de probleme</Text>
+                                </View>
+                            </View>
+
+                        </View>
+                    </View>
 
                 </View>
             </KeyboardAwareScrollView>
@@ -256,6 +425,48 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: colors.white
     },
+    statisticsLegend: {
+        flex: 1,
+        alignItems: "center",
+    },
+    textLegend: {
+        fontSize: 14,
+        fontWeight: "bold"
+    },
+    flatListItem: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: "space-between"
+    },
+    achievementsContainer: {
+        flex: 1,
+        flexDirection: 'column',
+    },
+    achievementsCard: {
+        width: '49%',
+        flexDirection: 'row',
+        alignItems: "center"
+    },
+    achievementsCardView: {
+        flex: 1,
+        flexDirection: 'row',
+        height: 60,
+        justifyContent: 'space-between',
+        marginTop: 10,
+    },
+    achievementsCardText: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        marginBottom: 5,
+        marginLeft: 4
+    },
+    achievementsCardTextDescription: {
+        fontSize: 12,
+        color: colors.textGray,
+        width: '106%',
+        textAlign: 'left'
+    }
 })
 
 export default connect(mapStateToProps)(ProfileScreen);
