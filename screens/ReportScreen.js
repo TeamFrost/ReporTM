@@ -8,6 +8,8 @@ import * as Location from 'expo-location';
 import { LogBox } from 'react-native';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Random from 'expo-random';
+import moment from 'moment';
 
 import NavBar from '../helpers/navbar';
 import { colors, screenHeight } from "../helpers/style";
@@ -28,7 +30,6 @@ function ReportScreen({ ...props }) {
     const [description, setDescriptionState] = useState('');
     const [title, setTitle] = useState('Alege o categorie');
     const [imageRef, setImageRef] = useState("");
-    const [imageURL, setImageURL] = useState("");
 
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
@@ -40,6 +41,12 @@ function ReportScreen({ ...props }) {
 
     const [image, setImage] = useState(null);
 
+    const [text, setText] = useState('')
+
+    const [dividerColor, setDividerColor] = useState(colors.textGray)
+    const [dividerHeight, setDividerHeight] = useState(1)
+    const [iconColor, setIconColor] = useState(colors.white)
+
     useEffect(() => {
         if (props.route.params) {
             let coords = props.route.params.coords;
@@ -49,15 +56,35 @@ function ReportScreen({ ...props }) {
                 if (status !== 'granted') {
                     setErrorMsg('Permission to access location was denied');
                 }
-
                 let adress = await Location.reverseGeocodeAsync(coords);
                 setAdress(adress);
-
+                if (errorMsg) {
+                    let text = errorMsg
+                    setText(text)
+                }
+                else {
+                    if (adress) {
+                        if (Platform.OS === 'ios') {
+                            let name = adress.map(res => res.name)
+                            let text = name
+                            setText(text)
+                        }
+                        else {
+                            let street = adress.map(res => res.street)
+                            let number = adress.map(res => res.name)
+                            let text = street + " " + number
+                            setText(text)
+                        }
+                    }
+                }
             })();
         }
     }, []);
 
+
     const getCurrentLocation = async () => {
+        setText('Waiting...')
+
         let { status } = await Location.requestPermissionsAsync();
         if (status !== 'granted') {
             setErrorMsg('Permission to access location was denied');
@@ -77,24 +104,26 @@ function ReportScreen({ ...props }) {
 
         let adress = await Location.reverseGeocodeAsync(coords);
         setAdress(adress);
-        // console.log(adress)
-    }
 
-    let text = 'Waiting..';
-    if (errorMsg) {
-        text = errorMsg;
-    } else if (adress) {
-        if (Platform.OS === 'ios') {
-            let name = adress.map(res => res.name)
-            text = name;
+        if (errorMsg) {
+            let text = errorMsg
+            setText(text)
         }
         else {
-            let street = adress.map(res => res.street)
-            let number = adress.map(res => res.name)
-            text = street + " " + number;
+            if (adress) {
+                if (Platform.OS === 'ios') {
+                    let name = adress.map(res => res.name)
+                    let text = name
+                    setText(text)
+                }
+                else {
+                    let street = adress.map(res => res.street)
+                    let number = adress.map(res => res.name)
+                    let text = street + " " + number
+                    setText(text)
+                }
+            }
         }
-
-        // console.log(text)
     }
 
     const togglePicker = () => {
@@ -113,11 +142,15 @@ function ReportScreen({ ...props }) {
         console.log(result);
 
         if (!result.cancelled) {
+            setDividerColor('green')
+            setDividerHeight(2)
+            setIconColor('green')
             let image = result.uri;
             setImage(image);
-            uploadImage(image, 'test')
+            let imageName = moment(Date.parse(new Date())).format().toString() + '-' + Random.getRandomBytes(1).toString();
+            uploadImage(image, imageName)
         }
-    };
+    }
 
     const uploadImage = async (uri, imageName) => {
         const response = await fetch(uri);
@@ -128,28 +161,31 @@ function ReportScreen({ ...props }) {
         return ref.put(blob);
     }
 
+    let imageURL = '';
     const submitForm = () => {
         const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-        imageRef.getDownloadURL().then(function (url) {
-            let imageURL = url;
-            setImageURL(imageURL)
-        }).catch(function (error) {
-            alert(error)
-        });
-        const data = {
-            adress: text,
-            author: currentUser.id,
-            color: color,
-            coordinates: coords,
-            description: description,
-            image: imageURL,
-            timestamp: timestamp,
-            upvotes: [],
-        }
-        const reportRef = firebase.firestore().collection('reports').doc(value).collection('sub_reports');
-        reportRef
-            .add(data)
+        imageRef.getDownloadURL()
+            .then(function (url) {
+                imageURL = url;
+                const data = {
+                    adress: text,
+                    author: currentUser.id,
+                    color: color,
+                    coordinates: coords,
+                    description: description,
+                    image: imageURL,
+                    timestamp: timestamp,
+                    upvotes: [],
+                }
+                const reportRef = firebase.firestore().collection('reports').doc(value).collection('sub_reports');
+                reportRef
+                    .add(data)
+            })
+            .catch(function (error) {
+                alert(error)
+            });
     }
+
 
     return (
         <View style={styles.container}>
@@ -168,7 +204,7 @@ function ReportScreen({ ...props }) {
                 <View style={styles.form}>
                     <Text style={styles.header}>COMPLETEAZĂ FORMULARUL PENTRU A SEMNALA O PROBLEMĂ</Text>
                     <Text style={styles.section}>Locație</Text>
-                    <Divider style={{ backgroundColor: colors.textGray }} />
+                    <Divider style={styles.divider} />
                     <View style={styles.help}>
                         <Image
                             source={require("../assets/Info.png")}
@@ -275,19 +311,23 @@ function ReportScreen({ ...props }) {
                         </View>
                     </Modal>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={styles.section}>Incarca o fotografie</Text>
+                        <Text style={styles.section}>Incarcă o fotografie</Text>
+                        <Icon style={styles.uploadIcon}
+                            name="md-checkmark"
+                            size={30}
+                            color={iconColor}
+                        />
                         <Icon style={styles.uploadIcon}
                             name="md-cloud-upload"
                             size={30}
                             color={colors.black}
-                            // onPress={() => console.log("Poza pentru incarcat!")}
                             onPress={pickImage}
                         />
 
                     </View>
-                    <Divider style={styles.divider} />
+                    <Divider style={{ backgroundColor: dividerColor, marginBottom: "7%", height: dividerHeight }} />
                     <Text style={styles.section}>Descriere</Text>
-                    <Divider style={{ backgroundColor: colors.textGray, marginBottom: "4%" }} />
+                    <Divider style={{ ...styles.divider, marginBottom: "4%" }} />
                     <View>
                         <TextInput
                             style={styles.descriptionInput}
@@ -368,7 +408,8 @@ const styles = StyleSheet.create({
     },
     divider: {
         backgroundColor: colors.textGray,
-        marginBottom: "7%"
+        marginBottom: "7%",
+        height: 1
     },
     ellipse1: {
         position: "absolute",
