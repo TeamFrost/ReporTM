@@ -31,7 +31,6 @@ export const watchReportsData = () => dispatch => {
 
             })
 
-            console.log(reportsData)
             dispatch(requestSuccess(reportsData))
 
         }),
