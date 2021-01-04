@@ -1,50 +1,37 @@
-import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View, Dimensions } from "react-native";
+import React, { useEffect } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { connect } from 'react-redux';
 
-import { firebase } from '../config/firebaseConfig'
 import { colors, screenHeight } from "../helpers/style";
+import { restoreSession } from '../redux/actions/auth/auth';
 
-export default function LandingScreen({ navigation }) {
+const mapStateToProps = (state) => ({
+    doneFetching: state.auth.doneFetching,
+    loggedIn: state.auth.loggedIn,
+    isFetching: state.auth.isFetching,
+    hasError: state.auth.hasError,
+    errorMessage: state.auth.errorMessage,
+    user: state.auth.user
+});
 
-    const [loading, setLoading] = useState(true)
-    const [user, setUser] = useState(null)
+function LandingScreen({ ...props }) {
+
+    const { dispatch, loggedIn, doneFetching, navigation } = props;
 
     useEffect(() => {
-        const usersRef = firebase.firestore().collection('users');
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                usersRef
-                    .doc(user.uid)
-                    .get()
-                    .then((document) => {
-                        const userData = document.data()
-                        setLoading(false)
-                        setUser(userData)
-                    })
-                    .catch((error) => {
-                        setLoading(false)
-
-                    });
-                setTimeout(() => {
-                    navigation.navigate('Drawer')
-                }, 3000);
-                clearTimeout();
-            } else {
-                setLoading(false)
-                setTimeout(() => {
-                    navigation.navigate('LoginStack')
-                }, 3000);
-                clearTimeout();
-            }
-        });
+        dispatch(restoreSession())
     }, []);
 
-    if (loading) {
-        return (
-            <>
-            </>
-        )
+    if (doneFetching) {
+        setTimeout(() => {
+            if (loggedIn) {
+                navigation.navigate('Drawer')
+            }
+            else {
+                navigation.navigate('Login')
+            }
+        }, 2000);
     }
 
     return (
@@ -104,3 +91,5 @@ const styles = StyleSheet.create({
         color: colors.purple,
     },
 });
+
+export default connect(mapStateToProps)(LandingScreen);
