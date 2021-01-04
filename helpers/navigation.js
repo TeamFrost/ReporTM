@@ -20,7 +20,6 @@ const Drawer = createDrawerNavigator();
 
 const createDrawer = () =>
     <Drawer.Navigator
-        // initialRouteName="HomeStack"
         drawerContent={props => <DrawerContent {...props} />}
     >
         <Drawer.Screen
@@ -76,15 +75,14 @@ const createDrawer = () =>
 
 export const createLandingStack = () =>
     <Stack.Navigator
-        initialRouteName="Landing"
         screenOptions={{
             headerShown: false,
             gestureEnabled: false
         }}>
         <Stack.Screen name="Landing" component={LandingScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Drawer" component={createDrawer} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="Drawer" component={createDrawer} />
     </Stack.Navigator>
 
 const createHomeStack = () =>
