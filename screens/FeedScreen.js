@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, OpaqueColorValue } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList } from "react-native";
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight, screenWidth } from "../helpers/style";
 import { Input, Divider } from 'react-native-elements';
@@ -9,9 +9,9 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Avatar } from 'react-native-paper';
 import { LogBox } from 'react-native';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import { watchReportsData } from '../redux/actions/reports/reports';
-import moment from 'moment';
 
 const mapStateToProps = (state) => ({
     reportsData: state.reports.reportsData,
@@ -141,37 +141,34 @@ const getHeader = () => {
     );
 };
 
+const renderItem = ({ item }) => {
+
+    let time = item.timestamp.toDate();
+    let relativeTime = moment(time).fromNow();
+    return (
+        <Item
+            userName={item.userInfo.username}
+            userAvatar={{ uri: item.userInfo.avatar }}
+            adress={item.adress}
+            time={relativeTime}
+            photo={{ uri: item.image }}
+            description={item.description}
+            upvotes={item.upvotes.length}
+            tag={item.parent}
+            color={item.color}
+        />
+    );
+}
 
 function FeedScreen({ ...props }) {
-    // console.log(props)
-    const { reportsData } = props;
-
-    const renderItem = ({ item }) => {
-
-        let time = item.timestamp.toDate();
-        let relativeTime = moment(time).fromNow();
-
-        return (
-            <Item userName={item.author}
-                userAvatar={require("../assets/ProfileWhite.png")}
-                adress={item.adress}
-                time={relativeTime}
-                photo={require("../assets/Test.png")}
-                description={item.description}
-                upvotes={item.upvotes.length}
-                tag={item.parent}
-                color={item.color}
-            />
-        );
-
-    }
+    const { reportsData } = props
+    const [search, setSearch] = useState('')
 
     useEffect(() => {
-        props.watchReportsData();
-        LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+        props.watchReportsData()
+        LogBox.ignoreLogs(['VirtualizedLists should never be nested'])
     }, [])
 
-    const [search, setSearch] = useState('')
 
     return (
         <View style={styles.container}>
