@@ -344,7 +344,6 @@ const styles = StyleSheet.create({
     },
     category: {
         flexDirection: 'row',
-
     },
     categorySection: {
         flex: 8.9,
