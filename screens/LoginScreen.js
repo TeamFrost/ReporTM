@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Image, StyleSheet, Text, View, TouchableHighlight } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -10,6 +10,7 @@ import { colors, screenHeight } from "../helpers/style";
 import { loginUser } from '../redux/actions/auth/auth';
 
 const mapStateToProps = (state) => ({
+    doneFetching: state.auth.doneFetching,
     loggedIn: state.auth.loggedIn,
     isFetching: state.auth.isFetching,
     hasError: state.auth.hasError,
@@ -23,13 +24,22 @@ function LoginScreen({ ...props }) {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
     const [textSecurity, setTextSecurity] = useState(true)
+    const { doneFetching, loggedIn, navigation, loginUser } = props
 
-    const onLoginPress = () => { props.loginUser(email, password) }
+    useEffect(() => {
+        if (loggedIn) {
+            console.log('\x1b[33m%s\x1b[0m: ', "LoggedIn & navigate to drawer")
+            navigation.navigate('Drawer')
+        }
+    }, [doneFetching]);
+
+    const onLoginPress = () => {
+        loginUser(email, password)
+    }
 
     const onFooterLinkPress = () => {
-        props.navigation.navigate('Register')
+        navigation.navigate('Register')
     }
 
     const handleEyeOnPress = () => {
