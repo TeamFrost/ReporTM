@@ -48,7 +48,7 @@ export default function SettingsScreen() {
                     </View>
                 </View>
 
-                <View style={styles.nameDiv}>
+                <View style={{ ...styles.nameDiv, marginTop: 10 }}>
                     <Text style={styles.nameText}>Schimbă numele</Text>
                     <Text style={{ marginLeft: 8 }}>Numele tau curent este: Edi One</Text>
                     <Input
@@ -72,7 +72,7 @@ export default function SettingsScreen() {
 
                 </View>
 
-                <View style={{ ...styles.nameDiv, height: screenHeight / 2.6, }}>
+                <View style={{ ...styles.nameDiv, height: screenHeight / 2.6, marginTop: 10 }}>
                     <Text style={styles.nameText}>Schimbă parola</Text>
                     <Input
                         placeholder='Parola veche'
@@ -118,7 +118,7 @@ export default function SettingsScreen() {
                 </View>
 
                 <View style={{ ...styles.nameDiv, justifyContent: 'flex-start', height: screenHeight / 2.8 }}>
-                    <Text style={{ ...styles.nameText, marginTop: 5 }}>Notificări</Text>
+                    <Text style={{ ...styles.nameText, marginTop: 20 }}>Notificări</Text>
                     <View style={styles.switchDiv}>
                         <Text style={{ marginLeft: 8 }}>Vreau să primesc notificări de la aplicație</Text>
                         <Switch
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     },
     confirmButton: {
         height: 35,
-        borderRadius: 20,
+        borderRadius: 18,
         justifyContent: 'center',
         width: '55%',
         alignSelf: "center",
