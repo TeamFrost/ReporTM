@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Image, StyleSheet, Text, View, TouchableHighlight } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -10,8 +10,10 @@ import { colors, screenHeight } from "../helpers/style";
 import { signupUser } from '../redux/actions/auth/auth';
 
 const mapStateToProps = (state) => ({
+    doneFetching: state.auth.doneFetching,
     loggedIn: state.auth.loggedIn,
     isFetching: state.auth.isFetching,
+    signUp: state.auth.signUp,
     hasError: state.auth.hasError,
     errorMessage: state.auth.errorMessage,
     user: state.auth.user
@@ -20,6 +22,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({ signupUser: (email, password, username) => dispatch(signupUser(email, password, username)) });
 
 function RegisterScreen({ ...props }) {
+
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -30,8 +33,17 @@ function RegisterScreen({ ...props }) {
 
     const [textSecurity, setTextSecurity] = useState(true)
 
+    const { doneFetching, signUp, navigation, signupUser } = props
+
+    useEffect(() => {
+        if (doneFetching && signUp) {
+            console.log('\x1b[36m%s\x1b[0m', "Registered & navigate to Login")
+            navigation.navigate('Login')
+        }
+    }, [doneFetching]);
+
     const onFooterLinkPress = () => {
-        props.navigation.navigate('Login')
+        navigation.navigate('Login')
     }
 
     const handleOnTextChangeEmail = (text) => {
@@ -53,41 +65,9 @@ function RegisterScreen({ ...props }) {
         setTextSecurity(false);
     }
 
-    const onRegisterPress = () => { props.signupUser(email, password, username) }
-    console.log(props)
-    // const onRegisterPress = () => {
-    //     console.log("Inregistrare")
-    //     firebase
-    //         .auth()
-    //         .createUserWithEmailAndPassword(email, password)
-    //         .then((response) => {
-    //             const uid = response.user.uid
-    //             const data = {
-    //                 id: uid,
-    //                 email,
-    //                 username,
-    //             };
-    //             const usersRef = firebase.firestore().collection('users')
-    //             usersRef
-    //                 .doc(uid)
-    //                 .set(data)
-    //                 .then(() => {
-    //                     alert("Cont creat!")
-    //                     navigation.navigate('LoginStack')
-    //                     // Toast.show({
-    //                     //     type: 'success',
-    //                     //     text1: 'Cont creat cu succes!',
-    //                     // });
-    //                 })
-    //                 .catch((error) => {
-    //                     alert(error)
-    //                 });
-    //         })
-    //         .catch((error) => {
-    //             // console.log(error)
-    //             alert(error)
-    //         });
-    // }
+    const onRegisterPress = () => {
+        signupUser(email, password, username)
+    }
 
     return (
 
