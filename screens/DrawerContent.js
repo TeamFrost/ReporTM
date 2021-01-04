@@ -1,27 +1,64 @@
-import React, { useState } from "react";
-import { firebase } from '../config/firebaseConfig';
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Switch, Platform } from "react-native";
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { colors, screenHeight } from "../helpers/style";
 import { Avatar, Caption } from 'react-native-paper';
 import { Icon } from 'react-native-elements';
 import { StatusBar } from "expo-status-bar";
+import { connect } from 'react-redux';
 
-export default function DrawerContent(props) {
+import { logoutUser } from '../redux/actions/auth/auth';
 
-    const [isSwitch, setIsSwitch] = useState(false);
-    const toggleSwitch = () => setIsSwitch(previousState => !previousState);
+const mapStateToProps = (state) => ({
+    doneFetching: state.auth.doneFetching,
+    loggedIn: state.auth.loggedIn,
+    loggedOut: state.auth.loggedOut,
+    isFetching: state.auth.isFetching,
+    hasError: state.auth.hasError,
+    errorMessage: state.auth.errorMessage,
+    user: state.auth.user
+});
+
+const mapDispatchToProps = (dispatch) => ({ logoutUser: () => dispatch(logoutUser()) });
+
+function DrawerContent({ ...props }) {
+
+    const [isSwitch, setIsSwitch] = useState(false)
+
+    const { logoutUser, doneFetching, loggedOut, navigation, user } = props
+
+    let username = ''
+    let nickname = ''
+    let avatar = 'https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/Profile.png?alt=media&token=3164e617-25bb-422f-aa84-fcbcda459d17'
+    if (user) {
+        username = user.username
+        nickname = '@' + user.email.substring(0, user.email.indexOf('@'))
+        avatar = user.profilelight
+    }
+
+    useEffect(() => {
+        if (doneFetching && loggedOut) {
+            console.log("LoggedOut & navigate to login")
+            navigation.navigate('Login')
+        }
+    }, [doneFetching]);
+
+    const toggleSwitch = () => setIsSwitch(previousState => !previousState)
+
+    const onLogoutPress = () => {
+        logoutUser()
+    }
 
     return (
         <View style={styles.container}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.avatarDiv}>
                     <View style={styles.userInfoIcon}>
-                        <Avatar.Image size={50} source={require('../assets/ProfileWhite.png')} />
+                        <Avatar.Image size={50} source={{ uri: avatar }} />
                     </View>
                     <View style={styles.userInfoView}>
-                        <Text style={styles.userInfoText}>Edi One</Text>
-                        <Caption style={{ color: colors.white, marginTop: -5 }}>@edyonetiu</Caption>
+                        <Text style={styles.userInfoText}>{username}</Text>
+                        <Caption style={{ color: colors.white, marginTop: -5 }}>{nickname}</Caption>
                     </View>
                 </View>
                 <View style={{ flex: 1, shadowColor: 'transparent' }}>
@@ -89,20 +126,7 @@ export default function DrawerContent(props) {
                             color={colors.darkPurple}
                             style={{ marginLeft: 12 }}
                         />}
-                        onPress={
-                            () => {
-                                firebase.auth().signOut()
-                                    .then(
-                                        props.navigation.reset({
-                                            index: 0,
-                                            routes: [{ name: 'LoginStack' }],
-                                        }))
-                                    .catch(error => {
-                                        alert(error)
-                                    });
-                            }
-                        }
-
+                        onPress={onLogoutPress}
                     />
                 </View>
             </DrawerContentScrollView>
@@ -128,8 +152,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.purple,
         borderBottomRightRadius: 55,
         marginBottom: '20%',
-        marginTop: "-10%",
-        paddingTop: "10%"
+        marginTop: "-20%",
+        paddingTop: "15%"
     },
     userInfoText: {
         color: colors.white,
@@ -185,3 +209,5 @@ const styles = StyleSheet.create({
     },
 
 })
+
+export default connect(mapStateToProps, mapDispatchToProps)(DrawerContent);
