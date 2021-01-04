@@ -7,41 +7,20 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Divider } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { LogBox } from 'react-native';
+import { connect } from 'react-redux';
 
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight } from "../helpers/style";
 
-const DATA = [
-    {
-        id: "1",
-        photo: require('../assets/Test.png'),
-        title: 'Str. Episcop Augustin Pacha, nr. 3',
-        upvotes: 12,
-    },
-    {
-        id: "2",
-        photo: require('../assets/Test2.png'),
-        title: 'Bulevardul Vasile Pârvan, nr. 2',
-        upvotes: 5,
-    },
-    {
-        id: "3",
-        photo: require('../assets/Test3.png'),
-        title: 'Str. Piața Iancu Huniade',
-        upvotes: 21,
-    },
-    {
-        id: "4",
-        photo: require('../assets/Test4.png'),
-        title: 'Str. Cozia 14',
-        upvotes: 191,
-    },
-]
+const mapStateToProps = (state) => ({
+    reportsData: state.reports.reportsData,
+    user: state.auth.user
+});
 
 const Item = ({ photo, title, upvotes }) => (
     <View style={{ flexDirection: 'row', flex: 1, height: 45, alignItems: 'center', justifyContent: "space-between" }}>
         <View style={{ flex: 1 }}>
-            <Avatar.Image size={35} source={photo} />
+            <Avatar.Image size={35} source={{ uri: photo }} />
         </View>
         <View style={{ flex: 5, flexDirection: "row", justifyContent: "flex-start", width: '100%' }}>
             <Text style={{ fontSize: 14, marginLeft: 5 }}>{title}</Text>
@@ -54,13 +33,17 @@ const Item = ({ photo, title, upvotes }) => (
 );
 
 const renderItem = ({ item }) => (
-    <Item photo={item.photo}
-        title={item.title}
-        upvotes={item.upvotes}
+    <Item photo={item.image}
+        title={item.adress}
+        upvotes={item.upvotes.length}
     />
 );
 
-export default function ProfileScreen() {
+function ProfileScreen({ ...props }) {
+
+    const { user, reportsData } = props
+
+    const myReports = reportsData.filter(data => data.author === user.id)
 
     useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -82,12 +65,14 @@ export default function ProfileScreen() {
                         style={styles.ellipse2}
                     />
                     <Avatar.Image style={{ marginTop: 30 }} size={150} source={require("../assets/avatarPhoto.jpg")} />
-                    <Text style={{ fontSize: 28, fontWeight: "bold" }}>Eduard One</Text>
+                    <Text style={{ fontSize: 28, fontWeight: "bold" }}>{user.username}</Text>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Text
                             style={{ fontSize: 14, textDecorationLine: 'underline', color: colors.textGray }}
                             onPress={() => console.log('Editam')}
-                        >Editează-ți profilul</Text>
+                        >
+                            Editează-ți profilul
+                        </Text>
                         <Icon name='sliders-h' type="font-awesome-5" size={12} style={{ marginLeft: 5, color: colors.textGray }} />
                     </View>
                 </View>
@@ -99,7 +84,7 @@ export default function ProfileScreen() {
                     </View>
                     <View style={{ flex: 1 }}>
                         <FlatList
-                            data={DATA}
+                            data={myReports}
                             renderItem={renderItem}
                             keyExtractor={(item) => item.id}
                             ItemSeparatorComponent={() => <Divider style={{ flexDirection: 'column', backgroundColor: colors.textGray }} />}
@@ -165,7 +150,9 @@ export default function ProfileScreen() {
 
                     </View>
                 </View>
+                <View style={{ flex: 1, height: screenHeight / 8.5, width: '100%', backgroundColor: 'pink' }}>
 
+                </View>
             </KeyboardAwareScrollView>
             <NavBar />
             <StatusBar style="auto" />
@@ -270,3 +257,5 @@ const styles = StyleSheet.create({
         color: colors.white
     },
 })
+
+export default connect(mapStateToProps)(ProfileScreen);
