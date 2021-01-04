@@ -1,43 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
 import MapView, { Marker } from 'react-native-maps';
-import { Image, View, StyleSheet, ScrollView, TouchableOpacity, Text } from "react-native";
+import { Image, View, StyleSheet, ScrollView, TouchableOpacity, Text, Platform } from "react-native";
 import { SearchBar } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { Callout } from 'react-native-maps';
+
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight, screenWidth } from "../helpers/style";
 import { watchReportsData } from '../redux/actions/reports/reports';
 import { category } from '../helpers/category';
-import { Callout } from 'react-native-maps';
 
-const mapStateToProps = (state) => ({ reportsData: state.reports.reportsData });
+const mapStateToProps = (state) => ({
+    doneFetching: state.reports.doneFetching,
+    isFetching: state.reports.isFetching,
+    hasError: state.reports.hasError,
+    errorMessage: state.reports.errorMessage,
+    reportsData: state.reports.reportsData
+});
 
 const mapDispatchToProps = (dispatch) => ({ watchReportsData: () => dispatch(watchReportsData()) });
 
 function MapScreen({ ...props }) {
+
     const [search, setSearch] = useState('')
     const [categoryFilter, setCategoryFilter] = useState('')
-    const { reportsData } = props;
+    const { reportsData, watchReportsData } = props;
     const [mapData, setMapData] = useState(reportsData)
-    // console.log(mapData)
+
+    useEffect(() => {
+        watchReportsData()
+    }, [])
 
     const applyFilter = (filter) => {
         if (filter === '') {
             setMapData(reportsData)
-        } else {
-            let mapData = reportsData.filter(function (data) {
-                return data.parent === filter
-            });
+        }
+        else {
+            let mapData = reportsData.filter(data => data.parent === filter)
             setMapData(mapData);
         }
     }
-    //fix fisrt render!!
-
-    useEffect(() => {
-        props.watchReportsData()
-    }, [])
 
     return (
         <View style={styles.container}>
@@ -66,12 +71,23 @@ function MapScreen({ ...props }) {
                             <Callout tooltip>
                                 <View>
                                     <View style={styles.calloutView}>
-                                        <Text style={{ height: 180, position: 'relative', bottom: 40, right: 17, top: -70, width: 200 }}>
-                                            <Image
-                                                imageResizeMode='cover'
-                                                source={require('../assets/Test.png')}
-                                            />
-                                        </Text>
+                                        {Platform.OS === 'android' ?
+                                            (<Text style={{ height: 180, position: 'relative', bottom: 40, right: 17, top: -70, width: 200 }}>
+                                                <Image
+                                                    imageResizeMode='strech'
+                                                    resizeMethod='resize'
+                                                    source={{ uri: marker.image }}
+                                                />
+                                            </Text>) :
+                                            (
+                                                <Image
+                                                    style={{ height: 200, width: 200 }}
+                                                    resizeMethod='resize'
+                                                    resizeMode='stretch'
+                                                    source={{ uri: marker.image }}
+                                                />
+                                            )
+                                        }
                                         <View style={{ marginTop: -40 }}>
                                             <Text style={{ fontSize: 16 }}>
                                                 {marker.description}
