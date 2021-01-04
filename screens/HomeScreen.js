@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
 import { Image, Text, View, StyleSheet, TouchableHighlight } from "react-native";
+import { connect } from 'react-redux';
 
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight } from "../helpers/style";
+import { watchReportsData } from '../redux/actions/reports/reports';
 
-export default function HomeScreen({ ...props }) {
+const mapStateToProps = (state) => ({ reportsData: state.reports.reportsData });
+
+const mapDispatchToProps = (dispatch) => ({ watchReportsData: () => dispatch(watchReportsData()) });
+
+
+function HomeScreen({ ...props }) {
+
+    const { watchReportsData } = props;
+
+    useEffect(() => {
+        watchReportsData()
+    }, [])
+
     return (
         <View style={styles.container}>
             <Image
@@ -217,3 +231,5 @@ const styles = StyleSheet.create({
         marginTop: 5
     },
 })
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
