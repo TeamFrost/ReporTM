@@ -168,7 +168,7 @@ function ReportScreen({ ...props }) {
 
         let result = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
-            aspect: [4, 3],
+            aspect: [1, 1],
             quality: 1,
         });
         console.log("Camera")
@@ -199,7 +199,7 @@ function ReportScreen({ ...props }) {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            aspect: [4, 3],
+            aspect: [1, 1],
             quality: 1,
         });
         console.log("Library")
@@ -268,7 +268,7 @@ function ReportScreen({ ...props }) {
                 <View style={styles.form}>
                     <Text style={styles.header}>COMPLETEAZĂ FORMULARUL PENTRU A SEMNALA O PROBLEMĂ</Text>
                     <Text style={styles.section}>Locație</Text>
-                    <Divider style={styles.divider} />
+                    <Divider style={{ ...styles.divider, marginBottom: '1%' }} />
                     <View style={styles.help}>
                         <Image
                             source={require("../assets/Info.png")}
@@ -504,7 +504,7 @@ const styles = StyleSheet.create({
     },
     help: {
         flexDirection: "row",
-        alignItems: "baseline"
+        alignItems: "baseline",
     },
     info: {
         marginTop: '1%',
@@ -538,7 +538,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: 50,
-        // backgroundColor: "pink",
     },
     searchIcon: {
         flex: 1.1,

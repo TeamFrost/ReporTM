@@ -7,6 +7,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Callout } from 'react-native-maps';
+import { Svg, Image as ImageSvg } from 'react-native-svg';
+
 
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight, screenWidth } from "../helpers/style";
@@ -72,13 +74,14 @@ function MapScreen({ ...props }) {
                                 <View>
                                     <View style={styles.calloutView}>
                                         {Platform.OS === 'android' ?
-                                            (<Text style={{ height: 180, position: 'relative', bottom: 40, right: 17, top: -70, width: 200 }}>
-                                                <Image
-                                                    imageResizeMode='strech'
-                                                    resizeMethod='resize'
-                                                    source={{ uri: marker.image }}
+                                            (<Svg width={200} height={200}>
+                                                <ImageSvg
+                                                    width={'100%'}
+                                                    height={'100%'}
+                                                    preserveAspectRatio="xMidYMid slice"
+                                                    href={{ uri: marker.image }}
                                                 />
-                                            </Text>) :
+                                            </Svg>) :
                                             (
                                                 <Image
                                                     style={{ height: 200, width: 200 }}
@@ -88,7 +91,7 @@ function MapScreen({ ...props }) {
                                                 />
                                             )
                                         }
-                                        <View style={{ marginTop: -40 }}>
+                                        <View>
                                             <Text style={{ fontSize: 16 }}>
                                                 {marker.description}
                                             </Text>
@@ -217,12 +220,12 @@ const styles = StyleSheet.create({
     },
     calloutView: {
         flexDirection: 'column',
-        width: 200,
+        width: 220,
         alignSelf: 'flex-start',
         backgroundColor: colors.white,
         borderRadius: 10,
         borderColor: "#ccc",
-        padding: 15,
+        padding: 10,
 
     },
 })
