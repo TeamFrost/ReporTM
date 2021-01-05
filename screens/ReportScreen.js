@@ -33,7 +33,6 @@ function ReportScreen({ ...props }) {
     const [color, setColor] = useState('');
     const [description, setDescriptionState] = useState('');
     const [title, setTitle] = useState('Alege o categorie');
-    const [imageRef, setImageRef] = useState("");
 
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
@@ -44,6 +43,7 @@ function ReportScreen({ ...props }) {
     const [adress, setAdress] = useState(null);
 
     const [image, setImage] = useState(null);
+    const [imageRef, setImageRef] = useState("");
 
     const [text, setText] = useState('')
 
