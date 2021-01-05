@@ -9,8 +9,35 @@ import { colors, screenHeight } from "../helpers/style";
 import { Input } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Divider } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { useActionSheet } from '@expo/react-native-action-sheet'
+import * as ImagePicker from 'expo-image-picker';
+import * as Random from 'expo-random';
+import moment from 'moment';
 
-export default function SettingsScreen() {
+import { firebase } from '../config/firebaseConfig'
+import { restoreSession } from '../redux/actions/auth/auth';
+
+const mapStateToProps = (state) => ({
+    user: state.auth.user,
+    doneFetching: state.auth.doneFetching
+});
+
+const mapDispatchToProps = (dispatch) => ({ restoreSession: () => dispatch(restoreSession()) });
+
+function SettingsScreen({ ...props }) {
+
+    const { showActionSheetWithOptions } = useActionSheet();
+
+    const { user, restoreSession, doneFetching } = props
+
+    const [image, setImage] = useState(null);
+    const [imageRef, setImageRef] = useState("");
+
+    const [newName, setNewName] = useState('')
+    const [oldPass, setOldPass] = useState('')
+    const [newPass, setNewPass] = useState('')
+    const [newPassConfirm, setNewPassConfirm] = useState('')
 
     const [isSwitch, setIsSwitch] = useState(false);
     const [isSwitchDark, setIsSwitchDark] = useState(false);
@@ -19,8 +46,156 @@ export default function SettingsScreen() {
     const toggleSwitchDark = () => setIsSwitchDark(previousState => !previousState);
     const [pickerVisibility, setPickerVisibility] = useState(false)
 
+    let username = '';
+
+    const changeName = () => {
+        if (user) {
+            firebase.firestore().collection('users').doc(user.id)
+                .update({
+                    username: newName
+                })
+                .then(function () {
+                    restoreSession()
+                    setNewName('')
+                })
+        }
+    }
+
+    if (doneFetching) {
+        if (user) {
+            username = user.username
+        }
+    }
+
+    const changePass = () => {
+        console.log(oldPass)
+        console.log(newPass)
+        console.log(newPassConfirm)
+        if (newPass === newPassConfirm) {
+            console.log("MATCHING!!!")
+        }
+        setOldPass('')
+        setNewPass('')
+        setNewPassConfirm('')
+        iconColor = colors.white
+    }
+
+    let iconColor = colors.white
+
+    if (newPass === newPassConfirm && newPass.length != 0) {
+        iconColor = 'green'
+    }
+
     const togglePicker = () => {
         setPickerVisibility(!pickerVisibility)
+    }
+
+    const chooseImage = () => {
+
+        const options = ['Take Photo...', 'Choose from gallery...', 'Cancel'];
+        const cancelButtonIndex = 2;
+
+        showActionSheetWithOptions(
+            {
+                options,
+                cancelButtonIndex,
+            },
+            buttonIndex => {
+                if (buttonIndex === 0) {
+                    takePicture()
+                } else if (buttonIndex === 1) {
+                    pickImage()
+                } else if (buttonIndex === 2) {
+                    //cancel
+                }
+            },
+        );
+    }
+
+    const takePicture = async () => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestCameraPermissionsAsync();
+                if (status !== 'granted') {
+                    alert('Sorry, we need camera roll permissions to make this work!');
+                }
+            }
+        })();
+
+        let result = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        // console.log("Camera")
+        // console.log(result);
+
+        if (!result.cancelled) {
+            let image = result.uri;
+            setImage(image);
+            let imageName = moment(Date.parse(new Date())).format().toString() + '-' + Random.getRandomBytes(1).toString();
+            uploadImage(image, imageName)
+        }
+    }
+
+    const pickImage = async () => {
+
+        // (async () => {
+        //     if (Platform.OS !== 'web') {
+        //         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        //         if (status !== 'granted') {
+        //             alert('Sorry, we need camera roll permissions to make this work!');
+        //         }
+        //     }
+        // })();
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        // console.log("Library")
+        // console.log(result);
+
+        if (!result.cancelled) {
+            let image = result.uri;
+            setImage(image);
+            let imageName = moment(Date.parse(new Date())).format().toString() + '-' + Random.getRandomBytes(1).toString();
+            uploadImage(image, imageName)
+        }
+    }
+
+    const uploadImage = async (uri, imageName) => {
+        const response = await fetch(uri);
+        const blob = await response.blob();
+        let imageURL = '';
+        const ref = firebase.storage().ref().child(`images/users/${imageName}`);
+        setImageRef(ref)
+        ref.put(blob)
+            .then(function () {
+                ref.getDownloadURL()
+                    .then(function (url) {
+                        imageURL = url;
+                        console.log(imageURL)
+                        firebase.firestore().collection('users').doc(user.id)
+                            .update({
+                                profile: imageURL
+                            })
+                            .then(function () {
+                                restoreSession()
+                            })
+                            .catch(function (error) {
+                                alert(error)
+                            });
+                    })
+                    .catch(function (error) {
+                        alert(error)
+                    })
+            })
+            .catch(function (error) {
+                alert(error)
+            })
     }
 
     return (
@@ -42,27 +217,31 @@ export default function SettingsScreen() {
                     <View style={styles.avatarTextDiv}>
                         <Text
                             style={styles.avatarText}
-                            onPress={() => alert('Incarca poza')}
-                        >Încarcă o poză de profil</Text>
+                            onPress={chooseImage}
+                        >
+                            Încarcă o poză de profil
+                            </Text>
                         <Icon name='camera' type="font-awesome-5" size={14} style={{ marginLeft: 5, marginTop: 2, color: colors.textGray }} />
                     </View>
                 </View>
 
                 <View style={{ ...styles.nameDiv, marginTop: 10 }}>
                     <Text style={styles.nameText}>Schimbă numele</Text>
-                    <Text style={{ marginLeft: 8 }}>Numele tau curent este: Edi One</Text>
+                    <Text style={{ marginLeft: 8 }}>Numele tau curent este: {username}</Text>
                     <Input
                         placeholder='Scrie aici noul nume'
-                        rightIcon={<Icon
-                            name='check'
-                            size={16}
-                            color={colors.textGray}
-                        />}
+                        // rightIcon={<Icon
+                        //     name='check'
+                        //     size={16}
+                        //     color={colors.textGray}
+                        // />}
+                        onChangeText={(text) => setNewName(text)}
+                        value={newName}
                         inputStyle={{ fontStyle: 'italic' }}
                         containerStyle={{ height: 65 }}
-                        errorMessage='ENTER A VALID NAME HERE'
+                    // errorMessage='ENTER A VALID NAME HERE'
                     />
-                    <TouchableOpacity style={styles.confirmButton}>
+                    <TouchableOpacity style={styles.confirmButton} onPress={changeName}>
                         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={{ ...styles.confirmButton, width: '100%' }}>
                             <View style={{ alignItems: "center" }}>
                                 <Text style={styles.buttonText}>Confirmă schimbarea</Text>
@@ -76,11 +255,13 @@ export default function SettingsScreen() {
                     <Text style={styles.nameText}>Schimbă parola</Text>
                     <Input
                         placeholder='Parola veche'
-                        rightIcon={<Icon
-                            name='check'
-                            size={16}
-                            color={colors.textGray}
-                        />}
+                        // rightIcon={<Icon
+                        //     name='check'
+                        //     size={16}
+                        //     color={colors.textGray}
+                        // />}
+                        onChangeText={(text) => setOldPass(text)}
+                        value={oldPass}
                         inputStyle={{ fontStyle: 'italic' }}
                         secureTextEntry={true}
                         containerStyle={{ height: 65 }}
@@ -90,8 +271,10 @@ export default function SettingsScreen() {
                         rightIcon={<Icon
                             name='check'
                             size={16}
-                            color={colors.textGray}
+                            color={iconColor}
                         />}
+                        onChangeText={(text) => setNewPass(text)}
+                        value={newPass}
                         secureTextEntry={true}
                         inputStyle={{ fontStyle: 'italic' }}
                         containerStyle={{ height: 65 }}
@@ -101,14 +284,16 @@ export default function SettingsScreen() {
                         rightIcon={<Icon
                             name='check'
                             size={16}
-                            color={colors.textGray}
+                            color={iconColor}
                         />}
+                        onChangeText={(text) => setNewPassConfirm(text)}
+                        value={newPassConfirm}
                         secureTextEntry={true}
                         inputStyle={{ fontStyle: 'italic' }}
                         containerStyle={{ height: 65 }}
 
                     />
-                    <TouchableOpacity style={styles.confirmButton}>
+                    <TouchableOpacity style={styles.confirmButton} onPress={changePass}>
                         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={{ ...styles.confirmButton, width: '100%' }}>
                             <View style={{ alignItems: "center" }}>
                                 <Text style={styles.buttonText}>Confirmă schimbarea</Text>
@@ -307,6 +492,6 @@ const styles = StyleSheet.create({
         width: "95%",
         alignSelf: "center"
     },
-
-
 })
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);
