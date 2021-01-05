@@ -69,7 +69,6 @@ const renderItemLegend = ({ item }) => (
     />
 );
 
-
 const mapStateToProps = (state) => ({
     reportsData: state.reports.reportsData,
     user: state.auth.user
@@ -104,7 +103,7 @@ function ProfileScreen({ ...props }) {
                         source={require("../assets/Ellipse_2.png")}
                         style={styles.ellipse2}
                     />
-                    <Avatar.Image style={{ marginTop: 30 }} size={150} source={require("../assets/avatarPhoto.jpg")} />
+                    <Avatar.Image style={{ marginTop: 30 }} size={150} source={{ uri: user.profile }} />
                     <Text style={{ fontSize: 28, fontWeight: "bold" }}>{user.username}</Text>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Text
