@@ -67,6 +67,9 @@ function RegisterScreen({ ...props }) {
 
     const onRegisterPress = () => {
         signupUser(email, password, username)
+        setEmail('')
+        setUsername('')
+        setPassword('')
     }
 
     return (

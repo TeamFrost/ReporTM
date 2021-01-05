@@ -36,6 +36,8 @@ function LoginScreen({ ...props }) {
 
     const onLoginPress = () => {
         loginUser(email, password)
+        setEmail('')
+        setPassword('')
     }
 
     const onFooterLinkPress = () => {
