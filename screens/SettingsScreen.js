@@ -76,9 +76,8 @@ function SettingsScreen({ ...props }) {
 
         currentUser.reauthenticateWithCredential(credential).then(function () {
             if (newPass === newPassConfirm) {
-                console.log("MATCHING!!!")
                 currentUser.updatePassword(newPass).then(function () {
-                    alert("Succes!")
+                    alert("Success!")
                     setOldPass('')
                     setNewPass('')
                     setNewPassConfirm('')
@@ -189,7 +188,6 @@ function SettingsScreen({ ...props }) {
                 ref.getDownloadURL()
                     .then(function (url) {
                         imageURL = url;
-                        console.log(imageURL)
                         if (user) {
                             firebase.firestore().collection('users').doc(user.id)
                                 .update({
@@ -197,7 +195,7 @@ function SettingsScreen({ ...props }) {
                                 })
                                 .then(function () {
                                     restoreSession()
-                                    alert("Succes!")
+                                    alert("Success!")
                                 })
                                 .catch(function (error) {
                                     alert(error)
