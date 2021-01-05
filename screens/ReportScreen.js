@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Random from 'expo-random';
 import moment from 'moment';
+import { useActionSheet } from '@expo/react-native-action-sheet'
+
 
 import NavBar from '../helpers/navbar';
 import { colors, screenHeight } from "../helpers/style";
@@ -21,6 +23,8 @@ import * as ImagePicker from 'expo-image-picker';
 const mapStateToProps = (state) => ({ currentUser: state.auth.user });
 
 function ReportScreen({ ...props }) {
+
+    const { showActionSheetWithOptions } = useActionSheet();
 
     const { currentUser } = props;
 
@@ -130,15 +134,75 @@ function ReportScreen({ ...props }) {
         setPickerVisibility(!pickerVisibility)
     }
 
+    const chooseImage = () => {
+
+        const options = ['Take Photo...', 'Choose from gallery...', 'Cancel'];
+        const cancelButtonIndex = 2;
+
+        showActionSheetWithOptions(
+            {
+                options,
+                cancelButtonIndex,
+            },
+            buttonIndex => {
+                if (buttonIndex === 0) {
+                    takePicture()
+                } else if (buttonIndex === 1) {
+                    pickImage()
+                } else if (buttonIndex === 2) {
+                    //cancel
+                }
+            },
+        );
+    }
+
+    const takePicture = async () => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestCameraPermissionsAsync();
+                if (status !== 'granted') {
+                    alert('Sorry, we need camera roll permissions to make this work!');
+                }
+            }
+        })();
+
+        let result = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        console.log("Camera")
+        console.log(result);
+
+        if (!result.cancelled) {
+            setDividerColor('green')
+            setDividerHeight(2)
+            setIconColor('green')
+            let image = result.uri;
+            setImage(image);
+            let imageName = moment(Date.parse(new Date())).format().toString() + '-' + Random.getRandomBytes(1).toString();
+            uploadImage(image, imageName)
+        }
+    }
+
     const pickImage = async () => {
+
+        // (async () => {
+        //     if (Platform.OS !== 'web') {
+        //         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        //         if (status !== 'granted') {
+        //             alert('Sorry, we need camera roll permissions to make this work!');
+        //         }
+        //     }
+        // })();
+
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
         });
-
-        console.log("Poza!!")
+        console.log("Library")
         console.log(result);
 
         if (!result.cancelled) {
@@ -321,7 +385,7 @@ function ReportScreen({ ...props }) {
                             name="md-cloud-upload"
                             size={30}
                             color={colors.black}
-                            onPress={pickImage}
+                            onPress={chooseImage}
                         />
 
                     </View>
@@ -509,5 +573,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     }
 })
+
+// const ConnectedApp = connectActionSheet(App)
 
 export default connect(mapStateToProps)(ReportScreen);

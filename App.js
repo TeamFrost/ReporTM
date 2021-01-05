@@ -1,5 +1,6 @@
 import React from "react";
 import 'react-native-gesture-handler';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 
 //Navigation imports
 import { NavigationContainer } from '@react-navigation/native';
@@ -10,11 +11,14 @@ import { Provider } from 'react-redux'
 import { store } from './redux/store';
 
 export default function App() {
+
 	return (
-		<Provider store={store}>
-			<NavigationContainer>
-				{createLandingStack()}
-			</NavigationContainer>
-		</Provider>
+		<ActionSheetProvider>
+			<Provider store={store}>
+				<NavigationContainer>
+					{createLandingStack()}
+				</NavigationContainer>
+			</Provider>
+		</ActionSheetProvider>
 	);
 }

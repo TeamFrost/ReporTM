@@ -69,6 +69,7 @@ const renderItemLegend = ({ item }) => (
     />
 );
 
+
 const mapStateToProps = (state) => ({
     reportsData: state.reports.reportsData,
     user: state.auth.user
@@ -76,7 +77,11 @@ const mapStateToProps = (state) => ({
 
 function ProfileScreen({ ...props }) {
 
-    const { user, reportsData } = props
+    const { user, reportsData, navigation } = props
+
+    const onEditProfilePress = () => {
+        navigation.navigate('Settings')
+    }
 
     const myReports = reportsData.filter(data => data.author === user.id)
 
@@ -104,7 +109,7 @@ function ProfileScreen({ ...props }) {
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Text
                             style={{ fontSize: 14, textDecorationLine: 'underline', color: colors.textGray }}
-                            onPress={() => console.log('Editam')}
+                            onPress={onEditProfilePress}
                         >
                             Editează-ți profilul
                         </Text>
