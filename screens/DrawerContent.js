@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         width: '80%',
-        height: screenHeight / 5.5,
+        height: screenHeight / 5.8,
         backgroundColor: colors.purple,
         borderBottomRightRadius: 55,
         marginBottom: '20%',
