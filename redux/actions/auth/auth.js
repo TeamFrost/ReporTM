@@ -78,12 +78,7 @@ export const signupUser = (email, password, username) => dispatch => {
                 .set(user)
                 .then(() => {
                     console.log("Cont creat!")
-                    firebase.auth().signOut()
-                        .then(() => {
-                            dispatch(signupSuccess())
-                        }).catch((error) => {
-                            alert(error)
-                        });
+                    dispatch(sessionSuccess(user))
                 })
                 .catch((error) => {
                     dispatch(sessionError(error.message));

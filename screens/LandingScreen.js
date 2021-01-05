@@ -27,10 +27,10 @@ function LandingScreen({ ...props }) {
 
     if (doneFetching) {
         setTimeout(() => {
-            if (doneFetching && loggedIn) {
+            if (loggedIn) {
                 navigation.navigate('Drawer')
             }
-            else if (doneFetching && !loggedIn) {
+            else {
                 navigation.navigate('Login')
             }
         }, 2000);
