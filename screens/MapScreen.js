@@ -74,8 +74,7 @@ function MapScreen({ ...props }) {
                                         {Platform.OS === 'android' ?
                                             (<Text style={{ height: 180, position: 'relative', bottom: 40, right: 17, top: -70, width: 200 }}>
                                                 <Image
-                                                    imageResizeMode='strech'
-                                                    resizeMethod='resize'
+                                                    imageResizeMode='cover'
                                                     source={{ uri: marker.image }}
                                                 />
                                             </Text>) :
