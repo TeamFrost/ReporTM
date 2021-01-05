@@ -130,6 +130,7 @@ const createProfileStack = () =>
             headerShown: false
         }}>
         <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Settings" component={SettingsScreen} />
     </Stack.Navigator>
 
 const createSettingsStack = () =>
