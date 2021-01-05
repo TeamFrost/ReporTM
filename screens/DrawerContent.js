@@ -54,7 +54,7 @@ function DrawerContent({ ...props }) {
             <DrawerContentScrollView {...props}>
                 <View style={styles.avatarDiv}>
                     <View style={styles.userInfoIcon}>
-                        <Avatar.Image size={50} source={{ uri: avatar }} />
+                        <Avatar.Image size={55} source={{ uri: avatar }} />
                     </View>
                     <View style={styles.userInfoView}>
                         <Text style={styles.userInfoText}>{username}</Text>
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         width: '80%',
-        height: screenHeight / 6.3,
+        height: screenHeight / 5.5,
         backgroundColor: colors.purple,
         borderBottomRightRadius: 55,
         marginBottom: '20%',
