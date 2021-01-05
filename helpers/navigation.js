@@ -99,6 +99,7 @@ const createHomeStack = () =>
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
         <Stack.Screen name="Help" component={HelpScreen} />
+        <Stack.Screen name="Success" component={SuccessScreen} />
     </Stack.Navigator>
 
 const createMapStack = () =>
@@ -116,6 +117,7 @@ const createReportStack = () =>
         }}>
         <Stack.Screen name="Report" component={ReportScreen} />
         <Stack.Screen name="Success" component={SuccessScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
     </Stack.Navigator>
 
 const createFeedStack = () =>

@@ -26,7 +26,7 @@ function ReportScreen({ ...props }) {
 
     const { showActionSheetWithOptions } = useActionSheet();
 
-    const { currentUser } = props;
+    const { currentUser, navigation } = props;
 
     const [pickerVisibility, setPickerVisibility] = useState(false)
     const [value, setValueState] = useState('');
@@ -250,6 +250,9 @@ function ReportScreen({ ...props }) {
             });
     }
 
+    const onButtonPress = () => {
+        navigation.navigate('Success')
+    }
 
     return (
         <View style={styles.container}>
@@ -404,9 +407,18 @@ function ReportScreen({ ...props }) {
                         />
                     </View>
                     <TouchableHighlight onPress={submitForm} style={styles.touchButton}>
+
                         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.button}>
                             <View style={{ alignItems: "center" }}>
                                 <Text style={styles.buttonText}>Trimite</Text>
+                            </View>
+                        </LinearGradient>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight onPress={onButtonPress} style={styles.touchButton}>
+                        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.button}>
+                            <View style={{ alignItems: "center" }}>
+                                <Text style={styles.buttonText}>TEST</Text>
                             </View>
                         </LinearGradient>
                     </TouchableHighlight>

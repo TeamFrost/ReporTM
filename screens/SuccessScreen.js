@@ -9,7 +9,7 @@ import { colors, screenHeight } from "../helpers/style";
 export default function SuccessScreen() {
 
     const onButtonPress = () => {
-        navigation.navigate('Drawer')
+        navigation.navigate('Home')
     }
 
     return (
