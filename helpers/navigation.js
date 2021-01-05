@@ -13,6 +13,7 @@ import FeedScreen from '../screens/FeedScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import HelpScreen from '../screens/HelpScreen';
+import SuccessScreen from '../screens/SuccessScreen';
 import DrawerContent from '../screens/DrawerContent';
 
 const Stack = createStackNavigator();
@@ -114,6 +115,7 @@ const createReportStack = () =>
             headerShown: false
         }}>
         <Stack.Screen name="Report" component={ReportScreen} />
+        <Stack.Screen name="Success" component={SuccessScreen} />
     </Stack.Navigator>
 
 const createFeedStack = () =>
