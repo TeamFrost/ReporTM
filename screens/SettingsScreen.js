@@ -68,16 +68,28 @@ function SettingsScreen({ ...props }) {
     }
 
     const changePass = () => {
-        console.log(oldPass)
-        console.log(newPass)
-        console.log(newPassConfirm)
-        if (newPass === newPassConfirm) {
-            console.log("MATCHING!!!")
-        }
-        setOldPass('')
-        setNewPass('')
-        setNewPassConfirm('')
-        iconColor = colors.white
+        const currentUser = firebase.auth().currentUser
+        const credential = firebase.auth.EmailAuthProvider.credential(
+            firebase.auth().currentUser.email,
+            oldPass
+        );
+
+        currentUser.reauthenticateWithCredential(credential).then(function () {
+            if (newPass === newPassConfirm) {
+                console.log("MATCHING!!!")
+                currentUser.updatePassword(newPass).then(function () {
+                    alert("Succes!")
+                    setOldPass('')
+                    setNewPass('')
+                    setNewPassConfirm('')
+                    iconColor = colors.white
+                }).catch(function (error) {
+                    alert(error)
+                });
+            }
+        }).catch(function (error) {
+            alert(error)
+        });
     }
 
     let iconColor = colors.white
@@ -178,16 +190,19 @@ function SettingsScreen({ ...props }) {
                     .then(function (url) {
                         imageURL = url;
                         console.log(imageURL)
-                        firebase.firestore().collection('users').doc(user.id)
-                            .update({
-                                profile: imageURL
-                            })
-                            .then(function () {
-                                restoreSession()
-                            })
-                            .catch(function (error) {
-                                alert(error)
-                            });
+                        if (user) {
+                            firebase.firestore().collection('users').doc(user.id)
+                                .update({
+                                    profile: imageURL
+                                })
+                                .then(function () {
+                                    restoreSession()
+                                    alert("Succes!")
+                                })
+                                .catch(function (error) {
+                                    alert(error)
+                                });
+                        }
                     })
                     .catch(function (error) {
                         alert(error)
