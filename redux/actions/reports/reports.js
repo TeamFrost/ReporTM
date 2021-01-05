@@ -28,11 +28,8 @@ export const watchReportsData = () => dispatch => {
                     .catch(error => {
                         dispatch(requestError(error));
                     });
-
             })
-
             dispatch(requestSuccess(reportsData))
-
         }),
         (error) => {
             dispatch(requestError(error))
