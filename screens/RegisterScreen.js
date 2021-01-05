@@ -36,7 +36,7 @@ function RegisterScreen({ ...props }) {
     const { doneFetching, signUp, navigation, signupUser } = props
 
     useEffect(() => {
-        if (doneFetching && signUp) {
+        if (signUp && doneFetching) {
             console.log('\x1b[36m%s\x1b[0m', "Registered & navigate to Login")
             navigation.navigate('Login')
         }

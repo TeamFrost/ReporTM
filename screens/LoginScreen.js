@@ -28,7 +28,7 @@ function LoginScreen({ ...props }) {
     const { doneFetching, loggedIn, navigation, loginUser } = props
 
     useEffect(() => {
-        if (loggedIn) {
+        if (loggedIn && doneFetching) {
             console.log('\x1b[33m%s\x1b[0m: ', "LoggedIn & navigate to drawer")
             navigation.navigate('Drawer')
         }

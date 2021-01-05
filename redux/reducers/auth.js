@@ -35,6 +35,7 @@ export default auth = (state = initialState, action) => {
                 doneFetching: true,
                 isFetching: false,
                 signUp: true,
+                loggedIn: false,
             };
         }
         case types.SESSION_ERROR: {

@@ -88,6 +88,7 @@ function ProfileScreen({ ...props }) {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     }, [])
 
+
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView

@@ -37,7 +37,7 @@ function DrawerContent({ ...props }) {
     }
 
     useEffect(() => {
-        if (doneFetching && loggedOut) {
+        if (loggedOut && doneFetching) {
             console.log("LoggedOut & navigate to login")
             navigation.navigate('Login')
         }

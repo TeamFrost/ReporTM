@@ -10,6 +10,8 @@ const mapStateToProps = (state) => ({
     doneFetching: state.auth.doneFetching,
     loggedIn: state.auth.loggedIn,
     isFetching: state.auth.isFetching,
+    signUp: state.auth.signUp,
+    loggedOut: state.auth.loggedOut,
     hasError: state.auth.hasError,
     errorMessage: state.auth.errorMessage,
     user: state.auth.user
@@ -25,10 +27,10 @@ function LandingScreen({ ...props }) {
 
     if (doneFetching) {
         setTimeout(() => {
-            if (loggedIn) {
+            if (doneFetching && loggedIn) {
                 navigation.navigate('Drawer')
             }
-            else {
+            else if (doneFetching && !loggedIn) {
                 navigation.navigate('Login')
             }
         }, 2000);
