@@ -177,7 +177,15 @@ function SettingsScreen({ ...props }) {
         }
     }
 
+    let profile = ''
+    let id = ''
+    if (user) {
+        profile = user.profile
+        id = user.id
+    }
+
     const uploadImage = async (uri, imageName) => {
+        const oldRef = firebase.storage().refFromURL(profile)
         const response = await fetch(uri);
         const blob = await response.blob();
         let imageURL = '';
@@ -188,19 +196,23 @@ function SettingsScreen({ ...props }) {
                 ref.getDownloadURL()
                     .then(function (url) {
                         imageURL = url;
-                        if (user) {
-                            firebase.firestore().collection('users').doc(user.id)
-                                .update({
-                                    profile: imageURL
-                                })
-                                .then(function () {
+                        firebase.firestore().collection('users').doc(id)
+                            .update({
+                                profile: imageURL,
+                                profilelight: imageURL
+                            })
+                            .then(function () {
+                                oldRef.delete().then(function () {
                                     restoreSession()
                                     alert("Success!")
-                                })
-                                .catch(function (error) {
+                                }).catch(function (error) {
                                     alert(error)
                                 });
-                        }
+
+                            })
+                            .catch(function (error) {
+                                alert(error)
+                            });
                     })
                     .catch(function (error) {
                         alert(error)
