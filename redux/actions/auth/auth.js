@@ -1,3 +1,4 @@
+import { round } from 'react-native-reanimated';
 import { firebase } from '../../../config/firebaseConfig';
 import * as types from './actionTypes';
 
@@ -62,7 +63,10 @@ export const signupUser = (email, password, username) => dispatch => {
             const uid = response.user.uid
             const user = {
                 id: uid,
+                darkmode: false,
                 email,
+                language: "ro",
+                notifications: true,
                 profile: profile,
                 profilelight: profileLight,
                 upvotedreports: [],
@@ -74,7 +78,12 @@ export const signupUser = (email, password, username) => dispatch => {
                 .set(user)
                 .then(() => {
                     console.log("Cont creat!")
-                    dispatch(signupSuccess())
+                    firebase.auth().signOut()
+                        .then(() => {
+                            dispatch(signupSuccess())
+                        }).catch((error) => {
+                            alert(error)
+                        });
                 })
                 .catch((error) => {
                     dispatch(sessionError(error.message));
