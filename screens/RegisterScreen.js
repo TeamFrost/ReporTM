@@ -55,7 +55,7 @@ function RegisterScreen({ ...props }) {
     }
 
     const handleEyeOnPress = () => {
-        setTextSecurity(false);
+        textSecurity ? setTextSecurity(false) : setTextSecurity(true);
     }
 
     const onRegisterPress = () => {
