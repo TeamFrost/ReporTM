@@ -11,14 +11,10 @@ import { LogBox } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import { watchReportsData } from '../redux/actions/reports/reports';
-
 const mapStateToProps = (state) => ({
     reportsData: state.reports.reportsData,
     currentUser: state.auth.user
 });
-
-const mapDispatchToProps = (dispatch) => ({ watchReportsData: () => dispatch(watchReportsData()) });
 
 const iconSelector = (tag) => {
     if (tag === 'groapa') return 'exclamation-triangle'
@@ -161,13 +157,11 @@ const renderItem = ({ item }) => {
     );
 }
 
-
 function FeedScreen({ ...props }) {
     const { reportsData } = props
     const [search, setSearch] = useState('')
 
     useEffect(() => {
-        props.watchReportsData()
         LogBox.ignoreLogs(['VirtualizedLists should never be nested'])
     }, [])
 
@@ -319,4 +313,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(FeedScreen);
+export default connect(mapStateToProps)(FeedScreen);

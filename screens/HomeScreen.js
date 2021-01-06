@@ -11,7 +11,6 @@ const mapStateToProps = (state) => ({ reportsData: state.reports.reportsData });
 
 const mapDispatchToProps = (dispatch) => ({ watchReportsData: () => dispatch(watchReportsData()) });
 
-
 function HomeScreen({ ...props }) {
 
     const { watchReportsData } = props;
