@@ -226,6 +226,7 @@ function ReportScreen({ ...props }) {
     }
 
     let imageURL = '';
+
     const submitForm = () => {
         const timestamp = firebase.firestore.FieldValue.serverTimestamp();
         imageRef.getDownloadURL()
@@ -242,16 +243,17 @@ function ReportScreen({ ...props }) {
                     upvotes: [],
                 }
                 const reportRef = firebase.firestore().collection('reports').doc(value).collection('sub_reports');
-                reportRef
-                    .add(data)
+                reportRef.add(data)
+                    .then(
+                        navigation.navigate('Success')
+                    )
+                    .catch(function (error) {
+                        alert(error)
+                    });
             })
             .catch(function (error) {
                 alert(error)
             });
-    }
-
-    const onButtonPress = () => {
-        navigation.navigate('Success')
     }
 
     return (
@@ -415,13 +417,6 @@ function ReportScreen({ ...props }) {
                         </LinearGradient>
                     </TouchableHighlight>
 
-                    <TouchableHighlight onPress={onButtonPress} style={styles.touchButton}>
-                        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.button}>
-                            <View style={{ alignItems: "center" }}>
-                                <Text style={styles.buttonText}>TEST</Text>
-                            </View>
-                        </LinearGradient>
-                    </TouchableHighlight>
                 </View>
 
             </KeyboardAwareScrollView>
@@ -585,7 +580,5 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     }
 })
-
-// const ConnectedApp = connectActionSheet(App)
 
 export default connect(mapStateToProps)(ReportScreen);
