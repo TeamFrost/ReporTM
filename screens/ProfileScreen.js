@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from "expo-status-bar";
 import { Text, View, StyleSheet, Image, FlatList } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -82,20 +82,23 @@ function ProfileScreen({ ...props }) {
         navigation.navigate('Settings')
     }
 
-
-    let profile = 'https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/Profile.png?alt=media&token=3164e617-25bb-422f-aa84-fcbcda459d17'
-    let username = ''
-    let myReports = reportsData
-
-    if (user) {
-        profile = user.profile
-        username = user.username
-        myReports = reportsData.filter(data => data.author === user.id)
-    }
+    const [profile, setProfile] = useState('https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/Profile.png?alt=media&token=3164e617-25bb-422f-aa84-fcbcda459d17')
+    const [username, setUsername] = useState('')
+    const [myReports, setMyReports] = useState([])
+    const [reportsNumber, setReportsNumber] = useState(0)
+    const [upvotesReceived, setUpvotesReceived] = useState(0)
+    const [categoriesReported, setCategoriesReported] = useState(0)
 
     useEffect(() => {
+        if (user) {
+            setProfile(user.profile)
+            setUsername(user.username)
+            let data = reportsData.filter(data => data.author === user.id)
+            setMyReports(data)
+            setReportsNumber(data.length)
+        }
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-    }, [])
+    }, [user])
 
 
     return (
@@ -155,7 +158,7 @@ function ProfileScreen({ ...props }) {
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.statCard}>
                                 <View style={styles.cardTextView}>
                                     <Text style={styles.cardText1}>Sesizari raportate</Text>
-                                    <Text style={styles.cardText2}>10</Text>
+                                    <Text style={styles.cardText2}>{reportsNumber}</Text>
                                 </View>
                                 <Image
                                     source={require("../assets/StatReport.png")}
