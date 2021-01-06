@@ -20,7 +20,7 @@ export const watchReportsData = () => dispatch => {
                             dispatch(requestError("Document does not exist!"))
                         }
                         const username = firestoreDocument.data().username;
-                        const avatar = firestoreDocument.data().avatar;
+                        const avatar = firestoreDocument.data().profile;
                         const userInfo = { username, avatar }
                         const reportFinal = { ...report, parent, userInfo };
                         reportsData.push(reportFinal)

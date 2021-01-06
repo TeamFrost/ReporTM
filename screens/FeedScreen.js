@@ -145,6 +145,7 @@ const renderItem = ({ item }) => {
 
     let time = item.timestamp.toDate();
     let relativeTime = moment(time).fromNow();
+
     return (
         <Item
             userName={item.userInfo.username}
@@ -160,6 +161,7 @@ const renderItem = ({ item }) => {
     );
 }
 
+
 function FeedScreen({ ...props }) {
     const { reportsData } = props
     const [search, setSearch] = useState('')
@@ -168,7 +170,6 @@ function FeedScreen({ ...props }) {
         props.watchReportsData()
         LogBox.ignoreLogs(['VirtualizedLists should never be nested'])
     }, [])
-
 
     return (
         <View style={styles.container}>
