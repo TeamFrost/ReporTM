@@ -286,8 +286,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 5,
         fontSize: 12,
-        width: 150,
-        marginLeft: 5
+        width: screenWidth > 400 ? screenWidth / 2.7 : screenWidth / 2.8,
     },
     cardFooter: {
         height: 35,
