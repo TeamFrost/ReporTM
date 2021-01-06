@@ -171,8 +171,8 @@ function ReportScreen({ ...props }) {
             aspect: [1, 1],
             quality: 1,
         });
-        console.log("Camera")
-        console.log(result);
+        // console.log("Camera")
+        // console.log(result);
 
         if (!result.cancelled) {
             setDividerColor('green')
@@ -202,8 +202,8 @@ function ReportScreen({ ...props }) {
             aspect: [1, 1],
             quality: 1,
         });
-        console.log("Library")
-        console.log(result);
+        // console.log("Library")
+        // console.log(result);
 
         if (!result.cancelled) {
             setDividerColor('green')
