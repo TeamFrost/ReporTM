@@ -52,7 +52,7 @@ const Item = ({ userName, userAvatar, adress, time, photo, description, upvotes,
         <View style={styles.cardContent}>
             <Image
                 source={photo}
-                style={{ width: 190, height: 130 }}
+                style={{ width: 160, height: 160 }}
             />
             <Text numberOfLines={10} style={styles.cardDescription}>
                 {description}
@@ -74,8 +74,8 @@ const Item = ({ userName, userAvatar, adress, time, photo, description, upvotes,
                     <Icon
                         type="font-awesome"
                         name={iconSelector(tag)}
-                        size={16}
-                        style={{ marginRight: 5, paddingTop: 2, color: color }}
+                        size={15}
+                        style={{ marginRight: 5, paddingTop: 1, color: color }}
                     />
                     <Text>{tag}</Text>
                 </TouchableOpacity>
@@ -244,14 +244,20 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         margin: 10,
         width: "85%",
-        height: 250,
+        height: 275,
         backgroundColor: '#FBF2FE',
-        elevation: 5
+        elevation: 5,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
     },
     cardHeader: {
         flexDirection: "row",
         justifyContent: "space-between",
-
         height: 70,
         width: '100%'
     },
@@ -274,13 +280,14 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        height: 140,
+        height: 165,
     },
     cardDescription: {
-        textAlign: 'justify',
-        padding: 4,
-        fontSize: 10,
-        width: 125,
+        textAlign: 'center',
+        padding: 5,
+        fontSize: 12,
+        width: 150,
+        marginLeft: 5
     },
     cardFooter: {
         height: 35,
@@ -300,7 +307,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 5,
         paddingHorizontal: 10,
-        height: 28,
+        height: 30,
         marginRight: 4,
         marginLeft: 4,
         borderWidth: 1,
