@@ -6,6 +6,7 @@ import { Avatar, Caption } from 'react-native-paper';
 import { Icon } from 'react-native-elements';
 import { StatusBar } from "expo-status-bar";
 import { connect } from 'react-redux';
+import { DrawerActions } from '@react-navigation/native';
 
 import { logoutUser } from '../redux/actions/auth/auth';
 
@@ -38,6 +39,7 @@ function DrawerContent({ ...props }) {
 
     useEffect(() => {
         if (loggedOut && doneFetching) {
+            navigation.dispatch(DrawerActions.closeDrawer());
             navigation.navigate('Login')
         }
     }, [doneFetching]);

@@ -21,6 +21,7 @@ const Drawer = createDrawerNavigator();
 
 const createDrawer = () =>
     <Drawer.Navigator
+        initialRouteName='HomeStack'
         drawerContent={props => <DrawerContent {...props} />}
     >
         <Drawer.Screen

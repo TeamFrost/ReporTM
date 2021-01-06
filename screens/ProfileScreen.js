@@ -82,7 +82,16 @@ function ProfileScreen({ ...props }) {
         navigation.navigate('Settings')
     }
 
-    const myReports = reportsData.filter(data => data.author === user.id)
+
+    let profile = 'https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/Profile.png?alt=media&token=3164e617-25bb-422f-aa84-fcbcda459d17'
+    let username = ''
+    let myReports = reportsData
+
+    if (user) {
+        profile = user.profile
+        username = user.username
+        myReports = reportsData.filter(data => data.author === user.id)
+    }
 
     useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -104,8 +113,8 @@ function ProfileScreen({ ...props }) {
                         source={require("../assets/Ellipse_2.png")}
                         style={styles.ellipse2}
                     />
-                    <Avatar.Image style={{ marginTop: 30 }} size={150} source={{ uri: user.profile }} />
-                    <Text style={{ fontSize: 28, fontWeight: "bold" }}>{user.username}</Text>
+                    <Avatar.Image style={{ marginTop: 30 }} size={150} source={{ uri: profile }} />
+                    <Text style={{ fontSize: 28, fontWeight: "bold" }}>{username}</Text>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Text
                             style={{ fontSize: 14, textDecorationLine: 'underline', color: colors.textGray }}
