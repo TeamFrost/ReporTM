@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
 import { Text, View, StyleSheet, Image, TouchableOpacity, Switch, Modal, Platform, TouchableHighlight } from "react-native";
 import { Avatar } from 'react-native-paper';
@@ -39,17 +39,20 @@ function SettingsScreen({ ...props }) {
     const [newPass, setNewPass] = useState('')
     const [newPassConfirm, setNewPassConfirm] = useState('')
 
-    const [isSwitch, setIsSwitch] = useState(false);
-    const [isSwitchDark, setIsSwitchDark] = useState(false);
+    const [isSwitch, setIsSwitch] = useState(false)
+    const [isSwitchDark, setIsSwitchDark] = useState(false)
+
     const [value, setValueState] = useState('Română');
     const toggleSwitch = () => setIsSwitch(previousState => !previousState);
     const toggleSwitchDark = () => setIsSwitchDark(previousState => !previousState);
     const [pickerVisibility, setPickerVisibility] = useState(false)
 
-    if (user) {
-        setIsSwitch(user.notification)
-        setIsSwitchDark(user.darkmode)
-    }
+    useEffect(() => {
+        if (user) {
+            setIsSwitch(user.notifications)
+            setIsSwitchDark(user.darkmode)
+        }
+    }, [user])
 
     let username = '';
 
