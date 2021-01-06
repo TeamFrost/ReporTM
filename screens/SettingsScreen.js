@@ -39,6 +39,8 @@ function SettingsScreen({ ...props }) {
     const [newPass, setNewPass] = useState('')
     const [newPassConfirm, setNewPassConfirm] = useState('')
 
+    // const [isSwitch, setIsSwitch] = useState(user.notifications);
+    // const [isSwitchDark, setIsSwitchDark] = useState(user.darkmode);
     const [isSwitch, setIsSwitch] = useState(false);
     const [isSwitchDark, setIsSwitchDark] = useState(false);
     const [value, setValueState] = useState('Română');

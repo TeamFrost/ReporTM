@@ -3,7 +3,6 @@ import { StatusBar } from "expo-status-bar";
 import { Text, View, StyleSheet, TouchableHighlight, Image } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 
-import NavBar from '../helpers/navbar'
 import { colors, screenHeight } from "../helpers/style";
 
 export default function SuccessScreen({ ...props }) {
@@ -63,7 +62,13 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         marginTop: 5,
         elevation: 5,
-
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
     },
     buttonText: {
         fontSize: 18,
@@ -95,6 +100,4 @@ const styles = StyleSheet.create({
         fontSize: 30,
         textAlign: "center"
     }
-
-
 })
