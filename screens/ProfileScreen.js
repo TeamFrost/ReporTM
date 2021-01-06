@@ -86,16 +86,34 @@ function ProfileScreen({ ...props }) {
     const [username, setUsername] = useState('')
     const [myReports, setMyReports] = useState([])
     const [reportsNumber, setReportsNumber] = useState(0)
+    const [upvotesGiven, setUpvotesGiven] = useState(0)
     const [upvotesReceived, setUpvotesReceived] = useState(0)
     const [categoriesReported, setCategoriesReported] = useState(0)
+
+    const onlyUnique = (value, index, self) => (self.indexOf(value) === index)
 
     useEffect(() => {
         if (user) {
             setProfile(user.profile)
             setUsername(user.username)
+
             let data = reportsData.filter(data => data.author === user.id)
             setMyReports(data)
             setReportsNumber(data.length)
+
+            setUpvotesGiven(user.upvotedreports.length)
+
+            let upvotesSum = 0
+            let upvotesData = data.map(data => data.upvotes.length)
+            upvotesData.forEach(key => upvotesSum += key)
+            setUpvotesReceived(upvotesSum)
+
+            let categoryData = data.map(data => data.parent)
+
+            let uniqueCategories = categoryData.filter(onlyUnique)
+            setCategoriesReported(uniqueCategories.length)
+
+
         }
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     }, [user])
@@ -169,7 +187,7 @@ function ProfileScreen({ ...props }) {
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.statCard}>
                                 <View style={styles.cardTextView}>
                                     <Text style={styles.cardText1}>Sesizari votate</Text>
-                                    <Text style={styles.cardText2}>64</Text>
+                                    <Text style={styles.cardText2}>{upvotesGiven}</Text>
                                 </View>
                                 <Image
                                     source={require("../assets/StatCheck.png")}
@@ -182,7 +200,7 @@ function ProfileScreen({ ...props }) {
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.statCard}>
                                 <View style={styles.cardTextView}>
                                     <Text style={styles.cardText1}>Voturi primite</Text>
-                                    <Text style={styles.cardText2}>154</Text>
+                                    <Text style={styles.cardText2}>{upvotesReceived}</Text>
                                 </View>
                                 <Image
                                     source={require("../assets/StatUpvote.png")}
@@ -193,7 +211,7 @@ function ProfileScreen({ ...props }) {
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.statCard}>
                                 <View style={styles.cardTextView}>
                                     <Text style={styles.cardText1}>Categorii sesizate</Text>
-                                    <Text style={styles.cardText2}>2/6</Text>
+                                    <Text style={styles.cardText2}>{categoriesReported}/6</Text>
                                 </View>
                                 <Image
                                     source={require("../assets/StatReport.png")}
