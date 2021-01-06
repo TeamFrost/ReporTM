@@ -8,21 +8,10 @@ import { Divider } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { LogBox } from 'react-native';
 import { connect } from 'react-redux';
-import { VictoryPie, VictoryContainer } from "victory-native";
+import { VictoryPie, VictoryContainer, VictoryLabel } from "victory-native";
 
 import NavBar from '../helpers/navbar';
 import { colors, screenHeight, screenWidth } from "../helpers/style";
-
-
-const chartData = [
-    { label: "8%", y: 15, title: "Groapă", color: "#d37e53" },
-    { label: "20%", y: 38, title: "Graffiti", color: "#593480" },
-    { label: "27%", y: 50, title: "Gunoi", color: "#C0EAFF" },
-    { label: "15%", y: 28, title: "Iluminat", color: "#FFCE3C" },
-    { label: "4%", y: 9, title: "Poluare", color: "#83b1cb" },
-    { label: "24%", y: 44, title: "Parcare", color: "#9c280e" },
-];
-
 
 const Item = ({ photo, title, upvotes }) => (
     <View style={{ height: 45, alignItems: 'center', ...styles.flatListItem }}>
@@ -89,8 +78,33 @@ function ProfileScreen({ ...props }) {
     const [upvotesGiven, setUpvotesGiven] = useState(0)
     const [upvotesReceived, setUpvotesReceived] = useState(0)
     const [categoriesReported, setCategoriesReported] = useState(0)
+    const [chartData, setChartData] = useState([])
 
     const onlyUnique = (value, index, self) => (self.indexOf(value) === index)
+
+    const chart = [
+        { title: "Groapă", color: "#d37e53" },
+        { title: "Graffiti", color: "#593480" },
+        { title: "Gunoi", color: "#C0EAFF" },
+        { title: "Iluminat", color: "#FFCE3C" },
+        { title: "Poluare", color: "#83b1cb" },
+        { title: "Parcare", color: "#9c280e" },
+    ]
+
+    const getChartData = (category, categoryData) => {
+        let sum = 0
+        categoryData.forEach((key) => {
+            if (key === category)
+                sum++
+        })
+        let label = sum / categoryData.length * 100
+        let labelString = ' '
+        if (label != 0) {
+            labelString = label.toString() + '%'
+        }
+        let y = sum
+        return { label: labelString, y: y }
+    }
 
     useEffect(() => {
         if (user) {
@@ -113,7 +127,42 @@ function ProfileScreen({ ...props }) {
             let uniqueCategories = categoryData.filter(onlyUnique)
             setCategoriesReported(uniqueCategories.length)
 
-
+            let chartData = []
+            chart.forEach((obj) => {
+                switch (obj.title) {
+                    case "Groapă": {
+                        let partial = getChartData('groapa', categoryData)
+                        chartData.push({ ...partial, title: obj.title, color: obj.color })
+                        return;
+                    }
+                    case "Graffiti": {
+                        let partial = getChartData('graffiti', categoryData)
+                        chartData.push({ ...partial, title: obj.title, color: obj.color })
+                        return;
+                    }
+                    case "Gunoi": {
+                        let partial = getChartData('gunoi', categoryData)
+                        chartData.push({ ...partial, title: obj.title, color: obj.color })
+                        return;
+                    }
+                    case "Iluminat": {
+                        let partial = getChartData('iluminat', categoryData)
+                        chartData.push({ ...partial, title: obj.title, color: obj.color })
+                        return;
+                    }
+                    case "Poluare": {
+                        let partial = getChartData('poluare', categoryData)
+                        chartData.push({ ...partial, title: obj.title, color: obj.color })
+                        return;
+                    }
+                    case "Parcare": {
+                        let partial = getChartData('parcare', categoryData)
+                        chartData.push({ ...partial, title: obj.title, color: obj.color })
+                        return;
+                    }
+                }
+            })
+            setChartData(chartData)
         }
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     }, [user])
@@ -242,7 +291,7 @@ function ProfileScreen({ ...props }) {
                         <FlatList
                             data={chartData}
                             renderItem={renderItemLegend}
-                            keyExtractor={(item) => item.label}
+                            keyExtractor={(item) => item.title}
                         />
                     </View>
                 </View>
