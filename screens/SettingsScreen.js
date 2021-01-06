@@ -39,14 +39,17 @@ function SettingsScreen({ ...props }) {
     const [newPass, setNewPass] = useState('')
     const [newPassConfirm, setNewPassConfirm] = useState('')
 
-    // const [isSwitch, setIsSwitch] = useState(user.notifications);
-    // const [isSwitchDark, setIsSwitchDark] = useState(user.darkmode);
     const [isSwitch, setIsSwitch] = useState(false);
     const [isSwitchDark, setIsSwitchDark] = useState(false);
     const [value, setValueState] = useState('Română');
     const toggleSwitch = () => setIsSwitch(previousState => !previousState);
     const toggleSwitchDark = () => setIsSwitchDark(previousState => !previousState);
     const [pickerVisibility, setPickerVisibility] = useState(false)
+
+    if (user) {
+        setIsSwitch(user.notification)
+        setIsSwitchDark(user.darkmode)
+    }
 
     let username = '';
 
@@ -187,7 +190,12 @@ function SettingsScreen({ ...props }) {
     }
 
     const uploadImage = async (uri, imageName) => {
-        const oldRef = firebase.storage().refFromURL(profile)
+        let oldRef = ''
+        if (profile != 'https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/Profile.png?alt=media&token=3164e617-25bb-422f-aa84-fcbcda459d17') {
+            console.log("poza diferita de profile")
+            oldRef = firebase.storage().refFromURL(profile)
+        }
+        console.log(oldRef)
         const response = await fetch(uri);
         const blob = await response.blob();
         let imageURL = '';
@@ -204,13 +212,19 @@ function SettingsScreen({ ...props }) {
                                 profilelight: imageURL
                             })
                             .then(function () {
-                                oldRef.delete().then(function () {
+                                if (oldRef != '') {
+                                    console.log("delete if oldREf===0")
+                                    oldRef.delete().then(function () {
+                                        restoreSession()
+                                        alert("Success!")
+                                    }).catch(function (error) {
+                                        alert(error)
+                                    });
+                                }
+                                else {
                                     restoreSession()
                                     alert("Success!")
-                                }).catch(function (error) {
-                                    alert(error)
-                                });
-
+                                }
                             })
                             .catch(function (error) {
                                 alert(error)
