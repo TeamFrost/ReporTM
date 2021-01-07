@@ -226,7 +226,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: "#ccc",
         padding: 10,
-
     },
 })
 

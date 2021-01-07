@@ -194,7 +194,7 @@ function SettingsScreen({ ...props }) {
 
     const uploadImage = async (uri, imageName) => {
         let oldRef = ''
-        if (profile != 'https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/Profile.png?alt=media&token=3164e617-25bb-422f-aa84-fcbcda459d17') {
+        if (profile != 'https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/Profile.png?alt=media&token=03f17fb0-6394-43fb-9695-fbc7633d7c19') {
             console.log("poza diferita de profile")
             oldRef = firebase.storage().refFromURL(profile)
         }

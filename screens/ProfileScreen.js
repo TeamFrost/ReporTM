@@ -71,7 +71,7 @@ function ProfileScreen({ ...props }) {
         navigation.navigate('Settings')
     }
 
-    const [profile, setProfile] = useState('https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/Profile.png?alt=media&token=3164e617-25bb-422f-aa84-fcbcda459d17')
+    const [profile, setProfile] = useState('https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/Profile.png?alt=media&token=03f17fb0-6394-43fb-9695-fbc7633d7c19')
     const [username, setUsername] = useState('')
     const [myReports, setMyReports] = useState([])
     const [reportsNumber, setReportsNumber] = useState(0)
