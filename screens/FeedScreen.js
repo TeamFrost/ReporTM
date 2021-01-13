@@ -189,9 +189,10 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         marginTop: 50,
-        width: "85%",
+        width: screenWidth / 10 * 8.5,
         height: 50,
         alignSelf: "center",
+
 
     },
     tagsContainer: {
