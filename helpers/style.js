@@ -18,6 +18,8 @@ export const colors = {
     textGray: '#8F92A1',
     textHelpGray: '#ADADAD',
     textYellow: '#FFC61B',
+    linkBlue: '#0000F0',
+
 
     groapa: "#d37e53",
     graffiti: "#593480",
