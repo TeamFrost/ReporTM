@@ -26,4 +26,3 @@ export const colors = {
     poluare: "#83b1cb",
     parcare: "#9c280e",
 }
-
