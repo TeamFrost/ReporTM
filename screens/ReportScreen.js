@@ -226,34 +226,41 @@ function ReportScreen({ ...props }) {
     }
 
     let imageURL = '';
+    let check = true;
 
     const submitForm = () => {
         const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-        imageRef.getDownloadURL()
-            .then(function (url) {
-                imageURL = url;
-                const data = {
-                    adress: text,
-                    author: currentUser.id,
-                    color: color,
-                    coordinates: coords,
-                    description: description,
-                    image: imageURL,
-                    timestamp: timestamp,
-                    upvotes: [],
-                }
-                const reportRef = firebase.firestore().collection('reports').doc(value).collection('sub_reports');
-                reportRef.add(data)
-                    .then(
-                        navigation.navigate('Success')
-                    )
-                    .catch(function (error) {
-                        alert(error)
-                    });
-            })
-            .catch(function (error) {
-                alert(error)
-            });
+        if ((text === '') || (coords === '') || (imageRef === '') || (value === '') || (description === "")) {
+            check = false
+            alert("Toate câmpurile trebuie completate!")
+        }
+        if (check === true) {
+            imageRef.getDownloadURL()
+                .then(function (url) {
+                    imageURL = url;
+                    const data = {
+                        adress: text,
+                        author: currentUser.id,
+                        color: color,
+                        coordinates: coords,
+                        description: description,
+                        image: imageURL,
+                        timestamp: timestamp,
+                        upvotes: [],
+                    }
+                    const reportRef = firebase.firestore().collection('reports').doc(value).collection('sub_reports');
+                    reportRef.add(data)
+                        .then(
+                            navigation.navigate('Success')
+                        )
+                        .catch(function (error) {
+                            alert(error)
+                        });
+                })
+                .catch(function (error) {
+                    alert(error)
+                });
+        }
     }
 
     return (
