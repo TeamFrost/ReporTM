@@ -99,11 +99,15 @@ function ProfileScreen({ ...props }) {
         })
         let label = sum / categoryData.length * 100
         let labelString = ' '
+        let labelRes = ' '
         if (label != 0) {
-            labelString = label.toString() + '%'
+            labelString = label.toString()
+            if (labelString.length > 2)
+                labelString = labelString.slice(0, 4)
+            labelRes = labelString + "%"
         }
         let y = sum
-        return { label: labelString, y: y }
+        return { label: labelRes, y: y }
     }
 
     useEffect(() => {

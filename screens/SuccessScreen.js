@@ -6,9 +6,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { colors, screenHeight } from "../helpers/style";
 
 export default function SuccessScreen({ ...props }) {
+    const { navigation } = props
 
     const onButtonPress = () => {
-        props.navigation.navigate('Home')
+        navigation.navigate('Home')
     }
 
     return (

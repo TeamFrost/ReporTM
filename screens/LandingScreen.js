@@ -17,12 +17,14 @@ const mapStateToProps = (state) => ({
     user: state.auth.user
 });
 
+const mapDispatchToProps = (dispatch) => ({ restoreSession: () => dispatch(restoreSession()) });
+
 function LandingScreen({ ...props }) {
 
-    const { dispatch, loggedIn, doneFetching, navigation } = props;
+    const { loggedIn, doneFetching, navigation, restoreSession } = props;
 
     useEffect(() => {
-        dispatch(restoreSession())
+        restoreSession()
     }, []);
 
     if (doneFetching) {
@@ -94,4 +96,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default connect(mapStateToProps)(LandingScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LandingScreen);

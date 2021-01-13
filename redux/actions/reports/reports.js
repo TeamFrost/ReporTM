@@ -7,12 +7,12 @@ export const watchReportsData = () => dispatch => {
     reportsRef
         .onSnapshot(querySnapshot => {
             let reportsData = []
-            querySnapshot.forEach(async doc => {
+            querySnapshot.forEach(doc => {
                 const report = doc.data()
                 report.id = doc.id
                 const parent = doc.ref.parent.parent.id
                 const authorId = report.author
-                await firebase.firestore().collection("users")
+                firebase.firestore().collection("users")
                     .doc(authorId)
                     .get()
                     .then(firestoreDocument => {
@@ -35,6 +35,7 @@ export const watchReportsData = () => dispatch => {
             dispatch(requestError(error))
         }
 }
+
 
 const requestStart = () => ({
     type: types.REQUEST_START

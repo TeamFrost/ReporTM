@@ -33,7 +33,7 @@ function MapScreen({ ...props }) {
     const [mapData, setMapData] = useState(reportsData)
 
     useEffect(() => {
-        watchReportsData()
+        // watchReportsData()
     }, [])
 
     const applyFilter = (filter) => {
