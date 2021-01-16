@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 
 import { colors, screenHeight } from "../helpers/style";
 import { restoreSession } from '../redux/actions/auth/auth';
+import Logo from "../assets/Logo";
+import Ellipse1 from "../assets/Ellipse1"
+import Ellipse2 from "../assets/Ellipse2"
 
 const mapStateToProps = (state) => ({
     doneFetching: state.auth.doneFetching,
@@ -40,21 +43,12 @@ function LandingScreen({ ...props }) {
 
     return (
         <View style={styles.container}>
-            <Image
-                source={require("../assets/Icon.png")}
-                style={styles.icon}
-            />
+            <Logo width={screenHeight / 3} height={screenHeight / 3} style={styles.icon} />
             <Text style={styles.titleBaseText}>
                 Repor<Text style={styles.titleInnerText}>TM</Text>
             </Text>
-            <Image
-                source={require("../assets/Ellipse_1.png")}
-                style={styles.ellipse1}
-            />
-            <Image
-                source={require("../assets/Ellipse_2.png")}
-                style={styles.ellipse2}
-            />
+            <Ellipse1 width={59} height={124} style={styles.ellipse1} />
+            <Ellipse2 width={52} height={103} style={styles.ellipse2} />
             <StatusBar style="auto" />
         </View>
     );
@@ -71,19 +65,13 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: "20%",
         right: "0%",
-        width: 59,
-        height: 124,
     },
     ellipse2: {
         position: "absolute",
         top: "75%",
         left: "-1%",
-        width: 52,
-        height: 103,
     },
     icon: {
-        width: screenHeight / 3,
-        height: screenHeight / 3,
         marginBottom: "6%",
     },
     titleBaseText: {

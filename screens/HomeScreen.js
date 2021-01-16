@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight } from "../helpers/style";
+import Home from "../assets/Home";
 import { watchReportsData } from '../redux/actions/reports/reports';
 
 const mapStateToProps = (state) => ({ reportsData: state.reports.reportsData });
@@ -147,11 +148,7 @@ function HomeScreen({ ...props }) {
 
             </View>
             <NavBar />
-            <Image
-                source={require("../assets/Home.png")}
-                style={styles.bottomIcon}
-            />
-
+            <Home width={screenHeight / 8.5} height={screenHeight / 8.5} style={styles.bottomIcon} />
             <StatusBar style="auto" />
         </View >
     );
@@ -159,8 +156,6 @@ function HomeScreen({ ...props }) {
 
 const styles = StyleSheet.create({
     bottomIcon: {
-        width: screenHeight / 8.5,
-        height: screenHeight / 8.5,
         position: "absolute",
         top: "88%",
     },

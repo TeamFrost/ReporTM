@@ -1,40 +1,40 @@
 import React, { useEffect } from 'react';
 import { Image, StyleSheet, Text, View } from "react-native";
 import AppIntroSlider from 'react-native-app-intro-slider';
-import Svg from 'react-native-svg';
-import { colors, screenHeight } from "../helpers/style";
 
+import { colors, screenHeight } from "../helpers/style";
+import Ellipse from "../assets/Ellipse"
+import Slide1 from "../assets/Slide1";
+import Slide2 from "../assets/Slide2";
+import Slide3 from "../assets/Slide3";
+import Slide4 from "../assets/Slide4";
+import Slide5 from "../assets/Slide5";
 
 const slides = [
     {
         key: "1",
         title: "Identificarea unei probleme",
         text: "În momentul în care sesizezi o problemă în oraș este foarte usor să o faci mai vizibilă către cetățeni și administrație. Trebuie doar să îți deschizi telefonul și să pornești \nReporTM.",
-        image: require('../assets/Slide1.png')
     },
     {
         key: "2",
         title: "Locația problemei",
         text: "Adăugarea locației pe hartă este un pas foarte importat și se poate face în două moduri: \n\n ‣ prin oferirea locației curente, caz în care se apasă pe butonul ⦿ de lângă locație din formular. \n\n  ‣ prin oferirea unei locații specifice. Pentru a face asta utilizatorul trebuie să meargă pe ecranul HARTĂ și să țină apăsat pe o locație până ce este redirecționat pe pagina de raportare.",
-        image: require('../assets/Slide2.png')
     },
     {
         key: "3",
         title: "Categoria din care face parte",
         text: "Mai departe, trebui să alegi în ce categorie se încadrează problema ta dintre cele 6 disponibile: \n\n ‣ Gropi \n‣ Gunoi \n‣ Graffiti \n‣ Iluminat \n‣ Poluare \n‣ Parcare \n ",
-        image: require('../assets/Slide3.png')
     },
     {
         key: "4",
         title: "Imaginea",
         text: "Adăugarea unei fotografii este esențială pentru a oferi credibilitate sesizării, dar și pentru a o face mai bine înțeleasă de ceilalți utilizatori. \n\n Poți face o poză cu telefonul pe loc sau poți alege una pe care o ai deja în galerie. După încărcare va apărea o iconiță verde ✓, care confirmă încărcarea cu succes.",
-        image: require('../assets/Slide4.png')
     },
     {
         key: "5",
         title: "Descrierea",
         text: "Ultimul pas înainte de a trimite formularul este de a oferi un context sesizării și de a descrie în câteva cuvinte problema.\n\n Ceva scurt și la obiect care să prezinte situația ar finaliza în mod adecvat raportarea.",
-        image: require('../assets/Slide5.png')
     },
 ];
 
@@ -70,10 +70,55 @@ export default function IntroScreen({ ...props }) {
         );
     }
 
+    const pickSlideImage = (key) => {
+        switch (key) {
+            case "1": {
+                return (
+                    <View style={styles.svgGroup}>
+                        <Ellipse width={220} height={220} style={styles.svgPart} />
+                        <Slide1 width={190} height={190} style={{ ...styles.svgPart, bottom: 10 }} />
+                    </View>
+                );
+            }
+            case "2": {
+                return (
+                    <View style={styles.svgGroup}>
+                        <Ellipse width={220} height={220} style={styles.svgPart} />
+                        <Slide2 width={190} height={190} style={{ ...styles.svgPart, bottom: 10 }} />
+                    </View>
+                );
+            }
+            case "3": {
+                return (
+                    <View style={styles.svgGroup}>
+                        <Ellipse width={220} height={220} style={styles.svgPart} />
+                        <Slide3 width={190} height={190} style={{ ...styles.svgPart, bottom: 10 }} />
+                    </View>
+                );
+            }
+            case "4": {
+                return (
+                    <View style={styles.svgGroup}>
+                        <Ellipse width={220} height={220} style={styles.svgPart} />
+                        <Slide4 width={200} height={200} style={{ ...styles.svgPart, bottom: 10 }} />
+                    </View>
+                );
+            }
+            case "5": {
+                return (
+                    <View style={styles.svgGroup}>
+                        <Ellipse width={220} height={220} style={styles.svgPart} />
+                        <Slide5 width={200} height={200} style={{ ...styles.svgPart, bottom: 15 }} />
+                    </View>
+                );
+            }
+        }
+    }
+
     const renderItem = ({ item }) => {
         return (
             <View style={styles.container}>
-                <Image source={item.image} style={{ marginTop: screenHeight / 10 }} />
+                {pickSlideImage(item.key)}
                 <View style={styles.textView}>
                     <Text style={styles.text}>{item.title}</Text>
                     <Text style={{ ...styles.text, fontSize: 16, fontWeight: "normal", position: "absolute", top: screenHeight / 8 }}>{item.text}</Text>
@@ -139,5 +184,14 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: colors.darkPurple,
         fontWeight: 'bold'
+    },
+    svgGroup: {
+        height: screenHeight / 2.8,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    svgPart: {
+        position: 'absolute',
+        bottom: 0
     }
 })
