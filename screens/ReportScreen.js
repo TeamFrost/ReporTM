@@ -462,7 +462,7 @@ const styles = StyleSheet.create({
     descriptionInput: {
         backgroundColor: colors.input,
         height: 100,
-        borderColor: 'gray',
+        borderColor: colors.textGray,
         borderWidth: 0.5,
         padding: 10,
         elevation: 1,
