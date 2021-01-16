@@ -11,14 +11,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Random from 'expo-random';
 import moment from 'moment';
 import { useActionSheet } from '@expo/react-native-action-sheet'
-
-
-import NavBar from '../helpers/navbar';
-import { colors, screenHeight } from "../helpers/style";
-import { category } from '../helpers/category';
-import { firebase } from '../config/firebaseConfig';
-import MapView, { Marker } from 'react-native-maps';
 import * as ImagePicker from 'expo-image-picker';
+import MapView, { Marker } from 'react-native-maps';
+
+
+import { firebase } from '../config/firebaseConfig';
+import { category } from '../helpers/category';
+import { colors, screenHeight } from "../helpers/style";
+import NavBar from '../helpers/navbar';
+import Ellipse1 from "../assets/Ellipse1"
+import Ellipse2 from "../assets/Ellipse2"
 
 const mapStateToProps = (state) => ({ currentUser: state.auth.user });
 
@@ -268,14 +270,8 @@ function ReportScreen({ ...props }) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%', height: '100%' }}
                 keyboardShouldPersistTaps="always">
-                <Image
-                    source={require("../assets/Ellipse_1.png")}
-                    style={styles.ellipse1}
-                />
-                <Image
-                    source={require("../assets/Ellipse_2.png")}
-                    style={styles.ellipse2}
-                />
+                <Ellipse1 width={29} height={61} style={styles.ellipse1} />
+                <Ellipse2 width={31} height={61} style={styles.ellipse2} />
 
                 <View style={styles.form}>
                     <Text style={styles.header}>COMPLETEAZĂ FORMULARUL PENTRU A SEMNALA O PROBLEMĂ</Text>
@@ -492,15 +488,11 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: "7%",
         right: "0%",
-        width: 29,
-        height: 61,
     },
     ellipse2: {
         position: "absolute",
         top: "10%",
         left: "-1%",
-        width: 31,
-        height: 61,
     },
     form: {
         alignSelf: "flex-start",

@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     svgGroup: {
-        height: screenHeight / 2.8,
+        height: screenHeight / 2.7,
         alignItems: 'center',
         justifyContent: 'center',
     },

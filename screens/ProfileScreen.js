@@ -8,10 +8,12 @@ import { Divider } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { LogBox } from 'react-native';
 import { connect } from 'react-redux';
-import { VictoryPie, VictoryContainer, VictoryLabel } from "victory-native";
+import { VictoryPie, VictoryContainer } from "victory-native";
 
-import NavBar from '../helpers/navbar';
 import { colors, screenHeight, screenWidth } from "../helpers/style";
+import NavBar from '../helpers/navbar';
+import Ellipse1 from "../assets/Ellipse1"
+import Ellipse2 from "../assets/Ellipse2"
 
 const Item = ({ photo, title, upvotes }) => (
     <View style={{ height: 45, alignItems: 'center', ...styles.flatListItem }}>
@@ -178,14 +180,8 @@ function ProfileScreen({ ...props }) {
                 keyboardShouldPersistTaps="always">
 
                 <View style={styles.avatarView}>
-                    <Image
-                        source={require("../assets/Ellipse_1.png")}
-                        style={styles.ellipse1}
-                    />
-                    <Image
-                        source={require("../assets/Ellipse_2.png")}
-                        style={styles.ellipse2}
-                    />
+                    <Ellipse1 width={35} height={75} style={styles.ellipse1} />
+                    <Ellipse2 width={50} height={100} style={styles.ellipse2} />
                     <Avatar.Image style={{ marginTop: 30 }} size={150} source={{ uri: profile }} />
                     <Text style={{ fontSize: 28, fontWeight: "bold" }}>{username}</Text>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -437,15 +433,11 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: "35%",
         right: "0%",
-        width: 35,
-        height: 75,
     },
     ellipse2: {
         position: "absolute",
         top: "50%",
         left: "-1%",
-        width: 50,
-        height: 100,
     },
     avatarView: {
         flex: 1,

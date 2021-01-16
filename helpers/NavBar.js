@@ -50,8 +50,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '8%',
         borderTopColor: colors.darkPurple,
-        // borderTopWidth: 0.5,
-        elevation: 5,
+        borderTopWidth: 0.5,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
