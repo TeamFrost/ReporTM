@@ -58,8 +58,8 @@ export const signupUser = (email, password, username) => dispatch => {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then((response) => {
-            const profile = 'https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/Profile.png?alt=media&token=03f17fb0-6394-43fb-9695-fbc7633d7c19'
-            const profileLight = 'https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/ProfileWhite.png?alt=media&token=0346a6ca-8551-47e2-acae-d2e1020d51ca'
+            const profile = 'https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/Profile.png?alt=media&token=1a6adc03-d653-4465-bf47-aabff7f14f29'
+            const profileLight = 'https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/ProfileWhite.png?alt=media&token=c9559da4-b0ff-4cbe-be31-2125daabe65a'
             const uid = response.user.uid
             const user = {
                 id: uid,

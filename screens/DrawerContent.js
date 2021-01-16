@@ -30,7 +30,7 @@ function DrawerContent({ ...props }) {
 
     let username = ''
     let nickname = ''
-    let avatar = 'https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/Profile.png?alt=media&token=03f17fb0-6394-43fb-9695-fbc7633d7c19'
+    let avatar = 'https://firebasestorage.googleapis.com/v0/b/reportm-40f3e.appspot.com/o/Profile.png?alt=media&token=1a6adc03-d653-4465-bf47-aabff7f14f29'
     if (user) {
         username = user.username
         nickname = '@' + user.email.substring(0, user.email.indexOf('@'))
