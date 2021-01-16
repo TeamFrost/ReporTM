@@ -9,6 +9,7 @@ import * as Linking from 'expo-linking';
 
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight } from "../helpers/style";
+import Help from "../assets/Help.svg"
 
 export default function HelpScreen({ ...props }) {
     const { navigation } = props
@@ -93,10 +94,7 @@ export default function HelpScreen({ ...props }) {
 
             <NavBar />
             <StatusBar style="auto" />
-            <Image
-                source={require("../assets/Help.png")}
-                style={styles.bottomIcon}
-            />
+            <Help width={screenHeight / 8.5} height={screenHeight / 8.5} style={styles.bottomIcon} />
         </View>
     );
 }
@@ -109,8 +107,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     bottomIcon: {
-        width: screenHeight / 8.5,
-        height: screenHeight / 8.5,
         position: "absolute",
         top: "88%",
     },

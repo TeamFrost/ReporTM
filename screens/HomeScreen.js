@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight } from "../helpers/style";
-import Home from "../assets/Home";
+import Home from "../assets/Home.svg";
 import { watchReportsData } from '../redux/actions/reports/reports';
 
 const mapStateToProps = (state) => ({ reportsData: state.reports.reportsData });

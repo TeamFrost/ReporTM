@@ -10,6 +10,7 @@ import moment from 'moment';
 
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight, screenWidth } from "../helpers/style";
+import Feed from "../assets/Feed.svg"
 import FeedCard from "../screens/components/FeedCard";
 import { watchReportsData } from '../redux/actions/reports/reports';
 
@@ -21,57 +22,6 @@ const mapStateToProps = (state) => ({
     reportsData: state.reports.reportsData,
     currentUser: state.auth.user
 });
-
-// const getHeader = () => {
-//     return (
-//         <View>
-//             <View style={styles.searchBar}>
-//                 <Input
-//                     style={{ padding: 5 }}
-//                     placeholder='Caută'
-//                     rightIcon={
-//                         <Icon
-//                             name='search'
-//                             size={24}
-//                             color={colors.textHelpGray}
-//                         />
-//                     }
-//                     onChangeText={value => setSearch({ value })}
-
-//                 />
-//             </View>
-//             <View style={styles.tagsContainer}>
-//                 <TouchableOpacity style={styles.tagButton}>
-//                     <Icon
-//                         type="font-awesome-5"
-//                         name='clock'
-//                         size={16}
-//                         style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
-//                     />
-//                     <Text style={{ fontSize: 14 }}> Recente</Text>
-//                 </TouchableOpacity>
-//                 <TouchableOpacity style={styles.tagButton}>
-//                     <Icon
-//                         type="font-awesome-5"
-//                         name='fire'
-//                         size={16}
-//                         style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
-//                     />
-//                     <Text style={{ fontSize: 14 }}> Populare</Text>
-//                 </TouchableOpacity>
-//                 <TouchableOpacity style={styles.tagButton}>
-//                     <Icon
-//                         type="font-awesome-5"
-//                         name='tag'
-//                         size={16}
-//                         style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
-//                     />
-//                     <Text style={{ fontSize: 14 }}> Categorie</Text>
-//                 </TouchableOpacity>
-//             </View>
-//         </View>
-//     );
-// };
 
 const renderItem = ({ item }) => {
 
@@ -85,8 +35,7 @@ const renderItem = ({ item }) => {
             userAvatar={{ uri: item.userInfo.avatar }}
             adress={item.adress}
             time={relativeTime}
-            // photo={{ uri: item.image }}
-            photo={require('../assets/Test3.png')}
+            photo={{ uri: item.image }}
             description={item.description}
             upvotes={item.upvotes.length}
             tag={item.parent}
@@ -162,10 +111,7 @@ function FeedScreen({ ...props }) {
                 </View>
             </KeyboardAwareScrollView>
             <NavBar />
-            <Image
-                source={require("../assets/Feed.png")}
-                style={styles.bottomIcon}
-            />
+            <Feed width={screenHeight / 8.5} height={screenHeight / 8.5} style={styles.bottomIcon} />
             <StatusBar style="auto" />
         </View>
     );
@@ -182,8 +128,6 @@ const styles = StyleSheet.create({
         width: screenWidth,
     },
     bottomIcon: {
-        width: screenHeight / 8.5,
-        height: screenHeight / 8.5,
         position: "absolute",
         top: "88%",
     },

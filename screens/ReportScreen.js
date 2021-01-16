@@ -15,6 +15,7 @@ import { useActionSheet } from '@expo/react-native-action-sheet'
 
 import NavBar from '../helpers/navbar';
 import { colors, screenHeight } from "../helpers/style";
+import Report from "../assets/Report.svg"
 import { category } from '../helpers/category';
 import { firebase } from '../config/firebaseConfig';
 import MapView, { Marker } from 'react-native-maps';
@@ -428,10 +429,7 @@ function ReportScreen({ ...props }) {
 
             </KeyboardAwareScrollView>
             <NavBar />
-            <Image
-                source={require("../assets/Report.png")}
-                style={styles.bottomIcon}
-            />
+            <Report width={screenHeight / 8.5} height={screenHeight / 8.5} style={styles.bottomIcon} />
             <StatusBar style="auto" />
         </View >
     );
@@ -439,8 +437,6 @@ function ReportScreen({ ...props }) {
 
 const styles = StyleSheet.create({
     bottomIcon: {
-        width: screenHeight / 8.5,
-        height: screenHeight / 8.5,
         position: "absolute",
         top: "88%",
     },
