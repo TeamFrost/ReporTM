@@ -83,12 +83,12 @@ function ProfileScreen({ ...props }) {
     const onlyUnique = (value, index, self) => (self.indexOf(value) === index)
 
     const chart = [
-        { title: "Groapă", color: "#d37e53" },
-        { title: "Graffiti", color: "#593480" },
-        { title: "Gunoi", color: "#C0EAFF" },
-        { title: "Iluminat", color: "#FFCE3C" },
-        { title: "Poluare", color: "#83b1cb" },
-        { title: "Parcare", color: "#9c280e" },
+        { title: "Groapă", color: "#593480" },
+        { title: "Graffiti", color: "#9457E0" },
+        { title: "Gunoi", color: "#BB6BD9" },
+        { title: "Iluminat", color: "#FFEB7B" },
+        { title: "Poluare", color: "#ECDAF2" },
+        { title: "Parcare", color: "#D4D0D9" },
     ]
 
     const getChartData = (category, categoryData) => {
@@ -170,7 +170,6 @@ function ProfileScreen({ ...props }) {
         }
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     }, [user])
-
 
     return (
         <View style={styles.container}>
@@ -278,7 +277,7 @@ function ProfileScreen({ ...props }) {
                 <View style={{ flex: 1, width: '100%', flexDirection: 'row' }}>
                     <VictoryPie
                         data={chartData}
-                        colorScale={["#d37e53", "#593480", "#C0EAFF", "#FFCE3C", "#83b1cb", "#9c280e"]}
+                        colorScale={["#593480", "#9457E0", "#BB6BD9", "#FFEB7B", "#ECDAF2", "#D4D0D9"]}
                         labelRadius={screenWidth / 7.5}
                         padding={{ top: 20 }}
                         height={160}
@@ -287,7 +286,7 @@ function ProfileScreen({ ...props }) {
                         containerComponent={<VictoryContainer height={200} style={{ flex: 1 }} />}
                         style={{
                             labels: { fill: "white", fontSize: 14, fontWeight: "bold" },
-                            data: { strokeWidth: 0.5, stroke: 'grey' }
+                            data: { strokeWidth: 0.5, stroke: 'black' }
                         }}
                     />
 
