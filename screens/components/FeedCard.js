@@ -7,20 +7,37 @@ import { connect } from 'react-redux';
 
 import { colors, screenWidth } from "../../helpers/style";
 import { firebase } from "../../config/firebaseConfig";
+import { restoreSession } from '../../redux/actions/auth/auth';
 
-const mapStateToProps = (state) => ({
-    currentUser: state.auth.user
-});
+const mapStateToProps = (state) => ({ currentUser: state.auth.user });
+
+const mapDispatchToProps = (dispatch) => ({ restoreSession: () => dispatch(restoreSession()) });
 
 function FeedCard({ userName, userAvatar, adress, time, photo, description, upvotes, tag, color, id, ...props }) {
 
-    const { currentUser } = props
+    const { currentUser, restoreSession } = props
 
     const onUpvotePress = async () => {
         const reportRef = firebase.firestore().collection('reports').doc(tag).collection('sub_reports').doc(id);
-        const unionRes = await reportRef.update({
-            upvotes: firebase.firestore.FieldValue.arrayUnion(currentUser.id)
-        });
+        const userRef = firebase.firestore().collection('users').doc(currentUser.id);
+        if (currentUser.upvotedreports.includes(id)) {
+            const unionRepRes = await reportRef.update({
+                upvotes: firebase.firestore.FieldValue.arrayRemove(currentUser.id)
+            });
+            const unionUserRes = await userRef.update({
+                upvotedreports: firebase.firestore.FieldValue.arrayRemove(id)
+            });
+            restoreSession()
+        }
+        else {
+            const unionRepRes = await reportRef.update({
+                upvotes: firebase.firestore.FieldValue.arrayUnion(currentUser.id)
+            });
+            const unionUserRes = await userRef.update({
+                upvotedreports: firebase.firestore.FieldValue.arrayUnion(id)
+            });
+            restoreSession()
+        }
     }
 
     const iconSelector = (tag) => {
@@ -173,4 +190,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect(mapStateToProps)(FeedCard);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedCard);
