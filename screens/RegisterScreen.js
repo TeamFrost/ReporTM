@@ -63,6 +63,7 @@ function RegisterScreen({ ...props }) {
         setEmail('')
         setUsername('')
         setPassword('')
+        navigation.navigate('Drawer', { showIntro: true })
     }
 
     return (

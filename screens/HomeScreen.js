@@ -13,10 +13,16 @@ const mapDispatchToProps = (dispatch) => ({ watchReportsData: () => dispatch(wat
 
 function HomeScreen({ ...props }) {
 
-    const { watchReportsData } = props;
+    const { watchReportsData, navigation } = props;
 
     useEffect(() => {
         watchReportsData()
+        if (props.route.params) {
+            let showIntro = props.route.params.showIntro;
+            if (showIntro) {
+                navigation.navigate("Intro");
+            }
+        }
     }, [])
 
     return (
