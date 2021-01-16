@@ -9,6 +9,12 @@ import NavBar from '../helpers/navbar'
 import Home from "../assets/Home";
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
+import Map from '../assets/Map.svg'
+import Report from '../assets/Report.svg'
+import Feed from '../assets/Feed.svg'
+import Profile from '../assets/Profile.svg'
+import Settings from '../assets/Settings.svg'
+import Help from '../assets/Help.svg'
 
 const mapStateToProps = (state) => ({ reportsData: state.reports.reportsData });
 
@@ -49,10 +55,7 @@ function HomeScreen({ ...props }) {
                     style={{ borderRadius: 20 }}
                 >
                     <View style={styles.paper}>
-                        <Image
-                            source={require("../assets/Map.png")}
-                            style={styles.iconPaper}
-                        />
+                        <Map width={50} height={50} style={styles.iconPaper} />
                         <Text style={styles.titlePaper}>Hartă</Text>
                         <Text style={styles.descriptionPaper}>Vezi harta problemelor din oraș</Text>
                     </View>
@@ -65,10 +68,7 @@ function HomeScreen({ ...props }) {
                     style={{ borderRadius: 20 }}
                 >
                     <View style={styles.paper}>
-                        <Image
-                            source={require("../assets/Report.png")}
-                            style={styles.iconPaper}
-                        />
+                        <Report width={50} height={50} style={styles.iconPaper} />
                         <Text style={styles.titlePaper}>Raportează</Text>
                         <Text style={styles.descriptionPaper}>Raportează o problemă întâlnită</Text>
                     </View>
@@ -84,10 +84,7 @@ function HomeScreen({ ...props }) {
                     style={{ borderRadius: 20 }}
                 >
                     <View style={styles.paper}>
-                        <Image
-                            source={require("../assets/Feed.png")}
-                            style={styles.iconPaper}
-                        />
+                        <Feed width={50} height={50} style={styles.iconPaper} />
                         <Text style={styles.titlePaper}>Sesizări</Text>
                         <Text style={styles.descriptionPaper}>Toate sesizările utilizatorilor</Text>
                     </View>
@@ -100,10 +97,7 @@ function HomeScreen({ ...props }) {
                     style={{ borderRadius: 20 }}
                 >
                     <View style={styles.paper}>
-                        <Image
-                            source={require("../assets/Profile.png")}
-                            style={styles.iconPaper}
-                        />
+                        <Profile width={50} height={50} style={styles.iconPaper} />
                         <Text style={styles.titlePaper}>Profilul meu</Text>
                         <Text style={styles.descriptionPaper}>Vezi informațiile despre utilizator</Text>
                     </View>
@@ -118,10 +112,7 @@ function HomeScreen({ ...props }) {
                     style={{ borderRadius: 20 }}
                 >
                     <View style={styles.paper}>
-                        <Image
-                            source={require("../assets/Settings.png")}
-                            style={styles.iconPaper}
-                        />
+                        <Settings width={50} height={50} style={styles.iconPaper} />
                         <Text style={styles.titlePaper}>Setări</Text>
                         <Text style={styles.descriptionPaper}>Setări aplicație</Text>
                     </View>
@@ -133,10 +124,7 @@ function HomeScreen({ ...props }) {
                     style={{ borderRadius: 20 }}
                 >
                     <View style={styles.paper}>
-                        <Image
-                            source={require("../assets/Help.png")}
-                            style={styles.iconPaper}
-                        />
+                        <Help width={50} height={50} style={styles.iconPaper} />
                         <Text style={styles.titlePaper}>Ajutor</Text>
                         <Text style={styles.descriptionPaper}>Află cum să folosești aplicația</Text>
                     </View>
@@ -187,8 +175,6 @@ const styles = StyleSheet.create({
     },
     iconPaper: {
         marginTop: 13,
-        width: 50,
-        height: 50,
     },
     paper: {
         backgroundColor: colors.lightPurple,
