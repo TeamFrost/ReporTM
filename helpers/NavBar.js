@@ -50,7 +50,15 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '8%',
         borderTopColor: colors.darkPurple,
-        borderTopWidth: 0.5,
+        // borderTopWidth: 0.5,
+        elevation: 5,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
     },
     bottomMenuTouchable: {
         flex: 1,
