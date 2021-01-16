@@ -209,14 +209,8 @@ function ProfileScreen({ ...props }) {
                 keyboardShouldPersistTaps="always">
 
                 <View style={styles.avatarView}>
-                    <Image
-                        source={require("../assets/Ellipse_1.png")}
-                        style={styles.ellipse1}
-                    />
-                    <Image
-                        source={require("../assets/Ellipse_2.png")}
-                        style={styles.ellipse2}
-                    />
+                    <Ellipse1 width={35} height={75} style={styles.ellipse1} />
+                    <Ellipse2 width={50} height={100} style={styles.ellipse2} />
                     <Avatar.Image style={{ marginTop: 30 }} size={150} source={{ uri: profile }} />
                     <Text style={{ fontSize: 28, fontWeight: "bold" }}>{username}</Text>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -451,15 +445,11 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: "35%",
         right: "0%",
-        width: 35,
-        height: 75,
     },
     ellipse2: {
         position: "absolute",
         top: "50%",
         left: "-1%",
-        width: 50,
-        height: 100,
     },
     avatarView: {
         flex: 1,
