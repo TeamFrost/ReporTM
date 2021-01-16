@@ -15,6 +15,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import HelpScreen from '../screens/HelpScreen';
 import SuccessScreen from '../screens/SuccessScreen';
 import DrawerContent from '../screens/DrawerContent';
+import IntroScreen from '../screens/IntroScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -101,6 +102,7 @@ const createHomeStack = () =>
         <Stack.Screen name="Settings" component={SettingsScreen} />
         <Stack.Screen name="Help" component={HelpScreen} />
         <Stack.Screen name="Success" component={SuccessScreen} />
+        <Stack.Screen name="Intro" component={IntroScreen} />
     </Stack.Navigator>
 
 const createMapStack = () =>
@@ -152,4 +154,5 @@ const createHelpStack = () =>
             headerShown: false
         }}>
         <Stack.Screen name="Help" component={HelpScreen} />
+        <Stack.Screen name="Intro" component={IntroScreen} />
     </Stack.Navigator>

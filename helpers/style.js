@@ -8,6 +8,7 @@ export const colors = {
     black: '#000',
     darkPurple: '#593480',
     lightPurple: '#ECDAF27F',
+    linkBlue: '#0000F0',
     pressedLightPurple: '#ECDAF2D0',
     pressedWhite: '#FEFEFE',
     purple: '#BB6BD9',
@@ -18,7 +19,7 @@ export const colors = {
     textGray: '#8F92A1',
     textHelpGray: '#ADADAD',
     textYellow: '#FFC61B',
-    linkBlue: '#0000F0',
+    introLightPurple: '#F8F5FC',
 
 
     groapa: "#d37e53",
