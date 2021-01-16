@@ -19,7 +19,30 @@ import StatReport from "../assets/StatReport.svg"
 import StatTag from "../assets/StatTag.svg"
 import StatUpvote from "../assets/StatUpvote.svg"
 import Profile from "../assets/Profile.svg"
-import Ach1 from "../assets/Achievements/Golden/Ach1.svg"
+
+//Golden
+import Ach1g from "../assets/Achievements/Golden/Ach1.svg"
+import Ach2g from "../assets/Achievements/Golden/Ach2.svg"
+import Ach3g from "../assets/Achievements/Golden/Ach3.svg"
+import Ach4g from "../assets/Achievements/Golden/Ach4.svg"
+import Ach5g from "../assets/Achievements/Golden/Ach5.svg"
+import Ach6g from "../assets/Achievements/Golden/Ach6.svg"
+import Ach7g from "../assets/Achievements/Golden/Ach7.svg"
+import Ach8g from "../assets/Achievements/Golden/Ach8.svg"
+import Ach9g from "../assets/Achievements/Golden/Ach9.svg"
+import Ach10g from "../assets/Achievements/Golden/Ach10.svg"
+
+//Grey
+import Ach1 from "../assets/Achievements/Gray/Ach1.svg"
+import Ach2 from "../assets/Achievements/Gray/Ach2.svg"
+import Ach3 from "../assets/Achievements/Gray/Ach3.svg"
+import Ach4 from "../assets/Achievements/Gray/Ach4.svg"
+import Ach5 from "../assets/Achievements/Gray/Ach5.svg"
+import Ach6 from "../assets/Achievements/Gray/Ach6.svg"
+import Ach7 from "../assets/Achievements/Gray/Ach7.svg"
+import Ach8 from "../assets/Achievements/Gray/Ach8.svg"
+import Ach9 from "../assets/Achievements/Gray/Ach9.svg"
+import Ach10 from "../assets/Achievements/Gray/Ach10.svg"
 
 const Item = ({ photo, title, upvotes }) => (
     <View style={{ height: 45, alignItems: 'center', ...styles.flatListItem }}>
@@ -300,7 +323,7 @@ function ProfileScreen({ ...props }) {
                         <View style={styles.achievementsCardView}>
 
                             <View style={styles.achievementsCard}>
-                                <Ach1 width={65} height={65} />
+                                <Ach1g width={65} height={65} />
                                 <View style={styles.achievementsCardText}>
                                     <Text style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>Bine ai venit</Text>
                                     <Text style={styles.achievementsCardTextDescription}>Te-ai înregistrat pe aplicație</Text>
@@ -308,7 +331,7 @@ function ProfileScreen({ ...props }) {
                             </View>
 
                             <View style={styles.achievementsCard}>
-                                <Image source={require("../assets/Achievement2.png")} />
+                                <Ach2g width={65} height={65} />
                                 <View style={styles.achievementsCardText}>
                                     <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>Sesizarea #1</Text>
                                     <Text style={styles.achievementsCardTextDescription}>Ai adăugat prima sesizare în aplicație</Text>
@@ -320,7 +343,7 @@ function ProfileScreen({ ...props }) {
                         <View style={styles.achievementsCardView}>
 
                             <View style={styles.achievementsCard}>
-                                <Image source={require("../assets/Achievement3.png")} />
+                                <Ach3g width={65} height={65} />
                                 <View style={styles.achievementsCardText}>
                                     <Text style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>Probleme++</Text>
                                     <Text style={styles.achievementsCardTextDescription}>Ai descoperit pagina de sesizări</Text>
@@ -328,7 +351,7 @@ function ProfileScreen({ ...props }) {
                             </View>
 
                             <View style={styles.achievementsCard}>
-                                <Image source={require("../assets/Achievement4.png")} />
+                                <Ach4 width={65} height={65} />
                                 <View style={styles.achievementsCardText}>
                                     <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>Votat!</Text>
                                     <Text style={styles.achievementsCardTextDescription}>Ai votat prima problemă în aplicație</Text>
@@ -340,7 +363,7 @@ function ProfileScreen({ ...props }) {
                         <View style={styles.achievementsCardView}>
 
                             <View style={styles.achievementsCard}>
-                                <Image source={require("../assets/Achievement5.png")} />
+                                <Ach5g width={65} height={65} />
                                 <View style={styles.achievementsCardText}>
                                     <Text style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>fotograf</Text>
                                     <Text style={styles.achievementsCardTextDescription}>Ai adaugat 5 poze pentru probleme</Text>
@@ -348,7 +371,7 @@ function ProfileScreen({ ...props }) {
                             </View>
 
                             <View style={styles.achievementsCard}>
-                                <Image source={require("../assets/Achievement6.png")} />
+                                <Ach6 width={65} height={65} />
                                 <View style={styles.achievementsCardText}>
                                     <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>selfie</Text>
                                     <Text style={styles.achievementsCardTextDescription}>Ți-ai schimbat poza de profil</Text>
@@ -360,7 +383,7 @@ function ProfileScreen({ ...props }) {
                         <View style={styles.achievementsCardView}>
 
                             <View style={styles.achievementsCard}>
-                                <Image source={require("../assets/Achievement7.png")} />
+                                <Ach7 width={65} height={65} />
                                 <View style={styles.achievementsCardText}>
                                     <Text style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>Influencer</Text>
                                     <Text style={styles.achievementsCardTextDescription}>Ai primit 50 de voturi la problema sesizată</Text>
@@ -368,7 +391,7 @@ function ProfileScreen({ ...props }) {
                             </View>
 
                             <View style={styles.achievementsCard}>
-                                <Image source={require("../assets/Achievement8.png")} />
+                                <Ach8g width={65} height={65} />
                                 <View style={styles.achievementsCardText}>
                                     <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>inspector</Text>
                                     <Text style={styles.achievementsCardTextDescription}>Ai adăugat 10 (Z-E-C-E) probleme în aplicație</Text>
@@ -380,7 +403,7 @@ function ProfileScreen({ ...props }) {
                         <View style={styles.achievementsCardView}>
 
                             <View style={styles.achievementsCard}>
-                                <Image source={require("../assets/Achievement9.png")} />
+                                <Ach9 width={65} height={65} />
                                 <View style={styles.achievementsCardText}>
                                     <Text style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>UNDE SUNT?</Text>
                                     <Text style={styles.achievementsCardTextDescription}>Ai folosit locația curentă în sesizare</Text>
@@ -388,7 +411,7 @@ function ProfileScreen({ ...props }) {
                             </View>
 
                             <View style={styles.achievementsCard}>
-                                <Image source={require("../assets/Achievement10.png")} />
+                                <Ach10g width={65} height={65} />
                                 <View style={styles.achievementsCardText}>
                                     <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>specialist</Text>
                                     <Text style={styles.achievementsCardTextDescription}>Ai adăugat 5 categorii diferite de probleme</Text>
