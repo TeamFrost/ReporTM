@@ -10,7 +10,8 @@ import * as Linking from 'expo-linking';
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight } from "../helpers/style";
 
-export default function HelpScreen() {
+export default function HelpScreen({ ...props }) {
+    const { navigation } = props
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView
@@ -77,7 +78,7 @@ export default function HelpScreen() {
 
                 <View style={styles.tutorialButton}>
 
-                    <TouchableHighlight onPress={() => console.log("merge!")} style={styles.touchButton}>
+                    <TouchableHighlight onPress={() => navigation.navigate('Intro')} style={styles.touchButton}>
 
                         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.button}>
                             <View style={{ alignItems: "center" }}>
