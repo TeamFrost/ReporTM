@@ -69,7 +69,7 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
                 </View>
                 <View style={styles.cardHeaderRight}>
                     <TouchableOpacity>
-                        <Icon name='ellipsis-h' size={20} style={{ color: colors.textGray, paddingRight: 10 }} />
+                        <Icon name='ellipsis-h' size={20} style={{ color: colors.black, paddingRight: 10 }} />
                     </TouchableOpacity>
                 </View>
             </View>
