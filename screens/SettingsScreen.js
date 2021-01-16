@@ -19,6 +19,7 @@ import { restoreSession } from '../redux/actions/auth/auth';
 
 import { colors, screenHeight } from "../helpers/style";
 import NavBar from '../helpers/navbar'
+import ProfilePlus from '../assets/ProfilePlus.svg'
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
 
@@ -255,7 +256,7 @@ function SettingsScreen({ ...props }) {
                 <View style={styles.avatarView}>
                     <Ellipse1 width={35} height={75} style={styles.ellipse1} />
                     <Ellipse2 width={50} height={100} style={styles.ellipse2} />
-                    <Avatar.Image size={150} source={require("../assets/ProfilePlus.png")} />
+                    <ProfilePlus width={150} height={150} />
                     <View style={styles.avatarTextDiv}>
                         <Text
                             style={styles.avatarText}
