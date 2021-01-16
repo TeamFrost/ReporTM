@@ -7,6 +7,8 @@ import NavBar from '../helpers/navbar'
 import { colors, screenHeight } from "../helpers/style";
 import Home from "../assets/Home.svg";
 import { watchReportsData } from '../redux/actions/reports/reports';
+import Ellipse1 from "../assets/Ellipse1"
+import Ellipse2 from "../assets/Ellipse2"
 
 const mapStateToProps = (state) => ({ reportsData: state.reports.reportsData });
 
@@ -28,14 +30,8 @@ function HomeScreen({ ...props }) {
 
     return (
         <View style={styles.container}>
-            <Image
-                source={require("../assets/Ellipse_1.png")}
-                style={styles.ellipse1}
-            />
-            <Image
-                source={require("../assets/Ellipse_2.png")}
-                style={styles.ellipse2}
-            />
+            <Ellipse1 width={29} height={61} style={styles.ellipse1} />
+            <Ellipse2 width={31} height={61} style={styles.ellipse2} />
             <View style={styles.textBox}>
                 <Text style={styles.titleBaseText}>
                     Repor<Text style={styles.titleInnerText}>TM</Text>
@@ -169,15 +165,11 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: "7%",
         right: "0%",
-        width: 29,
-        height: 61,
     },
     ellipse2: {
         position: "absolute",
         top: "10%",
         left: "-1%",
-        width: 31,
-        height: 61,
     },
     description: {
         marginTop: 10,

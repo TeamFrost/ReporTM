@@ -4,8 +4,6 @@ import { Text, View, StyleSheet, Image, TouchableOpacity, Switch, Modal, Platfor
 import { Avatar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import NavBar from '../helpers/navbar'
-import { colors, screenHeight } from "../helpers/style";
 import { Input } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Divider } from 'react-native-elements';
@@ -18,6 +16,11 @@ import moment from 'moment';
 import Settings from "../assets/Settings.svg"
 import { firebase } from '../config/firebaseConfig'
 import { restoreSession } from '../redux/actions/auth/auth';
+
+import { colors, screenHeight } from "../helpers/style";
+import NavBar from '../helpers/navbar'
+import Ellipse1 from "../assets/Ellipse1"
+import Ellipse2 from "../assets/Ellipse2"
 
 const mapStateToProps = (state) => ({
     user: state.auth.user,
@@ -250,14 +253,8 @@ function SettingsScreen({ ...props }) {
                 keyboardShouldPersistTaps="always">
 
                 <View style={styles.avatarView}>
-                    <Image
-                        source={require("../assets/Ellipse_1.png")}
-                        style={styles.ellipse1}
-                    />
-                    <Image
-                        source={require("../assets/Ellipse_2.png")}
-                        style={styles.ellipse2}
-                    />
+                    <Ellipse1 width={35} height={75} style={styles.ellipse1} />
+                    <Ellipse2 width={50} height={100} style={styles.ellipse2} />
                     <Avatar.Image size={150} source={require("../assets/ProfilePlus.png")} />
                     <View style={styles.avatarTextDiv}>
                         <Text
@@ -460,15 +457,11 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: "25%",
         right: "0%",
-        width: 35,
-        height: 75,
     },
     ellipse2: {
         position: "absolute",
         top: "58%",
         left: "-1%",
-        width: 50,
-        height: 100,
     },
     avatarTextDiv: {
         flexDirection: "row",

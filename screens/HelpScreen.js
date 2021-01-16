@@ -9,6 +9,8 @@ import * as Linking from 'expo-linking';
 
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight } from "../helpers/style";
+import Ellipse1 from "../assets/Ellipse1"
+import Ellipse2 from "../assets/Ellipse2"
 import Help from "../assets/Help.svg"
 
 export default function HelpScreen({ ...props }) {
@@ -19,14 +21,8 @@ export default function HelpScreen({ ...props }) {
                 style={{ flex: 1, width: '100%', height: '100%' }}
                 keyboardShouldPersistTaps="always">
 
-                <Image
-                    source={require("../assets/Ellipse_1.png")}
-                    style={styles.ellipse1}
-                />
-                <Image
-                    source={require("../assets/Ellipse_2.png")}
-                    style={styles.ellipse2}
-                />
+                <Ellipse1 width={35} height={75} style={styles.ellipse1} />
+                <Ellipse2 width={41} height={80} style={styles.ellipse2} />
 
                 <View style={styles.infoTop}>
                     <Text style={styles.textTop}>INFORMAȚII ADMINISTRAȚIE PUBLICĂ TIMIȘOARA</Text>
@@ -114,15 +110,11 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: "13%",
         right: "0%",
-        width: 35,
-        height: 75,
     },
     ellipse2: {
         position: "absolute",
         top: "10%",
         left: "-1%",
-        width: 41,
-        height: 80,
     },
     infoTop: {
         width: '80%',
