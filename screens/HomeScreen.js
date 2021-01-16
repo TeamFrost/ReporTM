@@ -51,7 +51,7 @@ function HomeScreen({ ...props }) {
 
                 <TouchableHighlight
                     onPress={() => props.navigation.navigate('Map')}
-                    underlayColor={colors.pressedLightPurple}
+                    underlayColor={colors.pressedHomeCardsColor}
                     style={{ borderRadius: 20 }}
                 >
                     <View style={styles.paper}>
@@ -64,7 +64,7 @@ function HomeScreen({ ...props }) {
 
                 <TouchableHighlight
                     onPress={() => props.navigation.navigate('Report')}
-                    underlayColor={colors.pressedLightPurple}
+                    underlayColor={colors.pressedHomeCardsColor}
                     style={{ borderRadius: 20 }}
                 >
                     <View style={styles.paper}>
@@ -80,7 +80,7 @@ function HomeScreen({ ...props }) {
 
                 <TouchableHighlight
                     onPress={() => props.navigation.navigate('Feed')}
-                    underlayColor={colors.pressedLightPurple}
+                    underlayColor={colors.pressedHomeCardsColor}
                     style={{ borderRadius: 20 }}
                 >
                     <View style={styles.paper}>
@@ -93,7 +93,7 @@ function HomeScreen({ ...props }) {
 
                 <TouchableHighlight
                     onPress={() => props.navigation.navigate('Profile')}
-                    underlayColor={colors.pressedLightPurple}
+                    underlayColor={colors.pressedHomeCardsColor}
                     style={{ borderRadius: 20 }}
                 >
                     <View style={styles.paper}>
@@ -108,7 +108,7 @@ function HomeScreen({ ...props }) {
 
                 <TouchableHighlight
                     onPress={() => props.navigation.navigate('Settings')}
-                    underlayColor={colors.pressedLightPurple}
+                    underlayColor={colors.pressedHomeCardsColor}
                     style={{ borderRadius: 20 }}
                 >
                     <View style={styles.paper}>
@@ -120,7 +120,7 @@ function HomeScreen({ ...props }) {
 
                 <TouchableHighlight
                     onPress={() => props.navigation.navigate('Help')}
-                    underlayColor={colors.pressedLightPurple}
+                    underlayColor={colors.pressedHomeCardsColor}
                     style={{ borderRadius: 20 }}
                 >
                     <View style={styles.paper}>
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: colors.white,
+        backgroundColor: colors.backgroundColor,
         alignItems: "center",
         justifyContent: "space-between",
     },
@@ -160,12 +160,14 @@ const styles = StyleSheet.create({
         left: "-1%",
     },
     description: {
+        color: colors.textColor,
         marginTop: 10,
         fontSize: 14,
         lineHeight: 18,
         textAlign: 'center'
     },
     descriptionPaper: {
+        color: colors.textColor,
         fontSize: 11,
         fontWeight: "400",
         textAlign: 'center',
@@ -177,7 +179,7 @@ const styles = StyleSheet.create({
         marginTop: 13,
     },
     paper: {
-        backgroundColor: colors.lightPurple,
+        backgroundColor: colors.homeCardsColor,
         width: 150,
         height: 130,
         borderRadius: 20,
@@ -196,6 +198,7 @@ const styles = StyleSheet.create({
         marginBottom: "2%"
     },
     titleBaseText: {
+        color: colors.textColor,
         fontSize: 52,
         fontWeight: "bold",
     },
@@ -204,6 +207,7 @@ const styles = StyleSheet.create({
         color: colors.purple,
     },
     titlePaper: {
+        color: colors.textColor,
         fontSize: 16,
         fontWeight: "bold",
         marginTop: 5

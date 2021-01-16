@@ -57,7 +57,7 @@ function LandingScreen({ ...props }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: colors.backgroundColor,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     titleBaseText: {
         fontSize: 52,
         fontWeight: "bold",
+        color: colors.textColor
     },
     titleInnerText: {
         fontWeight: "bold",

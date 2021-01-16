@@ -30,7 +30,7 @@ export default function SuccessScreen({ ...props }) {
                 <TouchableHighlight
                     style={styles.confirmButton}
                     onPress={onButtonPress}
-                    underlayColor='#E9DBF8'
+                    underlayColor={colors.backgroundColor}
                 >
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={{ ...styles.confirmButton, width: '100%' }}>
                         <View style={{ alignItems: "center" }}>
@@ -47,7 +47,7 @@ export default function SuccessScreen({ ...props }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.white,
+        backgroundColor: colors.backgroundColor,
         alignItems: "center",
         justifyContent: "flex-start",
     },
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     text: {
         fontWeight: "bold",
         fontSize: 30,
-        textAlign: "center"
+        textAlign: "center",
+        color: colors.textColor
     }
 })

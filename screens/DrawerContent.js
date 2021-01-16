@@ -105,7 +105,7 @@ function DrawerContent({ ...props }) {
                         name="moon-o"
                         type="font-awesome"
                         size={35}
-                        color={colors.darkPurple}
+                        color={colors.alwaysDarkPurple}
                         style={{ marginRight: 15 }} />
                     <Switch
                         style={{ transform: Platform.OS ? 'andriod'[{ scaleX: 1.3 }, { scaleY: 1.3 }] : [{ scaleX: 1 }, { scaleY: 1 }] }}
@@ -124,7 +124,7 @@ function DrawerContent({ ...props }) {
                             name="sign-out"
                             type="font-awesome"
                             size={35}
-                            color={colors.darkPurple}
+                            color={colors.alwaysDarkPurple}
                             style={{ marginLeft: 12 }}
                         />}
                         onPress={onLogoutPress}
@@ -139,7 +139,7 @@ function DrawerContent({ ...props }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.lightPurple,
+        backgroundColor: colors.drawerColor,
         flexDirection: 'column',
         justifyContent: 'space-around'
     },
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         width: '80%',
         height: screenHeight / 5.8,
-        backgroundColor: colors.purple,
+        backgroundColor: colors.drawerSectionColor,
         borderBottomRightRadius: 55,
         marginBottom: '20%',
         marginTop: "-20%",
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     },
     itemDrawer: {
         borderLeftWidth: 7,
-        borderColor: colors.purple,
+        borderColor: colors.drawerSectionColor,
         marginLeft: 0,
         borderRadius: 0,
         marginBottom: 10,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
         fontSize: screenHeight > 700 ? 18 : 16,
         fontWeight: 'bold',
         letterSpacing: 1,
-        color: "#1B1D28",
+        color: colors.textColor,
         marginLeft: 15
     },
     switchView: {
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
         fontSize: screenHeight > 700 ? 18 : 16,
         fontWeight: 'bold',
         letterSpacing: 1,
-        color: "#1B1D28",
+        color: colors.textColor,
         marginLeft: -20
     },
 

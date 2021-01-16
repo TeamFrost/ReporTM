@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: screenHeight,
         width: '100%',
-        backgroundColor: colors.introLightPurple,
+        backgroundColor: colors.introBackground,
         alignItems: "center",
     },
     textView: {
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 26,
         marginTop: 20,
+        color: colors.textColor
     },
     dot: {
         backgroundColor: colors.darkPurple,

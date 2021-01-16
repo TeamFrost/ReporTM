@@ -10,7 +10,7 @@ import { Callout } from 'react-native-maps';
 import { Svg, Image as ImageSvg } from 'react-native-svg';
 
 import NavBar from '../helpers/navbar'
-import { colors, screenHeight, screenWidth } from "../helpers/style";
+import { colors, screenHeight, screenWidth, mapStyle } from "../helpers/style";
 import Map from "../assets/Map.svg";
 import { watchReportsData } from '../redux/actions/reports/reports';
 import { category } from '../helpers/category';
@@ -51,6 +51,7 @@ function MapScreen({ ...props }) {
             <KeyboardAwareScrollView>
                 <MapView
                     provider="google"
+                    customMapStyle={(colors.textColor === colors.white) ? mapStyle : []}
                     style={{ height: screenHeight, width: screenWidth }}
                     initialRegion={{
                         latitude: 45.753256501696036,
@@ -92,7 +93,7 @@ function MapScreen({ ...props }) {
                                             )
                                         }
                                         <View>
-                                            <Text style={{ fontSize: 16 }}>
+                                            <Text style={{ fontSize: 16, color: colors.textColor }}>
                                                 {marker.description}
                                             </Text>
                                         </View>
@@ -108,7 +109,7 @@ function MapScreen({ ...props }) {
 
                 <SearchBar
                     platform='default'
-                    lightTheme={true}
+                    lightTheme={(colors.textColor === colors.white) ? false : true}
                     autoCapitalize="none"
                     placeholder='Search'
                     textAlign='center'
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: colors.white,
+        backgroundColor: colors.backgroundColor,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -184,20 +185,20 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     searchBarInput: {
-        backgroundColor: colors.white,
+        backgroundColor: colors.tooltipWhite,
         height: "100%",
-
     },
     scrollTags: {
         position: "absolute",
         top: 130,
     },
     tagText: {
+        color: colors.textColor,
         fontSize: 14
     },
     tagButton: {
         flexDirection: "row",
-        backgroundColor: colors.white,
+        backgroundColor: colors.tooltipWhite,
         borderRadius: 20,
         padding: 5,
         paddingHorizontal: 10,
@@ -211,13 +212,12 @@ const styles = StyleSheet.create({
     scrollContainter: {
         paddingLeft: "10%",
         paddingRight: "10%",
-
     },
     calloutView: {
         flexDirection: 'column',
         width: 220,
         alignSelf: 'flex-start',
-        backgroundColor: colors.white,
+        backgroundColor: colors.tooltipWhite,
         borderRadius: 10,
         borderColor: "#ccc",
         padding: 10,

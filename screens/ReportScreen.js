@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Image, StyleSheet, Text, View, TouchableHighlight, Modal, TextInput, Platform } from "react-native";
+import { StyleSheet, Text, View, TouchableHighlight, Modal, TextInput, Platform } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Divider } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -17,7 +17,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { firebase } from '../config/firebaseConfig';
 import { category } from '../helpers/category';
 
-import { colors, screenHeight } from "../helpers/style";
+import { colors, screenHeight, mapStyle } from "../helpers/style";
 import NavBar from '../helpers/navbar';
 import Report from "../assets/Report.svg"
 import Ellipse1 from "../assets/Ellipse1"
@@ -52,7 +52,7 @@ function ReportScreen({ ...props }) {
 
     const [dividerColor, setDividerColor] = useState(colors.textGray)
     const [dividerHeight, setDividerHeight] = useState(1)
-    const [iconColor, setIconColor] = useState(colors.white)
+    const [iconColor, setIconColor] = useState(colors.backgroundColor)
 
     useEffect(() => {
         if (props.route.params) {
@@ -278,35 +278,26 @@ function ReportScreen({ ...props }) {
                     <Text style={styles.header}>COMPLETEAZĂ FORMULARUL PENTRU A SEMNALA O PROBLEMĂ</Text>
                     <Text style={styles.section}>Locație</Text>
                     <Divider style={{ ...styles.divider, marginBottom: '1%' }} />
-                    <View style={styles.help}>
-                        <Image
-                            source={require("../assets/Info.png")}
-                            style={styles.info}
-                        />
-                        <Text style={styles.textHelp}>Apasă pe butonul</Text>
-                        <Image
-                            source={require("../assets/Location.png")}
-                            style={styles.info}
-                        />
-                        <Text style={styles.textHelp}>pentru a afla locația curentă.</Text>
-                    </View>
+                    <Text style={styles.textHelp}>ⓘ Apasă pe butonul ⦿ pentru a afla locația curentă.</Text>
                     <View style={styles.location}>
                         <TextInput
                             style={styles.locationInput}
                             placeholder="Adaugă locația problemei"
+                            placeholderTextColor={colors.textColor}
                         >
                             {text}
                         </TextInput>
                         <Icon style={styles.searchIcon}
                             name="md-locate"
                             size={35}
-                            color={colors.black}
+                            color={colors.textColor}
                             onPress={() => getCurrentLocation()}
                         />
                     </View>
                     <View style={styles.map}>
                         <MapView
                             provider="google"
+                            customMapStyle={(colors.textColor === colors.white) ? mapStyle : []}
                             style={{ height: 150, width: "100%" }}
                             // zoomEnabled={false}
                             // scrollEnabled={false}
@@ -331,7 +322,7 @@ function ReportScreen({ ...props }) {
                         <Icon style={styles.searchIcon}
                             name="md-arrow-dropdown"
                             size={35}
-                            color={colors.black}
+                            color={colors.textColor}
                             onPress={() => togglePicker()}
                         />
                     </View>
@@ -340,7 +331,7 @@ function ReportScreen({ ...props }) {
                         <View style={{
                             alignSelf: "center",
                             margin: 20, padding: 20,
-                            backgroundColor: "#fcfcfc",
+                            backgroundColor: colors.modalColor,
                             alignItems: 'center',
                             justifyContent: 'center',
                             position: 'absolute',
@@ -348,11 +339,11 @@ function ReportScreen({ ...props }) {
                             width: "80%",
 
                         }}>
-                            <Text style={{ color: colors.textHelpGray }}>Selectează o categorie</Text>
+                            <Text style={{ color: colors.modalTextHelp }}>Selectează o categorie</Text>
                             {category.map((value, index) => {
                                 return <TouchableHighlight
                                     key={index}
-                                    underlayColor={colors.lightPurple}
+                                    underlayColor={colors.homeCardsColor}
                                     onPress={() => {
                                         setValueState(value.value);
                                         setTitle(value.title);
@@ -366,7 +357,7 @@ function ReportScreen({ ...props }) {
                                         borderRadius: 20,
                                     }}
                                 >
-                                    <Text style={{ fontSize: 18, }}>{value.title}</Text>
+                                    <Text style={{ fontSize: 18, color: colors.textColor }}>{value.title}</Text>
                                 </TouchableHighlight>
                             })}
                             <TouchableHighlight
@@ -379,7 +370,7 @@ function ReportScreen({ ...props }) {
                                     paddingBottom: 4
                                 }}
                             >
-                                <Text style={{ color: colors.red, fontSize: 18 }}>Cancel</Text>
+                                <Text style={{ color: colors.modalCancel, fontSize: 18 }}>Cancel</Text>
                             </TouchableHighlight>
                         </View>
                     </Modal>
@@ -393,7 +384,7 @@ function ReportScreen({ ...props }) {
                         <Icon style={styles.uploadIcon}
                             name="md-cloud-upload"
                             size={30}
-                            color={colors.black}
+                            color={colors.textColor}
                             onPress={chooseImage}
                         />
 
@@ -408,6 +399,7 @@ function ReportScreen({ ...props }) {
                             numberOfLines={6}
                             maxLength={240}
                             placeholder='Adauga o descriere'
+                            placeholderTextColor={colors.textColor}
                             onChangeText={text => setDescriptionState(text)}
                             value={description}
                         />
@@ -438,7 +430,6 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: "5%",
-        backgroundColor: colors.purple,
         height: 50,
         width: '100%',
         alignItems: "center",
@@ -456,6 +447,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     categorySection: {
+        color: colors.textColor,
         flex: 8.9,
         fontSize: 18,
         alignSelf: "flex-end",
@@ -463,11 +455,12 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: colors.white,
+        backgroundColor: colors.backgroundColor,
         alignItems: "center",
         justifyContent: "space-between",
     },
     descriptionInput: {
+        backgroundColor: colors.input,
         height: 100,
         borderColor: 'gray',
         borderWidth: 0.5,
@@ -504,19 +497,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: '5%'
     },
-    help: {
-        flexDirection: "row",
-        alignItems: "baseline",
-    },
-    info: {
-        marginTop: '1%',
-        width: 15,
-        height: 15,
-    },
     location: {
         flexDirection: 'row',
     },
     locationInput: {
+        backgroundColor: colors.input,
+        color: colors.textColor,
         flex: 8.9,
         height: 40,
         borderColor: colors.textGray,
@@ -534,7 +520,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderWidth: 0.5,
-        borderColor: colors.black,
+        borderColor: colors.textColor,
     },
     picker: {
         flex: 1,
@@ -548,6 +534,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     section: {
+        color: colors.textColor,
         flex: 1,
         fontSize: 18,
         marginBottom: '2%',
@@ -559,7 +546,7 @@ const styles = StyleSheet.create({
         marginLeft: '1%',
         marginRight: '1%',
         marginTop: '1.5%',
-        color: colors.textHelpGray,
+        color: colors.textColor,
         fontSize: 11
     },
     uploadIcon: {

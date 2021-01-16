@@ -50,16 +50,31 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
 
     }
 
+    const displayIcon = () => {
+        if (currentUser) {
+            if (currentUser.upvotedreports.includes(id)) {
+                return (
+                    <Icon name='check-circle' size={25} color={colors.upvotePressed} style={{ paddingLeft: 15, paddingRight: 5 }} solid />
+                )
+            }
+            else {
+                return (
+                    <Icon name='arrow-alt-circle-up' size={25} color={colors.darkPurple} style={{ paddingLeft: 15, paddingRight: 5 }} />
+                )
+            }
+        }
+    }
+
     return (
         <View style={styles.card}>
             <View style={styles.cardHeader}>
                 <View style={styles.cardHeaderLeft}>
                     <Avatar.Image size={50} source={userAvatar} />
                     <View style={styles.cardHeaderText}>
-                        <Text style={{ fontSize: 18, fontWeight: 'bold', }}>{userName}</Text>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.textColor }}>{userName}</Text>
                         <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                            <Icon name='map-marker-alt' type="font-awesome-5" size={10} style={{ paddingRight: 7 }} />
-                            <Text style={{ fontSize: 12, }}>{adress}</Text>
+                            <Icon name='map-marker-alt' type="font-awesome-5" size={10} style={{ paddingRight: 7, color: colors.textColor }} />
+                            <Text style={{ fontSize: 12, color: colors.textColor }}>{adress}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: "center" }}>
                             <Icon name='clock' type="font-awesome-5" size={10} style={{ paddingRight: 5, marginLeft: -1, color: colors.textGray }} />
@@ -69,7 +84,7 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
                 </View>
                 <View style={styles.cardHeaderRight}>
                     <TouchableOpacity>
-                        <Icon name='ellipsis-h' size={20} style={{ color: colors.textGray, paddingRight: 10 }} />
+                        <Icon name='ellipsis-h' size={20} style={{ color: colors.textColor, paddingRight: 10 }} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -86,10 +101,10 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
             <View style={styles.cardFooter}>
                 <View style={styles.cardFooterLeft}>
                     <TouchableOpacity onPress={onUpvotePress}>
-                        <Icon name='arrow-alt-circle-up' size={25} color={colors.darkPurple} style={{ paddingLeft: 15, paddingRight: 5 }} />
+                        {displayIcon()}
                     </TouchableOpacity>
-                    <Text>{upvotes}</Text>
-                    <Text> Aprobări</Text>
+                    <Text style={{ color: colors.textColor }}>{upvotes}</Text>
+                    <Text style={{ color: colors.textColor }}> Aprobări</Text>
                 </View>
                 <View style={styles.rightBottomTag}>
                     <TouchableOpacity style={styles.tagButton2} >
@@ -99,7 +114,7 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
                             size={15}
                             style={{ marginRight: 5, paddingTop: 1, color: color }}
                         />
-                        <Text>{tag}</Text>
+                        <Text style={{ color: colors.textColor }}>{tag}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -116,7 +131,7 @@ const styles = StyleSheet.create({
         margin: 10,
         width: "85%",
         height: 275,
-        backgroundColor: '#FBF2FE',
+        backgroundColor: colors.feedCards,
         elevation: 5,
         shadowColor: "#000",
         shadowOffset: {
@@ -154,6 +169,7 @@ const styles = StyleSheet.create({
         height: 165,
     },
     cardDescription: {
+        color: colors.textColor,
         textAlign: 'center',
         padding: 5,
         fontSize: 12,
@@ -172,7 +188,7 @@ const styles = StyleSheet.create({
     tagButton2: {
         alignItems: "center",
         flexDirection: "row",
-        backgroundColor: '#FEFEFE',
+        backgroundColor: colors.tooltipWhite,
         marginTop: 2,
         borderRadius: 20,
         padding: 5,

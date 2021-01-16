@@ -77,7 +77,7 @@ function LoginScreen({ ...props }) {
                             <Icon
                                 name='md-mail'
                                 size={30}
-                                color={colors.black}
+                                color={colors.textColor}
                                 style={{ marginRight: 5 }}
                             />
                         }
@@ -94,7 +94,7 @@ function LoginScreen({ ...props }) {
                             <Icon
                                 name='md-lock'
                                 size={30}
-                                color={colors.black}
+                                color={colors.textColor}
                                 style={{ marginRight: 7 }}
                             />
                         }
@@ -102,7 +102,7 @@ function LoginScreen({ ...props }) {
                             <Icon
                                 name='md-eye'
                                 size={30}
-                                color={colors.black}
+                                color={colors.textColor}
                                 onPress={handleEyeOnPress}
                             />
                         }

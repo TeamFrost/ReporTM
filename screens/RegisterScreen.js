@@ -101,7 +101,7 @@ function RegisterScreen({ ...props }) {
                             <Icon
                                 name='md-mail'
                                 size={30}
-                                color={colors.black}
+                                color={colors.textColor}
                                 style={{ marginRight: 5 }}
                             />
                         }
@@ -123,7 +123,7 @@ function RegisterScreen({ ...props }) {
                             <Icon
                                 name='md-person'
                                 size={30}
-                                color={colors.black}
+                                color={colors.textColor}
                                 style={{ marginRight: 7, marginLeft: 3 }}
                             />
                         }
@@ -140,7 +140,7 @@ function RegisterScreen({ ...props }) {
                             <Icon
                                 name='md-lock'
                                 size={30}
-                                color={colors.black}
+                                color={colors.textColor}
                                 style={{ marginRight: 8, marginLeft: 4 }}
                             />
                         }
@@ -148,7 +148,7 @@ function RegisterScreen({ ...props }) {
                             <Icon
                                 name='md-eye'
                                 size={30}
-                                color={colors.black}
+                                color={colors.textColor}
                                 onPress={handleEyeOnPress}
                             />
                         }

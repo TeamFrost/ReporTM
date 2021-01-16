@@ -64,7 +64,7 @@ function FeedScreen({ ...props }) {
                             <Icon
                                 name='search'
                                 size={24}
-                                color={colors.textHelpGray}
+                                color={colors.textColor}
                             />
                         }
                         onChangeText={value => setSearch({ value })}
@@ -78,7 +78,7 @@ function FeedScreen({ ...props }) {
                             size={16}
                             style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
                         />
-                        <Text style={{ fontSize: 14 }}> Recente</Text>
+                        <Text style={{ fontSize: 14, color: colors.textColor }}> Recente</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.tagButton}>
                         <Icon
@@ -87,7 +87,7 @@ function FeedScreen({ ...props }) {
                             size={16}
                             style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
                         />
-                        <Text style={{ fontSize: 14 }}> Populare</Text>
+                        <Text style={{ fontSize: 14, color: colors.textColor }}> Populare</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.tagButton}>
                         <Icon
@@ -96,7 +96,7 @@ function FeedScreen({ ...props }) {
                             size={16}
                             style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
                         />
-                        <Text style={{ fontSize: 14 }}> Categorie</Text>
+                        <Text style={{ fontSize: 14, color: colors.textColor }}> Categorie</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -120,7 +120,7 @@ function FeedScreen({ ...props }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.white,
+        backgroundColor: colors.backgroundColor,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     },
     tagButton: {
         flexDirection: "row",
-        backgroundColor: colors.white,
+        backgroundColor: colors.tooltipWhite,
         borderRadius: 20,
         padding: 5,
         paddingHorizontal: 10,

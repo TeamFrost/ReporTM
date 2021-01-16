@@ -21,7 +21,7 @@ export default function NavBar() {
                         type="font-awesome"
                         size={30}
 
-                        color={colors.darkPurple}
+                        color={colors.navIconColor}
                         style={{ marginRight: 25 }}
                     />
                 </View>
@@ -35,7 +35,7 @@ export default function NavBar() {
                         name='home'
                         type="font-awesome"
                         size={32}
-                        color={colors.darkPurple}
+                        color={colors.navIconColor}
                         style={{ marginLeft: 25 }}
                     />
                 </View>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         height: '8%',
-        borderTopColor: colors.darkPurple,
+        borderTopColor: colors.navStroke,
         borderTopWidth: 0.5,
         shadowColor: "#000",
         shadowOffset: {
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: colors.pressedWhite,
+        backgroundColor: colors.navColor,
     }
 
 })

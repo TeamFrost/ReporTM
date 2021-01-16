@@ -50,11 +50,11 @@ const Item = ({ photo, title, upvotes }) => (
             <Avatar.Image size={35} source={{ uri: photo }} />
         </View>
         <View style={{ flex: 5, flexDirection: "row", justifyContent: "flex-start", width: '100%' }}>
-            <Text style={{ fontSize: 14, marginLeft: 5 }}>{title}</Text>
+            <Text style={{ fontSize: 14, marginLeft: 5, color: colors.textColor }}>{title}</Text>
         </View>
         <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "flex-end" }}>
-            <Text style={{ fontWeight: "bold" }}>{upvotes}</Text>
-            <Icon name='arrow-alt-circle-up' size={16} style={{ marginRight: 10, marginLeft: 2 }} />
+            <Text style={{ fontWeight: "bold", color: colors.textColor }}>{upvotes}</Text>
+            <Icon name='arrow-alt-circle-up' size={16} style={{ marginRight: 10, marginLeft: 2, color: colors.textColor }} />
         </View>
     </View >
 );
@@ -212,7 +212,7 @@ function ProfileScreen({ ...props }) {
                     <Ellipse1 width={35} height={75} style={styles.ellipse1} />
                     <Ellipse2 width={50} height={100} style={styles.ellipse2} />
                     <Avatar.Image style={{ marginTop: 30 }} size={150} source={{ uri: profile }} />
-                    <Text style={{ fontSize: 28, fontWeight: "bold" }}>{username}</Text>
+                    <Text style={{ fontSize: 28, fontWeight: "bold", color: colors.textColor }}>{username}</Text>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Text
                             style={{ fontSize: 14, textDecorationLine: 'underline', color: colors.textGray }}
@@ -226,8 +226,8 @@ function ProfileScreen({ ...props }) {
 
                 <View style={styles.reportsList}>
                     <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                        <Icon name="list-ul" type="font-awesome-5" size={20} style={{ marginLeft: 5 }} />
-                        <Text style={{ fontSize: 24, fontWeight: "bold", marginLeft: 5 }}>Sesizările mele</Text>
+                        <Icon name="list-ul" type="font-awesome-5" size={20} style={{ marginLeft: 5, color: colors.textColor }} />
+                        <Text style={{ fontSize: 24, fontWeight: "bold", marginLeft: 5, color: colors.textColor }}>Sesizările mele</Text>
                     </View>
                     <View style={{ flex: 1 }}>
                         <FlatList
@@ -244,8 +244,8 @@ function ProfileScreen({ ...props }) {
 
                 <View style={styles.statisticsView}>
                     <View style={{ flexDirection: 'row', alignItems: "center", marginBottom: 5 }}>
-                        <Icon name="chart-bar" type="font-awesome-5" size={24} style={{ marginLeft: 5, marginTop: 3 }} />
-                        <Text style={{ fontSize: 24, fontWeight: "bold", marginLeft: 5, }}>Statisticile mele</Text>
+                        <Icon name="chart-bar" type="font-awesome-5" size={24} style={{ marginLeft: 5, marginTop: 3, color: colors.textColor }} />
+                        <Text style={{ fontSize: 24, fontWeight: "bold", marginLeft: 5, color: colors.textColor }}>Statisticile mele</Text>
                     </View>
                     <View style={styles.statisticsCards}>
                         <View style={styles.statisticsCardsRow}>
@@ -314,8 +314,8 @@ function ProfileScreen({ ...props }) {
 
                 <View style={{ ...styles.reportsList, height: 500, marginBottom: 40 }}>
                     <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                        <Icon name="medal" type="font-awesome-5" size={20} style={{ marginLeft: 5 }} />
-                        <Text style={{ fontSize: 24, fontWeight: "bold", marginLeft: 5 }}>Realizările mele</Text>
+                        <Icon name="medal" type="font-awesome-5" size={20} style={{ marginLeft: 5, color: colors.textColor }} />
+                        <Text style={{ fontSize: 24, fontWeight: "bold", marginLeft: 5, color: colors.textColor }}>Realizările mele</Text>
                     </View>
 
                     <View style={styles.achievementsContainer}>
@@ -433,7 +433,7 @@ function ProfileScreen({ ...props }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.white,
+        backgroundColor: colors.backgroundColor,
         alignItems: "center",
         justifyContent: "space-between",
     },
@@ -488,7 +488,6 @@ const styles = StyleSheet.create({
     statCard: {
         width: '48%',
         height: 65,
-        backgroundColor: colors.purple,
         borderRadius: 20,
         flexDirection: "row",
         alignItems: "center",
@@ -519,6 +518,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     textLegend: {
+        color: colors.textColor,
         fontSize: 14,
         fontWeight: "bold"
     },

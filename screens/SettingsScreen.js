@@ -94,7 +94,7 @@ function SettingsScreen({ ...props }) {
                     setOldPass('')
                     setNewPass('')
                     setNewPassConfirm('')
-                    iconColor = colors.white
+                    iconColor = colors.backgroundColor
                 }).catch(function (error) {
                     alert(error)
                 });
@@ -104,7 +104,7 @@ function SettingsScreen({ ...props }) {
         });
     }
 
-    let iconColor = colors.white
+    let iconColor = colors.backgroundColor
 
     if (newPass === newPassConfirm && newPass.length != 0) {
         iconColor = 'green'
@@ -270,7 +270,7 @@ function SettingsScreen({ ...props }) {
 
                 <View style={{ ...styles.nameDiv, marginTop: 10 }}>
                     <Text style={styles.nameText}>Schimbă numele</Text>
-                    <Text style={{ marginLeft: 8 }}>Numele tau curent este: {username}</Text>
+                    <Text style={{ marginLeft: 8, color: colors.textColor }}>Numele tau curent este: {username}</Text>
                     <Input
                         placeholder='Scrie aici noul nume'
                         // rightIcon={<Icon
@@ -280,7 +280,7 @@ function SettingsScreen({ ...props }) {
                         // />}
                         onChangeText={(text) => setNewName(text)}
                         value={newName}
-                        inputStyle={{ fontStyle: 'italic' }}
+                        inputStyle={{ fontStyle: 'italic', color: colors.textColor }}
                         containerStyle={{ height: 65 }}
                     // errorMessage='ENTER A VALID NAME HERE'
                     />
@@ -305,7 +305,7 @@ function SettingsScreen({ ...props }) {
                         // />}
                         onChangeText={(text) => setOldPass(text)}
                         value={oldPass}
-                        inputStyle={{ fontStyle: 'italic' }}
+                        inputStyle={{ fontStyle: 'italic', color: colors.textColor }}
                         secureTextEntry={true}
                         containerStyle={{ height: 65 }}
                     />
@@ -319,7 +319,7 @@ function SettingsScreen({ ...props }) {
                         onChangeText={(text) => setNewPass(text)}
                         value={newPass}
                         secureTextEntry={true}
-                        inputStyle={{ fontStyle: 'italic' }}
+                        inputStyle={{ fontStyle: 'italic', color: colors.textColor }}
                         containerStyle={{ height: 65 }}
                     />
                     <Input
@@ -332,7 +332,7 @@ function SettingsScreen({ ...props }) {
                         onChangeText={(text) => setNewPassConfirm(text)}
                         value={newPassConfirm}
                         secureTextEntry={true}
-                        inputStyle={{ fontStyle: 'italic' }}
+                        inputStyle={{ fontStyle: 'italic', color: colors.textColor }}
                         containerStyle={{ height: 65 }}
 
                     />
@@ -348,7 +348,7 @@ function SettingsScreen({ ...props }) {
                 <View style={{ ...styles.nameDiv, justifyContent: 'flex-start', height: screenHeight / 2.8 }}>
                     <Text style={{ ...styles.nameText, marginTop: 20 }}>Notificări</Text>
                     <View style={styles.switchDiv}>
-                        <Text style={{ marginLeft: 8 }}>Vreau să primesc notificări de la aplicație</Text>
+                        <Text style={{ marginLeft: 8, color: colors.textColor }}>Vreau să primesc notificări de la aplicație</Text>
                         <Switch
                             style={{ transform: Platform.OS ? 'andriod'[{ scaleX: 1.3 }, { scaleY: 1.3 }] : [{ scaleX: 1 }, { scaleY: 1 }] }}
                             trackColor={{ false: "#767577", true: "#34C759" }}
@@ -361,7 +361,7 @@ function SettingsScreen({ ...props }) {
 
                     <Text style={{ ...styles.nameText, marginTop: 5 }}>Dark mode</Text>
                     <View style={styles.switchDiv}>
-                        <Text style={{ marginLeft: 8 }}>Activează modul întunecat</Text>
+                        <Text style={{ marginLeft: 8, color: colors.textColor }}>Activează modul întunecat</Text>
                         <Switch
                             style={{ transform: Platform.OS ? 'andriod'[{ scaleX: 1.3 }, { scaleY: 1.3 }] : [{ scaleX: 1 }, { scaleY: 1 }] }}
                             trackColor={{ false: "#767577", true: "#34C759" }}
@@ -378,7 +378,7 @@ function SettingsScreen({ ...props }) {
                         <Icon style={styles.searchIcon}
                             name="sort-down"
                             size={24}
-                            color={colors.black}
+                            color={colors.textColor}
                             onPress={() => togglePicker()}
                         />
                     </View>
@@ -387,7 +387,7 @@ function SettingsScreen({ ...props }) {
                         <View style={{
                             alignSelf: "center",
                             margin: 20, padding: 20,
-                            backgroundColor: "#fbfbfb",
+                            backgroundColor: colors.modalColor,
                             alignItems: 'center',
                             justifyContent: 'center',
                             position: 'absolute',
@@ -395,9 +395,9 @@ function SettingsScreen({ ...props }) {
                             width: "85%",
 
                         }}>
-                            <Text style={{ color: colors.textHelpGray }}>Alege o limbă</Text>
+                            <Text style={{ color: colors.modalTextHelp }}>Alege o limbă</Text>
                             <TouchableHighlight
-                                underlayColor={colors.lightPurple}
+                                underlayColor={colors.homeCardsColor}
                                 onPress={() => {
                                     setValueState("Româna");
                                     togglePicker()
@@ -409,7 +409,7 @@ function SettingsScreen({ ...props }) {
                                     borderRadius: 20,
                                 }}
                             >
-                                <Text style={{ fontSize: 18 }}>Română</Text>
+                                <Text style={{ fontSize: 18, color: colors.textColor }}>Română</Text>
                             </TouchableHighlight>
 
                             <TouchableHighlight
@@ -422,7 +422,7 @@ function SettingsScreen({ ...props }) {
                                     paddingBottom: 4
                                 }}
                             >
-                                <Text style={{ color: colors.red, fontSize: 18 }}>Cancel</Text>
+                                <Text style={{ color: colors.modalCancel, fontSize: 18 }}>Cancel</Text>
                             </TouchableHighlight>
                         </View>
                     </Modal>
@@ -439,7 +439,7 @@ function SettingsScreen({ ...props }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.white,
+        backgroundColor: colors.backgroundColor,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -485,8 +485,8 @@ const styles = StyleSheet.create({
     nameText: {
         fontSize: 24,
         fontWeight: "bold",
-        marginLeft: 8
-
+        marginLeft: 8,
+        color: colors.textColor
     },
     confirmButton: {
         height: 35,
@@ -512,7 +512,8 @@ const styles = StyleSheet.create({
         alignSelf: "flex-end",
         marginBottom: '2%',
         marginLeft: 8,
-        marginTop: 10
+        marginTop: 10,
+        color: colors.textColor
     },
     searchIcon: {
         flex: 1.1,
