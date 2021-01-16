@@ -4,6 +4,9 @@ import { Text, View, StyleSheet, TouchableHighlight, Image } from "react-native"
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { colors, screenHeight } from "../helpers/style";
+import Ellipse1 from "../assets/Ellipse1"
+import Ellipse2 from "../assets/Ellipse2"
+import Success from "../assets/Success.svg"
 
 export default function SuccessScreen({ ...props }) {
     const { navigation } = props
@@ -15,18 +18,11 @@ export default function SuccessScreen({ ...props }) {
     return (
         <View style={styles.container}>
             <View style={styles.textView}>
-                <Image
-                    source={require("../assets/Success.png")}
-                    style={styles.icon}
-                />
-                <Image
-                    source={require("../assets/Ellipse_1_s.png")}
-                    style={styles.ellipse1}
-                />
-                <Image
-                    source={require("../assets/Ellipse_2_s.png")}
-                    style={styles.ellipse2}
-                />
+
+                <Success width={200} height={200} />
+                <Ellipse1 width={59} height={128} style={styles.ellipse1} />
+                <Ellipse2 width={47} height={103} style={styles.ellipse2} />
+
             </View>
             <View style={{ ...styles.textView, height: screenHeight / 3, width: '80%', justifyContent: 'space-around', }}>
                 <Text style={styles.text}>Formular trimis!</Text>
@@ -80,15 +76,11 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: "20%",
         right: "0%",
-        width: 59,
-        height: 124,
     },
     ellipse2: {
         position: "absolute",
         top: "60%",
         left: "-1%",
-        width: 47,
-        height: 103,
     },
     textView: {
         height: screenHeight / 1.75,

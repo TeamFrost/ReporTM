@@ -12,6 +12,12 @@ import { VictoryPie, VictoryContainer } from "victory-native";
 
 import NavBar from '../helpers/navbar';
 import { colors, screenHeight, screenWidth } from "../helpers/style";
+import Ellipse1 from "../assets/Ellipse1"
+import Ellipse2 from "../assets/Ellipse2"
+import StatCheck from "../assets/StatCheck.svg"
+import StatReport from "../assets/StatReport.svg"
+import StatTag from "../assets/StatTag.svg"
+import StatUpvote from "../assets/StatUpvote.svg"
 import Profile from "../assets/Profile.svg"
 
 //Golden
@@ -255,10 +261,7 @@ function ProfileScreen({ ...props }) {
                                     <Text style={styles.cardText1}>Sesizari raportate</Text>
                                     <Text style={styles.cardText2}>{reportsNumber}</Text>
                                 </View>
-                                <Image
-                                    source={require("../assets/StatReport.png")}
-                                    style={styles.statPhoto}
-                                />
+                                <StatReport height={40} width={40} style={styles.statPhoto} />
                             </LinearGradient>
 
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.statCard}>
@@ -266,10 +269,7 @@ function ProfileScreen({ ...props }) {
                                     <Text style={styles.cardText1}>Sesizari votate</Text>
                                     <Text style={styles.cardText2}>{upvotesGiven}</Text>
                                 </View>
-                                <Image
-                                    source={require("../assets/StatCheck.png")}
-                                    style={styles.statPhoto}
-                                />
+                                <StatCheck height={40} width={40} style={styles.statPhoto} />
                             </LinearGradient>
                         </View>
 
@@ -279,10 +279,7 @@ function ProfileScreen({ ...props }) {
                                     <Text style={styles.cardText1}>Voturi primite</Text>
                                     <Text style={styles.cardText2}>{upvotesReceived}</Text>
                                 </View>
-                                <Image
-                                    source={require("../assets/StatUpvote.png")}
-                                    style={styles.statPhoto}
-                                />
+                                <StatUpvote height={40} width={40} style={styles.statPhoto} />
                             </LinearGradient>
 
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.statCard}>
@@ -290,10 +287,7 @@ function ProfileScreen({ ...props }) {
                                     <Text style={styles.cardText1}>Categorii sesizate</Text>
                                     <Text style={styles.cardText2}>{categoriesReported}/6</Text>
                                 </View>
-                                <Image
-                                    source={require("../assets/StatReport.png")}
-                                    style={styles.statPhoto}
-                                />
+                                <StatTag height={40} width={40} style={styles.statPhoto} />
                             </LinearGradient>
                         </View>
 
@@ -512,8 +506,6 @@ const styles = StyleSheet.create({
         elevation: 1
     },
     statPhoto: {
-        height: 40,
-        width: 40,
         marginRight: 8
     },
     cardTextView: {
