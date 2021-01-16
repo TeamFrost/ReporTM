@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight } from "../helpers/style";
-import Home from "../assets/Home";
+import Home from "../assets/Home.svg";
 import { watchReportsData } from '../redux/actions/reports/reports';
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"

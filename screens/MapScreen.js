@@ -9,9 +9,9 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Callout } from 'react-native-maps';
 import { Svg, Image as ImageSvg } from 'react-native-svg';
 
-
 import NavBar from '../helpers/navbar'
 import { colors, screenHeight, screenWidth } from "../helpers/style";
+import Map from "../assets/Map.svg";
 import { watchReportsData } from '../redux/actions/reports/reports';
 import { category } from '../helpers/category';
 
@@ -152,10 +152,7 @@ function MapScreen({ ...props }) {
                 <StatusBar style="auto" />
             </KeyboardAwareScrollView>
             <NavBar />
-            <Image
-                source={require("../assets/Map.png")}
-                style={styles.bottomIcon}
-            />
+            <Map width={screenHeight / 8.5} height={screenHeight / 8.5} style={styles.bottomIcon} />
             <StatusBar style="auto" />
         </View>
     );
@@ -163,8 +160,6 @@ function MapScreen({ ...props }) {
 
 const styles = StyleSheet.create({
     bottomIcon: {
-        width: screenHeight / 8.5,
-        height: screenHeight / 8.5,
         position: "absolute",
         top: "88%",
     },

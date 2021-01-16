@@ -14,11 +14,12 @@ import { useActionSheet } from '@expo/react-native-action-sheet'
 import * as ImagePicker from 'expo-image-picker';
 import MapView, { Marker } from 'react-native-maps';
 
-
 import { firebase } from '../config/firebaseConfig';
 import { category } from '../helpers/category';
+
 import { colors, screenHeight } from "../helpers/style";
 import NavBar from '../helpers/navbar';
+import Report from "../assets/Report.svg"
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
 
@@ -424,10 +425,7 @@ function ReportScreen({ ...props }) {
 
             </KeyboardAwareScrollView>
             <NavBar />
-            <Image
-                source={require("../assets/Report.png")}
-                style={styles.bottomIcon}
-            />
+            <Report width={screenHeight / 8.5} height={screenHeight / 8.5} style={styles.bottomIcon} />
             <StatusBar style="auto" />
         </View >
     );
@@ -435,8 +433,6 @@ function ReportScreen({ ...props }) {
 
 const styles = StyleSheet.create({
     bottomIcon: {
-        width: screenHeight / 8.5,
-        height: screenHeight / 8.5,
         position: "absolute",
         top: "88%",
     },

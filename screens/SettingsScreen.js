@@ -13,6 +13,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Random from 'expo-random';
 import moment from 'moment';
 
+import Settings from "../assets/Settings.svg"
 import { firebase } from '../config/firebaseConfig'
 import { restoreSession } from '../redux/actions/auth/auth';
 
@@ -429,10 +430,7 @@ function SettingsScreen({ ...props }) {
             </KeyboardAwareScrollView>
             <NavBar />
             <StatusBar style="auto" />
-            <Image
-                source={require("../assets/Settings.png")}
-                style={styles.bottomIcon}
-            />
+            <Settings width={screenHeight / 8.5} height={screenHeight / 8.5} style={styles.bottomIcon} />
         </View>
     );
 }
@@ -445,8 +443,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     bottomIcon: {
-        width: screenHeight / 8.5,
-        height: screenHeight / 8.5,
         position: "absolute",
         top: "88%",
     },

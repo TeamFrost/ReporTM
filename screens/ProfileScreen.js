@@ -14,6 +14,8 @@ import { colors, screenHeight, screenWidth } from "../helpers/style";
 import NavBar from '../helpers/navbar';
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
+import Profile from "../assets/Profile.svg"
+import Ach1 from "../assets/Achievements/Golden/Ach1.svg"
 
 const Item = ({ photo, title, upvotes }) => (
     <View style={{ height: 45, alignItems: 'center', ...styles.flatListItem }}>
@@ -306,7 +308,7 @@ function ProfileScreen({ ...props }) {
                         <View style={styles.achievementsCardView}>
 
                             <View style={styles.achievementsCard}>
-                                <Image source={require("../assets/Achievement1.png")} />
+                                <Ach1 width={65} height={65} />
                                 <View style={styles.achievementsCardText}>
                                     <Text style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>Bine ai venit</Text>
                                     <Text style={styles.achievementsCardTextDescription}>Te-ai înregistrat pe aplicație</Text>
@@ -408,10 +410,7 @@ function ProfileScreen({ ...props }) {
             </KeyboardAwareScrollView>
             <NavBar />
             <StatusBar style="auto" />
-            <Image
-                source={require("../assets/Profile.png")}
-                style={styles.bottomIcon}
-            />
+            <Profile width={screenHeight / 8.5} height={screenHeight / 8.5} style={styles.bottomIcon} />
         </View >
     );
 }
@@ -424,8 +423,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     bottomIcon: {
-        width: screenHeight / 8.5,
-        height: screenHeight / 8.5,
         position: "absolute",
         top: "88%",
     },
