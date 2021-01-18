@@ -9,8 +9,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Callout } from 'react-native-maps';
 import { Svg, Image as ImageSvg } from 'react-native-svg';
 
-import NavBar from '../helpers/navbar'
-import { colors, screenHeight, screenWidth, mapStyle } from "../helpers/style";
+import NavBar from './components/NavBar'
+import { screenHeight, screenWidth, mapStyle, themeColors } from "../helpers/style";
 import Map from "../assets/Map.svg";
 import { watchReportsData } from '../redux/actions/reports/reports';
 import { category } from '../helpers/category';
@@ -20,21 +20,28 @@ const mapStateToProps = (state) => ({
     isFetching: state.reports.isFetching,
     hasError: state.reports.hasError,
     errorMessage: state.reports.errorMessage,
-    reportsData: state.reports.reportsData
+    reportsData: state.reports.reportsData,
+    theme: state.theme
 });
 
 const mapDispatchToProps = (dispatch) => ({ watchReportsData: () => dispatch(watchReportsData()) });
 
 function MapScreen({ ...props }) {
+    const { reportsData, theme, watchReportsData } = props;
+    const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
+    const [colors, setColors] = useState(themeColors.themeLight)
 
     const [search, setSearch] = useState('')
     const [categoryFilter, setCategoryFilter] = useState('')
-    const { reportsData, watchReportsData } = props;
     const [mapData, setMapData] = useState(reportsData)
 
     useEffect(() => {
         // watchReportsData()
-    }, [])
+        if (theme) {
+            setColors(theme.theme)
+            setStyles(styleSheetFactory(theme.theme))
+        }
+    }, [theme])
 
     const applyFilter = (filter) => {
         if (filter === '') {
@@ -159,7 +166,7 @@ function MapScreen({ ...props }) {
     );
 }
 
-const styles = StyleSheet.create({
+const styleSheetFactory = (colors) => StyleSheet.create({
     bottomIcon: {
         position: "absolute",
         top: "88%",

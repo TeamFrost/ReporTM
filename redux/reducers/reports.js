@@ -1,4 +1,3 @@
-import { TextPropTypes } from 'react-native';
 import * as types from '../actions/reports/actionTypes'
 
 const initialState = {

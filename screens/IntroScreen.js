@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
-import { Image, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from "react-native";
 import AppIntroSlider from 'react-native-app-intro-slider';
+import { connect } from 'react-redux';
 
-import { colors, screenHeight } from "../helpers/style";
+import { screenHeight, themeColors } from "../helpers/style";
 import Ellipse from "../assets/Ellipse"
 import Slide1 from "../assets/Slide1";
 import Slide2 from "../assets/Slide2";
@@ -38,8 +39,19 @@ const slides = [
     },
 ];
 
-export default function IntroScreen({ ...props }) {
-    const { navigation } = props
+const mapStateToProps = (state) => ({ theme: state.theme });
+
+function IntroScreen({ ...props }) {
+    const { navigation, theme } = props
+    const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
+    const [colors, setColors] = useState(themeColors.themeLight)
+
+    useEffect(() => {
+        if (theme) {
+            setColors(theme.theme)
+            setStyles(styleSheetFactory(theme.theme))
+        }
+    }, [theme])
 
     const renderNextButton = () => {
         return (
@@ -146,7 +158,7 @@ export default function IntroScreen({ ...props }) {
     );
 }
 
-const styles = StyleSheet.create({
+const styleSheetFactory = (colors) => StyleSheet.create({
     container: {
         flex: 1,
         height: screenHeight,
@@ -196,3 +208,5 @@ const styles = StyleSheet.create({
         bottom: 0
     }
 })
+
+export default connect(mapStateToProps)(IntroScreen);

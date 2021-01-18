@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { connect } from 'react-redux';
 
@@ -8,6 +8,8 @@ import { restoreSession } from '../redux/actions/auth/auth';
 import Logo from "../assets/Logo";
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
+import { changeTheme } from "../redux/actions/colorTheme/colorTheme";
+import { getData } from "../helpers/storage"
 
 const mapStateToProps = (state) => ({
     doneFetching: state.auth.doneFetching,
@@ -17,17 +19,30 @@ const mapStateToProps = (state) => ({
     loggedOut: state.auth.loggedOut,
     hasError: state.auth.hasError,
     errorMessage: state.auth.errorMessage,
-    user: state.auth.user
+    user: state.auth.user,
+    theme: state.theme
 });
 
-const mapDispatchToProps = (dispatch) => ({ restoreSession: () => dispatch(restoreSession()) });
+const mapDispatchToProps = (dispatch) => ({
+    restoreSession: () => dispatch(restoreSession()),
+    changeTheme: (theme) => dispatch(changeTheme(theme))
+});
 
 function LandingScreen({ ...props }) {
 
-    const { loggedIn, doneFetching, navigation, restoreSession } = props;
+    const { loggedIn, doneFetching, navigation, restoreSession, changeTheme } = props;
 
     useEffect(() => {
-        restoreSession()
+        getData('@reportm-theme')
+            .then((theme) => {
+                if (theme) {
+                    changeTheme(theme);
+                }
+                restoreSession()
+            })
+            .catch(() => {
+                console.log(error)
+            });
     }, []);
 
     if (doneFetching) {

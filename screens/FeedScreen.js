@@ -8,8 +8,8 @@ import { LogBox } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import NavBar from '../helpers/navbar'
-import { colors, screenHeight, screenWidth } from "../helpers/style";
+import NavBar from '../screens/components/NavBar'
+import { screenHeight, screenWidth, themeColors } from "../helpers/style";
 import Feed from "../assets/Feed.svg"
 import FeedCard from "../screens/components/FeedCard";
 import { watchReportsData } from '../redux/actions/reports/reports';
@@ -20,7 +20,8 @@ const mapStateToProps = (state) => ({
     hasError: state.reports.hasError,
     errorMessage: state.reports.errorMessage,
     reportsData: state.reports.reportsData,
-    currentUser: state.auth.user
+    currentUser: state.auth.user,
+    theme: state.theme
 });
 
 const renderItem = ({ item }) => {
@@ -46,12 +47,20 @@ const renderItem = ({ item }) => {
 
 function FeedScreen({ ...props }) {
 
-    const { reportsData } = props
+    const { reportsData, theme } = props
+    const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
+    const [colors, setColors] = useState(themeColors.themeLight)
+
     const [search, setSearch] = useState('')
 
+
     useEffect(() => {
+        if (theme) {
+            setColors(theme.theme)
+            setStyles(styleSheetFactory(theme.theme))
+        }
         LogBox.ignoreLogs(['VirtualizedLists should never be nested'])
-    }, [])
+    }, [theme])
 
     return (
         <View style={styles.container}>
@@ -117,7 +126,7 @@ function FeedScreen({ ...props }) {
     );
 }
 
-const styles = StyleSheet.create({
+const styleSheetFactory = (colors) => StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.backgroundColor,

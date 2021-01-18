@@ -1,19 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Text, View, StyleSheet, TouchableHighlight, Image } from "react-native";
+import { Text, View, StyleSheet, TouchableHighlight } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
+import { connect } from 'react-redux';
 
-import { colors, screenHeight } from "../helpers/style";
+import { screenHeight, themeColors } from "../helpers/style";
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
 import Success from "../assets/Success.svg"
 
-export default function SuccessScreen({ ...props }) {
-    const { navigation } = props
+const mapStateToProps = (state) => ({ theme: state.theme });
+
+function SuccessScreen({ ...props }) {
+    const { navigation, theme } = props
+    const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
+    const [colors, setColors] = useState(themeColors.themeLight)
 
     const onButtonPress = () => {
         navigation.navigate('Home')
     }
+    useEffect(() => {
+        if (theme) {
+            setColors(theme.theme)
+            setStyles(styleSheetFactory(theme.theme))
+        }
+    }, [theme])
 
     return (
         <View style={styles.container}>
@@ -44,7 +55,7 @@ export default function SuccessScreen({ ...props }) {
     );
 }
 
-const styles = StyleSheet.create({
+const styleSheetFactory = (colors) => StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.backgroundColor,
@@ -95,3 +106,5 @@ const styles = StyleSheet.create({
         color: colors.textColor
     }
 })
+
+export default connect(mapStateToProps)(SuccessScreen);

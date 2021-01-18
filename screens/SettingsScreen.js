@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Text, View, StyleSheet, Image, TouchableOpacity, Switch, Modal, Platform, TouchableHighlight } from "react-native";
-import { Avatar } from 'react-native-paper';
+import { Text, View, StyleSheet, TouchableOpacity, Switch, Modal, Platform, TouchableHighlight } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Input } from 'react-native-elements';
@@ -16,25 +15,32 @@ import moment from 'moment';
 import Settings from "../assets/Settings.svg"
 import { firebase } from '../config/firebaseConfig'
 import { restoreSession } from '../redux/actions/auth/auth';
+import { changeTheme } from '../redux/actions/colorTheme/colorTheme'
 
-import { colors, screenHeight } from "../helpers/style";
-import NavBar from '../helpers/navbar'
+import { screenHeight, themeColors } from "../helpers/style";
+import NavBar from '../screens/components/NavBar'
 import ProfilePlus from '../assets/ProfilePlus.svg'
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
 
 const mapStateToProps = (state) => ({
     user: state.auth.user,
-    doneFetching: state.auth.doneFetching
+    doneFetching: state.auth.doneFetching,
+    theme: state.theme
 });
 
-const mapDispatchToProps = (dispatch) => ({ restoreSession: () => dispatch(restoreSession()) });
+const mapDispatchToProps = (dispatch) => ({
+    restoreSession: () => dispatch(restoreSession()),
+    changeTheme: (theme) => dispatch(changeTheme(theme))
+});
 
 function SettingsScreen({ ...props }) {
 
     const { showActionSheetWithOptions } = useActionSheet();
 
-    const { user, restoreSession, doneFetching } = props
+    const { user, restoreSession, doneFetching, theme, changeTheme } = props
+    const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
+    const [colors, setColors] = useState(themeColors.themeLight)
 
     const [image, setImage] = useState(null);
     const [imageRef, setImageRef] = useState("");
@@ -45,19 +51,20 @@ function SettingsScreen({ ...props }) {
     const [newPassConfirm, setNewPassConfirm] = useState('')
 
     const [isSwitch, setIsSwitch] = useState(false)
-    const [isSwitchDark, setIsSwitchDark] = useState(false)
-
+    const [isSwitchDark, setIsSwitchDark] = useState(theme === themeColors.themeLight ? false : true)
     const [value, setValueState] = useState('Română');
-    const toggleSwitch = () => setIsSwitch(previousState => !previousState);
-    const toggleSwitchDark = () => setIsSwitchDark(previousState => !previousState);
     const [pickerVisibility, setPickerVisibility] = useState(false)
 
     useEffect(() => {
         if (user) {
             setIsSwitch(user.notifications)
-            setIsSwitchDark(user.darkmode)
+            // setIsSwitchDark(user.darkmode)
         }
-    }, [user])
+        if (theme) {
+            setColors(theme.theme)
+            setStyles(styleSheetFactory(theme.theme))
+        }
+    }, [user, theme])
 
     let username = '';
 
@@ -245,6 +252,19 @@ function SettingsScreen({ ...props }) {
             .catch(function (error) {
                 alert(error)
             })
+    }
+
+    const toggleSwitch = () => setIsSwitch(previousState => !previousState);
+
+    const toggleSwitchDark = () => {
+        if (isSwitchDark === false) {
+            changeTheme(themeColors.themeDark)
+            setIsSwitchDark(true)
+        }
+        else {
+            changeTheme(themeColors.themeLight)
+            setIsSwitchDark(false)
+        }
     }
 
     return (
@@ -436,7 +456,7 @@ function SettingsScreen({ ...props }) {
     );
 }
 
-const styles = StyleSheet.create({
+const styleSheetFactory = (colors) => StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.backgroundColor,

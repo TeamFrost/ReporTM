@@ -6,7 +6,7 @@ import { Input } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 
-import { colors, screenHeight } from "../helpers/style";
+import { screenHeight, themeColors } from "../helpers/style";
 import { loginUser } from '../redux/actions/auth/auth';
 
 const mapStateToProps = (state) => ({
@@ -15,7 +15,8 @@ const mapStateToProps = (state) => ({
     isFetching: state.auth.isFetching,
     hasError: state.auth.hasError,
     errorMessage: state.auth.errorMessage,
-    user: state.auth.user
+    user: state.auth.user,
+    theme: state.theme
 });
 
 const mapDispatchToProps = (dispatch) => ({ loginUser: (email, password) => dispatch(loginUser(email, password)) });
@@ -25,13 +26,19 @@ function LoginScreen({ ...props }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [textSecurity, setTextSecurity] = useState(true)
-    const { doneFetching, loggedIn, navigation, loginUser } = props
+    const { doneFetching, loggedIn, navigation, loginUser, theme } = props
+    const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
+    const [colors, setColors] = useState(themeColors.themeLight)
 
     useEffect(() => {
         if (loggedIn && doneFetching) {
             navigation.navigate('Drawer')
         }
-    }, [doneFetching]);
+        if (theme) {
+            setColors(theme.theme)
+            setStyles(styleSheetFactory(theme.theme))
+        }
+    }, [doneFetching, theme]);
 
     const onLoginPress = () => {
         loginUser(email, password)
@@ -123,7 +130,7 @@ function LoginScreen({ ...props }) {
     );
 }
 
-const styles = StyleSheet.create({
+const styleSheetFactory = (colors) => StyleSheet.create({
     arrowIcon: {
         fontSize: 30,
         alignSelf: "flex-end",

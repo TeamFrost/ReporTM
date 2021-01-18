@@ -1,4 +1,3 @@
-import { round } from 'react-native-reanimated';
 import { firebase } from '../../../config/firebaseConfig';
 import * as types from './actionTypes';
 

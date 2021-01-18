@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Image, Text, View, StyleSheet, TouchableHighlight } from "react-native";
+import { Text, View, StyleSheet, TouchableHighlight } from "react-native";
 import { connect } from 'react-redux';
 
-import { colors, screenHeight } from "../helpers/style";
+import { screenHeight, themeColors } from "../helpers/style";
 import { watchReportsData } from '../redux/actions/reports/reports';
-import NavBar from '../helpers/navbar'
+import NavBar from '../screens/components/NavBar'
 import Home from "../assets/Home";
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
@@ -16,15 +16,26 @@ import Profile from '../assets/Profile.svg'
 import Settings from '../assets/Settings.svg'
 import Help from '../assets/Help.svg'
 
-const mapStateToProps = (state) => ({ reportsData: state.reports.reportsData });
+const mapStateToProps = (state) => ({
+    reportsData: state.reports.reportsData,
+    theme: state.theme
+});
 
 const mapDispatchToProps = (dispatch) => ({ watchReportsData: () => dispatch(watchReportsData()) });
 
 function HomeScreen({ ...props }) {
 
-    const { watchReportsData, navigation } = props;
+    const { watchReportsData, navigation, theme } = props;
+    const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
+    const [colors, setColors] = useState(themeColors.themeLight)
+
 
     useEffect(() => {
+        if (theme) {
+            setColors(theme.theme)
+            setStyles(styleSheetFactory(theme.theme))
+        }
+
         watchReportsData()
         if (props.route.params) {
             let showIntro = props.route.params.showIntro;
@@ -32,7 +43,7 @@ function HomeScreen({ ...props }) {
                 navigation.navigate("Intro");
             }
         }
-    }, [])
+    }, [theme])
 
     return (
         <View style={styles.container}>
@@ -50,7 +61,7 @@ function HomeScreen({ ...props }) {
             <View style={styles.paperView}>
 
                 <TouchableHighlight
-                    onPress={() => props.navigation.navigate('Map')}
+                    onPress={() => navigation.navigate('Map')}
                     underlayColor={colors.pressedHomeCardsColor}
                     style={{ borderRadius: 20 }}
                 >
@@ -63,7 +74,7 @@ function HomeScreen({ ...props }) {
                 </TouchableHighlight>
 
                 <TouchableHighlight
-                    onPress={() => props.navigation.navigate('Report')}
+                    onPress={() => navigation.navigate('Report')}
                     underlayColor={colors.pressedHomeCardsColor}
                     style={{ borderRadius: 20 }}
                 >
@@ -79,7 +90,7 @@ function HomeScreen({ ...props }) {
             <View style={styles.paperView}>
 
                 <TouchableHighlight
-                    onPress={() => props.navigation.navigate('Feed')}
+                    onPress={() => navigation.navigate('Feed')}
                     underlayColor={colors.pressedHomeCardsColor}
                     style={{ borderRadius: 20 }}
                 >
@@ -92,7 +103,7 @@ function HomeScreen({ ...props }) {
                 </TouchableHighlight>
 
                 <TouchableHighlight
-                    onPress={() => props.navigation.navigate('Profile')}
+                    onPress={() => navigation.navigate('Profile')}
                     underlayColor={colors.pressedHomeCardsColor}
                     style={{ borderRadius: 20 }}
                 >
@@ -107,7 +118,7 @@ function HomeScreen({ ...props }) {
             <View style={styles.paperView}>
 
                 <TouchableHighlight
-                    onPress={() => props.navigation.navigate('Settings')}
+                    onPress={() => navigation.navigate('Settings')}
                     underlayColor={colors.pressedHomeCardsColor}
                     style={{ borderRadius: 20 }}
                 >
@@ -119,7 +130,7 @@ function HomeScreen({ ...props }) {
                 </TouchableHighlight>
 
                 <TouchableHighlight
-                    onPress={() => props.navigation.navigate('Help')}
+                    onPress={() => navigation.navigate('Help')}
                     underlayColor={colors.pressedHomeCardsColor}
                     style={{ borderRadius: 20 }}
                 >
@@ -138,7 +149,7 @@ function HomeScreen({ ...props }) {
     );
 }
 
-const styles = StyleSheet.create({
+const styleSheetFactory = (colors) => StyleSheet.create({
     bottomIcon: {
         position: "absolute",
         top: "88%",

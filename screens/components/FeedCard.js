@@ -5,17 +5,30 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar } from 'react-native-paper';
 import { connect } from 'react-redux';
 
-import { colors, screenWidth } from "../../helpers/style";
+import { screenWidth, themeColors } from "../../helpers/style";
 import { firebase } from "../../config/firebaseConfig";
 import { restoreSession } from '../../redux/actions/auth/auth';
 
-const mapStateToProps = (state) => ({ currentUser: state.auth.user });
+const mapStateToProps = (state) => ({
+    currentUser: state.auth.user,
+    theme: state.theme
+});
 
 const mapDispatchToProps = (dispatch) => ({ restoreSession: () => dispatch(restoreSession()) });
 
 function FeedCard({ userName, userAvatar, adress, time, photo, description, upvotes, tag, color, id, ...props }) {
 
-    const { currentUser, restoreSession } = props
+    const { currentUser, restoreSession, theme } = props
+
+    const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
+    const [colors, setColors] = useState(themeColors.themeLight)
+
+    useEffect(() => {
+        if (theme) {
+            setColors(theme.theme)
+            setStyles(styleSheetFactory(theme.theme))
+        }
+    }, [theme])
 
     const onUpvotePress = async () => {
         const reportRef = firebase.firestore().collection('reports').doc(tag).collection('sub_reports').doc(id);
@@ -122,7 +135,7 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
     );
 }
 
-const styles = StyleSheet.create({
+const styleSheetFactory = (colors) => StyleSheet.create({
     card: {
         // alignItems: 'center',
         // justifyContent: 'center',

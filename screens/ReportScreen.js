@@ -17,19 +17,24 @@ import MapView, { Marker } from 'react-native-maps';
 import { firebase } from '../config/firebaseConfig';
 import { category } from '../helpers/category';
 
-import { colors, screenHeight, mapStyle } from "../helpers/style";
-import NavBar from '../helpers/navbar';
+import { screenHeight, mapStyle, themeColors } from "../helpers/style";
+import NavBar from './components/NavBar';
 import Report from "../assets/Report.svg"
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
 
-const mapStateToProps = (state) => ({ currentUser: state.auth.user });
+const mapStateToProps = (state) => ({
+    currentUser: state.auth.user,
+    theme: state.theme
+});
 
 function ReportScreen({ ...props }) {
 
     const { showActionSheetWithOptions } = useActionSheet();
 
-    const { currentUser, navigation } = props;
+    const { currentUser, navigation, theme } = props;
+    const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
+    const [colors, setColors] = useState(themeColors.themeLight)
 
     const [pickerVisibility, setPickerVisibility] = useState(false)
     const [value, setValueState] = useState('');
@@ -86,7 +91,11 @@ function ReportScreen({ ...props }) {
                 }
             })();
         }
-    }, []);
+        if (theme) {
+            setColors(theme.theme)
+            setStyles(styleSheetFactory(theme.theme))
+        }
+    }, [theme]);
 
 
     const getCurrentLocation = async () => {
@@ -423,7 +432,7 @@ function ReportScreen({ ...props }) {
     );
 }
 
-const styles = StyleSheet.create({
+const styleSheetFactory = (colors) => StyleSheet.create({
     bottomIcon: {
         position: "absolute",
         top: "88%",

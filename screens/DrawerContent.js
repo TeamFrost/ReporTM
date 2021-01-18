@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Switch, Platform } from "react-native";
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { colors, screenHeight } from "../helpers/style";
 import { Avatar, Caption } from 'react-native-paper';
 import { Icon } from 'react-native-elements';
 import { StatusBar } from "expo-status-bar";
@@ -9,6 +8,8 @@ import { connect } from 'react-redux';
 import { DrawerActions } from '@react-navigation/native';
 
 import { logoutUser } from '../redux/actions/auth/auth';
+import { changeTheme } from '../redux/actions/colorTheme/colorTheme'
+import { screenHeight, themeColors } from "../helpers/style";
 
 const mapStateToProps = (state) => ({
     doneFetching: state.auth.doneFetching,
@@ -17,16 +18,22 @@ const mapStateToProps = (state) => ({
     isFetching: state.auth.isFetching,
     hasError: state.auth.hasError,
     errorMessage: state.auth.errorMessage,
-    user: state.auth.user
+    user: state.auth.user,
+    theme: state.theme
 });
 
-const mapDispatchToProps = (dispatch) => ({ logoutUser: () => dispatch(logoutUser()) });
+
+const mapDispatchToProps = (dispatch) => ({
+    logoutUser: () => dispatch(logoutUser()),
+    changeTheme: (theme) => dispatch(changeTheme(theme))
+});
 
 function DrawerContent({ ...props }) {
+    const { logoutUser, doneFetching, loggedOut, navigation, user, theme, changeTheme } = props
+    const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
+    const [colors, setColors] = useState(themeColors.themeLight)
 
-    const [isSwitch, setIsSwitch] = useState(false)
-
-    const { logoutUser, doneFetching, loggedOut, navigation, user } = props
+    const [isSwitch, setIsSwitch] = useState(theme === themeColors.themeLight ? false : true)
 
     let username = ''
     let nickname = ''
@@ -42,10 +49,22 @@ function DrawerContent({ ...props }) {
             navigation.dispatch(DrawerActions.closeDrawer());
             navigation.navigate('Login')
         }
-    }, [doneFetching]);
+        if (theme) {
+            setColors(theme.theme)
+            setStyles(styleSheetFactory(theme.theme))
+        }
+    }, [doneFetching, theme]);
 
-    const toggleSwitch = () => setIsSwitch(previousState => !previousState)
-
+    const toggleSwitch = () => {
+        if (isSwitch === false) {
+            changeTheme(themeColors.themeDark)
+            setIsSwitch(true)
+        }
+        else {
+            changeTheme(themeColors.themeLight)
+            setIsSwitch(false)
+        }
+    }
     const onLogoutPress = () => {
         logoutUser()
     }
@@ -136,7 +155,7 @@ function DrawerContent({ ...props }) {
     );
 }
 
-const styles = StyleSheet.create({
+const styleSheetFactory = (colors) => StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.drawerColor,

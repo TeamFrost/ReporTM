@@ -6,7 +6,7 @@ import { Input } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { connect } from 'react-redux';
 
-import { colors, screenHeight } from "../helpers/style";
+import { screenHeight, themeColors } from "../helpers/style";
 import { signupUser } from '../redux/actions/auth/auth';
 
 const mapStateToProps = (state) => ({
@@ -16,12 +16,16 @@ const mapStateToProps = (state) => ({
     signUp: state.auth.signUp,
     hasError: state.auth.hasError,
     errorMessage: state.auth.errorMessage,
-    user: state.auth.user
+    user: state.auth.user,
+    theme: state.theme
 });
 
 const mapDispatchToProps = (dispatch) => ({ signupUser: (email, password, username) => dispatch(signupUser(email, password, username)) });
 
 function RegisterScreen({ ...props }) {
+    const { navigation, signupUser, theme } = props
+    const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
+    const [colors, setColors] = useState(themeColors.themeLight)
 
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
@@ -33,7 +37,13 @@ function RegisterScreen({ ...props }) {
 
     const [textSecurity, setTextSecurity] = useState(true)
 
-    const { navigation, signupUser } = props
+    useEffect(() => {
+        if (theme) {
+            setColors(theme.theme)
+            setStyles(styleSheetFactory(theme.theme))
+        }
+    }, [theme])
+
 
     const onFooterLinkPress = () => {
         navigation.navigate('Login')
@@ -171,7 +181,7 @@ function RegisterScreen({ ...props }) {
 
 }
 
-const styles = StyleSheet.create({
+const styleSheetFactory = (colors) => StyleSheet.create({
     arrowIcon: {
         fontSize: 30,
         alignSelf: "flex-end",

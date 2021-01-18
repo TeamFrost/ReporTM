@@ -10,8 +10,8 @@ import { LogBox } from 'react-native';
 import { connect } from 'react-redux';
 import { VictoryPie, VictoryContainer } from "victory-native";
 
-import NavBar from '../helpers/navbar';
-import { colors, screenHeight, screenWidth } from "../helpers/style";
+import NavBar from './components/NavBar';
+import { screenHeight, screenWidth, themeColors } from "../helpers/style";
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
 import StatCheck from "../assets/StatCheck.svg"
@@ -44,59 +44,17 @@ import Ach8 from "../assets/Achievements/Gray/Ach8.svg"
 import Ach9 from "../assets/Achievements/Gray/Ach9.svg"
 import Ach10 from "../assets/Achievements/Gray/Ach10.svg"
 
-const Item = ({ photo, title, upvotes }) => (
-    <View style={{ height: 45, alignItems: 'center', ...styles.flatListItem }}>
-        <View style={{ flex: 1 }}>
-            <Avatar.Image size={35} source={{ uri: photo }} />
-        </View>
-        <View style={{ flex: 5, flexDirection: "row", justifyContent: "flex-start", width: '100%' }}>
-            <Text style={{ fontSize: 14, marginLeft: 5, color: colors.textColor }}>{title}</Text>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "flex-end" }}>
-            <Text style={{ fontWeight: "bold", color: colors.textColor }}>{upvotes}</Text>
-            <Icon name='arrow-alt-circle-up' size={16} style={{ marginRight: 10, marginLeft: 2, color: colors.textColor }} />
-        </View>
-    </View >
-);
-
-const renderItem = ({ item }) => (
-    <Item photo={item.image}
-        title={item.adress}
-        upvotes={item.upvotes.length}
-    />
-);
-
-const ItemLegend = ({ color, title, number }) => (
-    <View style={{ height: 30, alignItems: 'flex-start', ...styles.flatListItem }}>
-        <View
-            style={{ width: 18, height: 18, borderRadius: 20, backgroundColor: color, elevation: 4 }}
-        >
-        </View>
-        <View style={{ width: '40%', justifyContent: 'flex-start' }}>
-            <Text style={styles.textLegend}>{title}</Text>
-        </View>
-        <View style={{ width: '30%', alignItems: 'center' }}>
-            <Text style={styles.textLegend}>{number}</Text>
-        </View>
-    </View>
-);
-
-const renderItemLegend = ({ item }) => (
-    <ItemLegend
-        color={item.color}
-        title={item.title}
-        number={item.y}
-    />
-);
-
 const mapStateToProps = (state) => ({
     reportsData: state.reports.reportsData,
-    user: state.auth.user
+    user: state.auth.user,
+    theme: state.theme
 });
 
 function ProfileScreen({ ...props }) {
 
-    const { user, reportsData, navigation } = props
+    const { user, reportsData, navigation, theme } = props
+    const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
+    const [colors, setColors] = useState(themeColors.themeLight)
 
     const onEditProfilePress = () => {
         navigation.navigate('Settings')
@@ -199,8 +157,57 @@ function ProfileScreen({ ...props }) {
             })
             setChartData(chartData)
         }
+        if (theme) {
+            setColors(theme.theme)
+            setStyles(styleSheetFactory(theme.theme))
+        }
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-    }, [user])
+    }, [user, theme])
+
+    const Item = ({ photo, title, upvotes }) => (
+        <View style={{ height: 45, alignItems: 'center', ...styles.flatListItem }}>
+            <View style={{ flex: 1 }}>
+                <Avatar.Image size={35} source={{ uri: photo }} />
+            </View>
+            <View style={{ flex: 5, flexDirection: "row", justifyContent: "flex-start", width: '100%' }}>
+                <Text style={{ fontSize: 14, marginLeft: 5, color: colors.textColor }}>{title}</Text>
+            </View>
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "flex-end" }}>
+                <Text style={{ fontWeight: "bold", color: colors.textColor }}>{upvotes}</Text>
+                <Icon name='arrow-alt-circle-up' size={16} style={{ marginRight: 10, marginLeft: 2, color: colors.textColor }} />
+            </View>
+        </View >
+    );
+
+    const renderItem = ({ item }) => (
+        <Item photo={item.image}
+            title={item.adress}
+            upvotes={item.upvotes.length}
+        />
+    );
+
+    const ItemLegend = ({ color, title, number }) => (
+        <View style={{ height: 30, alignItems: 'flex-start', ...styles.flatListItem }}>
+            <View
+                style={{ width: 18, height: 18, borderRadius: 20, backgroundColor: color, elevation: 4 }}
+            >
+            </View>
+            <View style={{ width: '40%', justifyContent: 'flex-start' }}>
+                <Text style={styles.textLegend}>{title}</Text>
+            </View>
+            <View style={{ width: '30%', alignItems: 'center' }}>
+                <Text style={styles.textLegend}>{number}</Text>
+            </View>
+        </View>
+    );
+
+    const renderItemLegend = ({ item }) => (
+        <ItemLegend
+            color={item.color}
+            title={item.title}
+            number={item.y}
+        />
+    );
 
     return (
         <View style={styles.container}>
@@ -430,7 +437,7 @@ function ProfileScreen({ ...props }) {
     );
 }
 
-const styles = StyleSheet.create({
+const styleSheetFactory = (colors) => StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.backgroundColor,

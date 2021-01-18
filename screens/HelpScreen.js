@@ -1,20 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from "expo-status-bar";
 import { Text, View, StyleSheet, Image, TouchableHighlight, } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Linking from 'expo-linking';
+import { connect } from 'react-redux';
 
 
-import NavBar from '../helpers/navbar'
-import { colors, screenHeight } from "../helpers/style";
+import NavBar from '../screens/components/NavBar'
+import { screenHeight, themeColors } from "../helpers/style";
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
 import Help from "../assets/Help.svg"
 
-export default function HelpScreen({ ...props }) {
-    const { navigation } = props
+const mapStateToProps = (state) => ({ theme: state.theme });
+
+function HelpScreen({ ...props }) {
+
+    const { navigation, theme } = props
+    const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
+    const [colors, setColors] = useState(themeColors.themeLight)
+
+    useEffect(() => {
+        if (theme) {
+            setColors(theme.theme)
+            setStyles(styleSheetFactory(theme.theme))
+        }
+    }, [theme])
+
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView
@@ -94,7 +108,7 @@ export default function HelpScreen({ ...props }) {
     );
 }
 
-const styles = StyleSheet.create({
+const styleSheetFactory = (colors) => StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.backgroundColor,
@@ -189,3 +203,6 @@ const styles = StyleSheet.create({
         color: colors.textColor
     }
 })
+
+
+export default connect(mapStateToProps)(HelpScreen);
