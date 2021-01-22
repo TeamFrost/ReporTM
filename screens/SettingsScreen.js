@@ -26,7 +26,8 @@ import Ellipse2 from "../assets/Ellipse2"
 const mapStateToProps = (state) => ({
     user: state.auth.user,
     doneFetching: state.auth.doneFetching,
-    theme: state.theme
+    theme: state.theme,
+    dark: state.theme.dark
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -38,7 +39,7 @@ function SettingsScreen({ ...props }) {
 
     const { showActionSheetWithOptions } = useActionSheet();
 
-    const { user, restoreSession, doneFetching, theme, changeTheme } = props
+    const { user, restoreSession, doneFetching, theme, changeTheme, dark } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
@@ -51,7 +52,7 @@ function SettingsScreen({ ...props }) {
     const [newPassConfirm, setNewPassConfirm] = useState('')
 
     const [isSwitch, setIsSwitch] = useState(false)
-    const [isSwitchDark, setIsSwitchDark] = useState(theme === themeColors.themeLight ? false : true)
+    const [isSwitchDark, setIsSwitchDark] = useState(dark)
     const [value, setValueState] = useState('Română');
     const [pickerVisibility, setPickerVisibility] = useState(false)
 
@@ -63,6 +64,7 @@ function SettingsScreen({ ...props }) {
         if (theme) {
             setColors(theme.theme)
             setStyles(styleSheetFactory(theme.theme))
+            setIsSwitchDark(dark)
         }
     }, [user, theme])
 
@@ -259,12 +261,11 @@ function SettingsScreen({ ...props }) {
     const toggleSwitchDark = () => {
         if (isSwitchDark === false) {
             changeTheme(themeColors.themeDark)
-            setIsSwitchDark(true)
         }
         else {
             changeTheme(themeColors.themeLight)
-            setIsSwitchDark(false)
         }
+        // setIsSwitchDark(dark)
     }
 
     return (

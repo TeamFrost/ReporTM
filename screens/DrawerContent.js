@@ -19,7 +19,8 @@ const mapStateToProps = (state) => ({
     hasError: state.auth.hasError,
     errorMessage: state.auth.errorMessage,
     user: state.auth.user,
-    theme: state.theme
+    theme: state.theme,
+    dark: state.theme.dark
 });
 
 
@@ -29,11 +30,11 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 function DrawerContent({ ...props }) {
-    const { logoutUser, doneFetching, loggedOut, navigation, user, theme, changeTheme } = props
+    const { logoutUser, doneFetching, loggedOut, navigation, user, theme, changeTheme, dark } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
-    const [isSwitch, setIsSwitch] = useState(theme === themeColors.themeLight ? false : true)
+    const [isSwitch, setIsSwitch] = useState(dark)
 
     let username = ''
     let nickname = ''
@@ -52,17 +53,16 @@ function DrawerContent({ ...props }) {
         if (theme) {
             setColors(theme.theme)
             setStyles(styleSheetFactory(theme.theme))
+            setIsSwitch(dark)
         }
     }, [doneFetching, theme]);
 
     const toggleSwitch = () => {
         if (isSwitch === false) {
             changeTheme(themeColors.themeDark)
-            setIsSwitch(true)
         }
         else {
             changeTheme(themeColors.themeLight)
-            setIsSwitch(false)
         }
     }
     const onLogoutPress = () => {

@@ -204,7 +204,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
     },
     textBox: {
         alignItems: "center",
-        marginTop: "9%",
+        marginTop: "15%",
         margin: "10%",
         marginBottom: "2%"
     },

@@ -75,6 +75,7 @@ function LoginScreen({ ...props }) {
                     <Input
                         label='Email'
                         labelStyle={styles.text}
+                        color={colors.textColor}
                         autoCapitalize="none"
                         onChangeText={(text) => setEmail(text)}
                         value={email}
@@ -92,6 +93,7 @@ function LoginScreen({ ...props }) {
                     <Input
                         label='Parola'
                         labelStyle={styles.text}
+                        color={colors.textColor}
                         secureTextEntry={textSecurity}
                         autoCapitalize="none"
                         onChangeText={(text) => setPassword(text)}
@@ -154,7 +156,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: colors.white,
+        backgroundColor: colors.backgroundColor,
         alignItems: "center",
         justifyContent: "flex-start",
     },
@@ -202,6 +204,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         fontWeight: "bold",
     },
     titleBaseText: {
+        color: colors.textColor,
         fontSize: 48,
         fontWeight: "bold",
         alignSelf: "center"

@@ -33,7 +33,7 @@ function RegisterScreen({ ...props }) {
 
     const [errorStyle, setErrorStyle] = useState({})
     const [errorMessage, setErrorMessage] = useState('')
-    const [checkColor, setCheckColor] = useState('white')
+    const [checkColor, setCheckColor] = useState(colors.backgroundColor)
 
     const [textSecurity, setTextSecurity] = useState(true)
 
@@ -41,6 +41,7 @@ function RegisterScreen({ ...props }) {
         if (theme) {
             setColors(theme.theme)
             setStyles(styleSheetFactory(theme.theme))
+            setCheckColor(colors.backgroundColor)
         }
     }, [theme])
 
@@ -57,9 +58,9 @@ function RegisterScreen({ ...props }) {
             setCheckColor('green')
         }
         else {
-            setErrorStyle({ color: 'red' })
+            setErrorStyle({ color: colors.modalCancel })
             setErrorMessage('Adresa de email invalida!')
-            setCheckColor('white')
+            setCheckColor(colors.backgroundColor)
         }
         setEmail(text)
     }
@@ -100,6 +101,7 @@ function RegisterScreen({ ...props }) {
                     <Input
                         errorStyle={errorStyle}
                         errorMessage={errorMessage}
+                        color={colors.textColor}
                         label='Email'
                         labelStyle={styles.text}
                         autoCapitalize="none"
@@ -125,6 +127,7 @@ function RegisterScreen({ ...props }) {
                     <Input
                         label='Nume de utilizator'
                         labelStyle={styles.text}
+                        color={colors.textColor}
                         autoCapitalize="none"
                         placeholder='Nume de utilizator'
                         onChangeText={(text) => setUsername(text)}
@@ -141,6 +144,7 @@ function RegisterScreen({ ...props }) {
                     <Input
                         label='Parola'
                         labelStyle={styles.text}
+                        color={colors.textColor}
                         autoCapitalize="none"
                         secureTextEntry={textSecurity}
                         placeholder='Parola'
@@ -205,7 +209,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: colors.white,
+        backgroundColor: colors.backgroundColor,
         alignItems: "center",
         justifyContent: "flex-start",
     },
