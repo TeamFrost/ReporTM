@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableHighlight, Modal, TextInput, Platform } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -45,8 +45,8 @@ function ReportScreen({ ...props }) {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [coords, setCoords] = useState({
-        "latitude": 45.73893889978378,
-        "longitude": 21.221619515895844,
+        "latitude": 45.751291,
+        "longitude": 21.224554,
     });
     const [adress, setAdress] = useState(null);
 
@@ -58,6 +58,8 @@ function ReportScreen({ ...props }) {
     const [dividerColor, setDividerColor] = useState(colors.textGray)
     const [dividerHeight, setDividerHeight] = useState(1)
     const [iconColor, setIconColor] = useState(colors.backgroundColor)
+
+    const mapRef = useRef();
 
     useEffect(() => {
         if (props.route.params) {
@@ -96,6 +98,15 @@ function ReportScreen({ ...props }) {
             setStyles(styleSheetFactory(theme.theme))
         }
     }, [theme]);
+
+    const changeRegion = ({ latitude, longitude }) => {
+        mapRef.current.animateToRegion({
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: 0.0025,
+            longitudeDelta: 0.0025,
+        }, 1000)
+    }
 
 
     const getCurrentLocation = async () => {
@@ -140,6 +151,8 @@ function ReportScreen({ ...props }) {
                 }
             }
         }
+
+        changeRegion(coords);
     }
 
     const togglePicker = () => {
@@ -305,11 +318,12 @@ function ReportScreen({ ...props }) {
                     </View>
                     <View style={styles.map}>
                         <MapView
+                            ref={mapRef}
                             provider="google"
                             customMapStyle={(colors.textColor === colors.white) ? mapStyle : []}
                             style={{ height: 150, width: "100%" }}
-                            // zoomEnabled={false}
-                            // scrollEnabled={false}
+                            zoomEnabled={false}
+                            scrollEnabled={false}
                             initialRegion={{
                                 latitude: coords.latitude,
                                 longitude: coords.longitude,
