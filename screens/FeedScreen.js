@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -64,7 +64,7 @@ function FeedScreen({ ...props }) {
 
     return (
         <View style={styles.container}>
-            <View>
+            <View >
                 <View style={styles.searchBar}>
                     <Input
                         style={{ padding: 5 }}
@@ -85,27 +85,27 @@ function FeedScreen({ ...props }) {
                             type="font-awesome-5"
                             name='clock'
                             size={16}
-                            style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
+                            style={styles.headerIcons}
                         />
-                        <Text style={{ fontSize: 14, color: colors.textColor }}> Recente</Text>
+                        <Text style={styles.headerIconsText}> Recente</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.tagButton}>
                         <Icon
                             type="font-awesome-5"
                             name='fire'
                             size={16}
-                            style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
+                            style={styles.headerIcons}
                         />
-                        <Text style={{ fontSize: 14, color: colors.textColor }}> Populare</Text>
+                        <Text style={styles.headerIconsText}> Populare</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.tagButton}>
                         <Icon
                             type="font-awesome-5"
                             name='tag'
                             size={16}
-                            style={{ marginRight: 2, paddingTop: 2, color: colors.purple }}
+                            style={styles.headerIcons}
                         />
-                        <Text style={{ fontSize: 14, color: colors.textColor }}> Categorie</Text>
+                        <Text style={styles.headerIconsText}> Categorie</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -115,7 +115,6 @@ function FeedScreen({ ...props }) {
                         data={reportsData}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id}
-                    // ListHeaderComponent={getHeader}
                     />
                 </View>
             </KeyboardAwareScrollView>
@@ -145,8 +144,15 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         width: screenWidth / 10 * 8.5,
         height: 50,
         alignSelf: "center",
-
-
+    },
+    headerIcons: {
+        marginRight: 2,
+        paddingTop: 2,
+        color: colors.purple
+    },
+    headerIconsText: {
+        fontSize: 14,
+        color: colors.textColor
     },
     tagsContainer: {
         flexDirection: "row",
@@ -155,7 +161,6 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         alignSelf: "center",
         width: "85%",
         height: 50,
-        //backgroundColor: "#CA239166"
     },
     tagButton: {
         flexDirection: "row",
@@ -173,7 +178,6 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.5,
         shadowRadius: 5,
-
     },
 })
 
