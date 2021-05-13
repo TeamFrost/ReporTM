@@ -7,6 +7,9 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { connect } from 'react-redux';
 
 import { screenHeight, themeColors } from "../helpers/style";
+import Logo from "../assets/Logo";
+import Ellipse1 from "../assets/Ellipse1"
+import Ellipse2 from "../assets/Ellipse2"
 import { loginUser } from '../redux/actions/auth/auth';
 
 const mapStateToProps = (state) => ({
@@ -59,18 +62,12 @@ function LoginScreen({ ...props }) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                <Image source={require("../assets/Icon.png")} style={styles.icon} />
+                <Logo width={screenHeight / 4.2} height={screenHeight / 4.2} style={styles.icon} />
                 <Text style={styles.titleBaseText}>
                     Repor<Text style={styles.titleInnerText}>TM</Text>
                 </Text>
-                <Image
-                    source={require("../assets/Ellipse_1.png")}
-                    style={styles.ellipse1}
-                />
-                <Image
-                    source={require("../assets/Ellipse_2.png")}
-                    style={styles.ellipse2}
-                />
+                <Ellipse1 width={59} height={124} style={styles.ellipse1} />
+                <Ellipse2 width={52} height={103} style={styles.ellipse2} />
                 <View style={styles.info}>
                     <Input
                         label='Email'
@@ -164,15 +161,11 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         position: "absolute",
         top: "5%",
         right: "0%",
-        width: 59,
-        height: 124,
     },
     ellipse2: {
         position: "absolute",
         top: "25%",
         left: "-1%",
-        width: 52,
-        height: 103,
     },
     footerInnerText: {
         color: colors.textYellow,
@@ -184,8 +177,6 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         fontSize: 16,
     },
     icon: {
-        width: screenHeight / 3.6,
-        height: screenHeight / 3.6,
         marginBottom: 10,
         marginTop: '15%',
         alignSelf: "center"
