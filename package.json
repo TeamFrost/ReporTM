@@ -22,6 +22,7 @@
     "expo-random": "~9.0.0",
     "expo-status-bar": "~1.0.2",
     "firebase": "7.9.0",
+    "handlebars": "^4.7.7",
     "moment": "^2.29.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
