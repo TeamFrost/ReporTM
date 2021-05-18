@@ -9,9 +9,13 @@ import { connect } from 'react-redux';
 
 import { screenHeight, screenWidth, themeColors } from "../helpers/style";
 import Logo from "../assets/Logo";
-import Ellipse1 from "../assets/Ellipse1"
-import Ellipse2 from "../assets/Ellipse2"
-import GoogleIcon from "../assets/googleIcon.js"
+import Ellipse1 from "../assets/Ellipse1";
+import Ellipse2 from "../assets/Ellipse2";
+import MailIcon from "../assets/Icons/mailIcon.js";
+import LockIcon from "../assets/Icons/lockIcon.js";
+import EyeIcon from "../assets/Icons/eyeIcon.js";
+import EyeCloseIcon from "../assets/Icons/eyeCloseIcon.js";
+import GoogleIcon from "../assets/googleIcon.js";
 import { loginUser } from '../redux/actions/auth/auth';
 
 
@@ -65,7 +69,7 @@ function LoginScreen({ ...props }) {
     }
 
     const handleEyeOnPress = () => {
-        textSecurity ? setTextSecurity(false) : setTextSecurity(true);
+        setTextSecurity(!textSecurity);
     }
 
     return (
@@ -89,14 +93,7 @@ function LoginScreen({ ...props }) {
                         value={email}
                         keyboardType="email-address"
                         placeholder='Email'
-                        leftIcon={
-                            <Icon
-                                name='md-mail'
-                                size={30}
-                                color={colors.textColor}
-                                style={{ marginRight: 5 }}
-                            />
-                        }
+                        leftIcon={<MailIcon />}
                     />
                     <Input
                         label='Parola'
@@ -107,22 +104,8 @@ function LoginScreen({ ...props }) {
                         onChangeText={(text) => setPassword(text)}
                         value={password}
                         placeholder='Parola'
-                        leftIcon={
-                            <Icon
-                                name='md-lock'
-                                size={30}
-                                color={colors.textColor}
-                                style={{ marginRight: 7 }}
-                            />
-                        }
-                        rightIcon={
-                            <Icon
-                                name='md-eye'
-                                size={30}
-                                color={colors.textColor}
-                                onPress={handleEyeOnPress}
-                            />
-                        }
+                        leftIcon={<LockIcon />}
+                        rightIcon={textSecurity ? <EyeIcon onPress={handleEyeOnPress} /> : <EyeCloseIcon onPress={handleEyeOnPress} />}
                     />
                     <Text style={styles.forgotText} onPress={onForgotPress}>Am uitat parola.</Text>
 
@@ -133,7 +116,7 @@ function LoginScreen({ ...props }) {
                         </TouchableOpacity>
                     </LinearGradient>
 
-                    <Text style={styles.footerOuterText}>Daca nu ai cont, <Text onPress={onFooterLinkPress} style={styles.footerInnerText}>inregistreaza-te</Text> acum.</Text>
+                    <Text style={styles.footerOuterText}>Dacă nu ai cont, <Text onPress={onFooterLinkPress} style={styles.footerInnerText}>înregistrează-te</Text> acum.</Text>
 
                     <TouchableOpacity style={styles.googleButton} onPress={onGooglePress}>
                         <GoogleIcon style={{ marginRight: 10 }} />
