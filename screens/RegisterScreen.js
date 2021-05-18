@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { Image, StyleSheet, Text, View, TouchableHighlight } from "react-native";
+import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { connect } from 'react-redux';
 
-import { screenHeight, themeColors } from "../helpers/style";
+import { screenHeight, screenWidth, themeColors } from "../helpers/style";
 import Logo from "../assets/Logo";
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
+import MailIcon from "../assets/Icons/mailIcon.js";
+import UserIcon from "../assets/Icons/userIcon.js";
+import LockIcon from "../assets/Icons/lockIcon.js";
+import InfoIcon from "../assets/Icons/infoIcon.js";
+import EyeIcon from "../assets/Icons/eyeIcon.js";
+import EyeCloseIcon from "../assets/Icons/eyeCloseIcon.js";
 import { signupUser } from '../redux/actions/auth/auth';
 
 const mapStateToProps = (state) => ({
@@ -33,6 +40,7 @@ function RegisterScreen({ ...props }) {
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [isValid, setIsValid] = useState(false);
 
     const [errorStyle, setErrorStyle] = useState({})
     const [errorMessage, setErrorMessage] = useState('')
@@ -59,41 +67,47 @@ function RegisterScreen({ ...props }) {
             setErrorStyle({ color: 'green' })
             setErrorMessage('Adresa de email valida!')
             setCheckColor('green')
+            setIsValid(true)
         }
         else {
             setErrorStyle({ color: colors.modalCancel })
             setErrorMessage('Adresa de email invalida!')
             setCheckColor(colors.backgroundColor)
+            setIsValid(false)
         }
         setEmail(text)
     }
 
     const handleEyeOnPress = () => {
-        textSecurity ? setTextSecurity(false) : setTextSecurity(true);
+        setTextSecurity(!textSecurity);
     }
 
     const onRegisterPress = () => {
-        signupUser(email, password, username)
-        setEmail('')
-        setUsername('')
-        setPassword('')
-        navigation.navigate('Drawer', { showIntro: true })
+        if (isValid) {
+            signupUser(email, password, username)
+            setEmail('')
+            setUsername('')
+            setPassword('')
+            navigation.navigate('Drawer', { showIntro: true })
+        }
+        else {
+            Alert.alert("A apărut o problemă", "Datele introduse nu sunt corecte")
+        }
     }
 
     return (
 
         <View style={styles.container}>
-            <KeyboardAwareScrollView
-                style={{ flex: 1, width: '100%' }}
-                keyboardShouldPersistTaps="always">
-
-                <Logo width={screenHeight / 4.2} height={screenHeight / 4.2} style={styles.icon} />
-                <Ellipse1 width={59} height={124} style={styles.ellipse1} />
-                <Ellipse2 width={52} height={103} style={styles.ellipse2} />
-
+            <KeyboardAwareScrollView style={styles.keyboardAware}>
+                <View style={{ height: screenHeight / 2.4 }}>
+                    <Logo width={screenHeight / 3.8} height={screenHeight / 3.8} style={styles.icon} />
+                    <Ellipse1 width={59} height={124} style={styles.ellipse1} />
+                    <Ellipse2 width={52} height={103} style={styles.ellipse2} />
+                </View>
                 <View style={styles.info}>
                     <Input
                         errorStyle={errorStyle}
+                        inputContainerStyle={{ borderBottomColor: errorStyle.color }}
                         errorMessage={errorMessage}
                         color={colors.textColor}
                         label='Email'
@@ -103,14 +117,7 @@ function RegisterScreen({ ...props }) {
                         onChangeText={(text) => handleOnTextChangeEmail(text)}
                         value={email}
                         keyboardType="email-address"
-                        leftIcon={
-                            <Icon
-                                name='md-mail'
-                                size={30}
-                                color={colors.textColor}
-                                style={{ marginRight: 5 }}
-                            />
-                        }
+                        leftIcon={<MailIcon />}
                         rightIcon={
                             <Icon
                                 name='md-checkmark'
@@ -126,14 +133,7 @@ function RegisterScreen({ ...props }) {
                         placeholder='Nume de utilizator'
                         onChangeText={(text) => setUsername(text)}
                         value={username}
-                        leftIcon={
-                            <Icon
-                                name='md-person'
-                                size={30}
-                                color={colors.textColor}
-                                style={{ marginRight: 7, marginLeft: 3 }}
-                            />
-                        }
+                        leftIcon={<UserIcon />}
                     />
                     <Input
                         label='Parola'
@@ -144,32 +144,23 @@ function RegisterScreen({ ...props }) {
                         placeholder='Parola'
                         onChangeText={(text) => setPassword(text)}
                         value={password}
-                        leftIcon={
-                            <Icon
-                                name='md-lock'
-                                size={30}
-                                color={colors.textColor}
-                                style={{ marginRight: 8, marginLeft: 4 }}
-                            />
-                        }
-                        rightIcon={
-                            <Icon
-                                name='md-eye'
-                                size={30}
-                                color={colors.textColor}
-                                onPress={handleEyeOnPress}
-                            />
-                        }
+                        leftIcon={<LockIcon />}
+                        rightIcon={textSecurity ? <EyeIcon onPress={handleEyeOnPress} /> : <EyeCloseIcon onPress={handleEyeOnPress} />}
                     />
+                    <View style={{ alignItems: 'flex-start', justifyContent: 'center', flexDirection: "row", marginTop: '-4%', height: 60 }}>
+                        <InfoIcon marginTop={1} />
+                        <Text style={{ fontSize: 14, color: colors.textGray, }}> Parola trebuie să conțină minim 6 caractere.</Text>
+                    </View>
 
-                    <TouchableHighlight underlayColor='#593480' onPress={onRegisterPress} style={styles.button}>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <Text style={styles.buttonText}>Inregistrare</Text>
+                    <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.button}>
+                        <TouchableOpacity onPress={onRegisterPress} style={styles.touchable}>
+                            <Text style={styles.buttonText}>Înregistrare</Text>
                             <Icon active name='md-arrow-forward' style={styles.arrowIcon} />
-                        </View>
-                    </TouchableHighlight>
+                        </TouchableOpacity>
+                    </LinearGradient>
 
-                    <Text style={styles.footerOuterText}>Daca ai deja cont, <Text onPress={onFooterLinkPress} style={styles.footerInnerText}>autentifica-te</Text> acum.</Text>
+                    <Text style={styles.footerOuterText}>Dacă ai deja cont, <Text onPress={onFooterLinkPress} style={styles.footerInnerText}>autentifică-te</Text> acum.</Text>
+
                 </View>
 
                 <StatusBar style="auto" />
@@ -187,14 +178,13 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         marginLeft: '5%'
     },
     button: {
-        marginTop: "7%",
-        backgroundColor: colors.purple,
-        height: 50,
+        height: 53,
+        flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: 20,
-        marginBottom: "5%",
-        elevation: 10,
+        backgroundColor: colors.purple,
+        borderRadius: 22,
+        elevation: 5,
     },
     buttonText: {
         fontSize: 20,
@@ -209,42 +199,51 @@ const styleSheetFactory = (colors) => StyleSheet.create({
     },
     ellipse1: {
         position: "absolute",
-        top: "5%",
+        top: "20%",
         right: "0%",
     },
     ellipse2: {
         position: "absolute",
-        top: "20%",
+        top: "60%",
         left: "-1%",
     },
     footerInnerText: {
         color: colors.textYellow,
-        textDecorationLine: 'underline'
+        textDecorationLine: 'underline',
     },
     footerOuterText: {
         alignSelf: "center",
         color: colors.textGray,
         fontSize: 16,
+        marginTop: '3%'
     },
     icon: {
-        // width: screenHeight / 4.2,
-        // height: screenHeight / 4.2,
         marginBottom: 10,
-        marginTop: '15%',
+        marginTop: '20%',
         alignSelf: "center"
     },
     info: {
-        alignSelf: "flex-start",
-        marginLeft: "10%",
-        marginTop: '10%',
-        width: "80%",
-        marginBottom: "5%",
+        height: screenHeight / 1.7,
+        alignSelf: "center",
+        width: "85%",
+        justifyContent: 'space-evenly',
+
     },
     text: {
         fontSize: 20,
         color: colors.textGray,
         fontWeight: "bold",
     },
+    keyboardAware: {
+        width: screenWidth,
+        height: screenHeight,
+    },
+    touchable: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center"
+    }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
