@@ -107,10 +107,11 @@ function LoginScreen({ ...props }) {
                         leftIcon={<LockIcon />}
                         rightIcon={textSecurity ? <EyeIcon onPress={handleEyeOnPress} /> : <EyeCloseIcon onPress={handleEyeOnPress} />}
                     />
+
                     <Text style={styles.forgotText} onPress={onForgotPress}>Am uitat parola.</Text>
 
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.button}>
-                        <TouchableOpacity onPress={onLoginPress} style={{ flexDirection: "row" }}>
+                        <TouchableOpacity onPress={onLoginPress} style={styles.touchable}>
                             <Text style={styles.buttonText}>Autentificare</Text>
                             <Icon active name='md-arrow-forward' style={styles.arrowIcon} />
                         </TouchableOpacity>
@@ -175,6 +176,8 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         alignSelf: "center",
         color: colors.textGray,
         fontSize: 16,
+        marginTop: '1%',
+        marginBottom: '1%'
     },
     icon: {
         marginBottom: 10,
@@ -183,7 +186,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
     },
     info: {
         flex: 1,
-        height: screenHeight / 1.80,
+        height: screenHeight / 1.8,
         width: '85%',
         alignSelf: "center",
         justifyContent: 'space-evenly'
@@ -208,13 +211,13 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         height: screenHeight,
     },
     forgotText: {
-        height: 50,
+        height: 40,
         alignItems: 'flex-start',
         color: colors.textGray,
         fontSize: 16,
         textDecorationLine: 'underline',
         paddingLeft: "3%",
-        marginTop: '-10%'
+        marginTop: '-7%'
     },
     googleButton: {
         flexDirection: "row",
@@ -227,6 +230,12 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         borderRadius: 22,
         elevation: 5,
         marginBottom: '5%'
+    },
+    touchable: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center"
     }
 })
 
