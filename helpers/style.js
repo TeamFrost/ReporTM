@@ -32,6 +32,7 @@ export const colors = {
     linkBlue: "#0000F0",
     introBackground: "#F8F5FC",
     shadowGray: "#CCC",
+    tooglePress: "#593480",
 
 
     groapa: "#d37e53",
@@ -72,6 +73,7 @@ export const themeColors = {
         linkBlue: "#0000F0",
         introBackground: "#F8F5FC",
         shadowGray: "#CCC",
+        tooglePress: "#593480",
 
 
         groapa: "#d37e53",
@@ -110,6 +112,8 @@ export const themeColors = {
         linkBlue: "#8A8AFF",
         introBackground: "#242424",
         shadowGray: "#000",
+        tooglePress: "#fff",
+
 
         groapa: "#d37e53",
         graffiti: "#593480",
