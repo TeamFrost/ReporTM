@@ -41,6 +41,7 @@ const renderItem = ({ item }) => {
             upvotes={item.upvotes.length}
             tag={item.parent}
             color={item.color}
+            author={item.author}
         />
     );
 }
