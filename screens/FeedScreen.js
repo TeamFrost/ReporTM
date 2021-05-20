@@ -51,9 +51,10 @@ function FeedScreen({ ...props }) {
     const { reportsData, theme } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
+    const [recentToggle, setRecentToggle] = useState(false)
+    const [popularToggle, setPopularToggle] = useState(false)
 
     const [search, setSearch] = useState('')
-
 
     useEffect(() => {
         if (theme) {
@@ -62,6 +63,28 @@ function FeedScreen({ ...props }) {
         }
         LogBox.ignoreLogs(['VirtualizedLists should never be nested'])
     }, [theme])
+
+    const handleRecentPress = () => {
+        if (recentToggle) {
+            setRecentToggle(false)
+            reportsData.sort((a, b) => (new Date(a.timestamp.toDate()) > new Date(b.timestamp.toDate())) ? 1 : ((new Date(b.timestamp.toDate()) > new Date(a.timestamp.toDate())) ? -1 : 0))
+        }
+        else {
+            setRecentToggle(true)
+            reportsData.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0))
+        }
+    }
+
+    const handlePopularPress = () => {
+        if (popularToggle) {
+            setPopularToggle(false)
+            reportsData.sort((a, b) => ((b.upvotes.length > a.upvotes.length) ? 1 : (a.upvotes.length > b.upvotes.length) ? -1 : 0))
+        }
+        else {
+            setPopularToggle(true)
+            reportsData.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0))
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -81,7 +104,7 @@ function FeedScreen({ ...props }) {
                     />
                 </View>
                 <View style={styles.tagsContainer}>
-                    <TouchableOpacity style={styles.tagButton}>
+                    <TouchableOpacity style={styles.tagButton} onPress={handleRecentPress}>
                         <Icon
                             type="font-awesome-5"
                             name='clock'
@@ -90,7 +113,7 @@ function FeedScreen({ ...props }) {
                         />
                         <Text style={styles.headerIconsText}> Recente</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.tagButton}>
+                    <TouchableOpacity style={styles.tagButton} onPress={handlePopularPress}>
                         <Icon
                             type="font-awesome-5"
                             name='fire'
