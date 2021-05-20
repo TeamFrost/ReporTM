@@ -3,7 +3,6 @@ import { StatusBar } from "expo-status-bar";
 import { Text, View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LogBox } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -66,24 +65,27 @@ function FeedScreen({ ...props }) {
     }, [theme])
 
     const handleRecentPress = () => {
+        if (popularToggle) setPopularToggle(!popularToggle);
         if (recentToggle) {
             setRecentToggle(false)
-            reportsData.sort((a, b) => (new Date(a.timestamp.toDate()) > new Date(b.timestamp.toDate())) ? 1 : ((new Date(b.timestamp.toDate()) > new Date(a.timestamp.toDate())) ? -1 : 0))
+            reportsData.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0))
         }
         else {
             setRecentToggle(true)
-            reportsData.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0))
+            reportsData.sort((a, b) => (new Date(b.timestamp.toDate()) > new Date(a.timestamp.toDate())) ? 1 : ((new Date(a.timestamp.toDate()) > new Date(b.timestamp.toDate())) ? -1 : 0))
         }
     }
 
     const handlePopularPress = () => {
+        if (recentToggle) setRecentToggle(!recentToggle);
+
         if (popularToggle) {
             setPopularToggle(false)
-            reportsData.sort((a, b) => ((b.upvotes.length > a.upvotes.length) ? 1 : (a.upvotes.length > b.upvotes.length) ? -1 : 0))
+            reportsData.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0))
         }
         else {
             setPopularToggle(true)
-            reportsData.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0))
+            reportsData.sort((a, b) => ((b.upvotes.length > a.upvotes.length) ? 1 : (a.upvotes.length > b.upvotes.length) ? -1 : 0))
         }
     }
 
@@ -105,32 +107,32 @@ function FeedScreen({ ...props }) {
                     />
                 </View>
                 <View style={styles.tagsContainer}>
-                    <TouchableOpacity style={styles.tagButton} onPress={handleRecentPress}>
+                    <TouchableOpacity style={[styles.tagButton, recentToggle && styles.active]} onPress={handleRecentPress}>
                         <Icon
                             type="font-awesome-5"
                             name='clock'
                             size={16}
-                            style={styles.headerIcons}
+                            style={[styles.headerIcons, recentToggle && styles.activeIcon]}
                         />
                         <Text style={styles.headerIconsText}> Recente</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.tagButton} onPress={handlePopularPress}>
+                    <TouchableOpacity style={[styles.tagButton, popularToggle && styles.active]} onPress={handlePopularPress}>
                         <Icon
                             type="font-awesome-5"
                             name='fire'
                             size={16}
-                            style={styles.headerIcons}
+                            style={[styles.headerIcons, popularToggle && styles.activeIcon]}
                         />
                         <Text style={styles.headerIconsText}> Populare</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.tagButton}>
+                    <TouchableOpacity style={{ ...styles.tagButton, }}>
                         <Icon
                             type="font-awesome-5"
-                            name='tag'
+                            name='clipboard-check'
                             size={16}
                             style={styles.headerIcons}
                         />
-                        <Text style={styles.headerIconsText}> Categorie</Text>
+                        <Text style={styles.headerIconsText}> Rezolvate</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -175,7 +177,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         alignSelf: "center",
     },
     headerIcons: {
-        marginRight: 2,
+        marginRight: 1,
         paddingTop: 2,
         color: colors.purple
     },
@@ -208,6 +210,13 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 5,
     },
+    active: {
+        borderWidth: 2.5,
+        borderColor: colors.tooglePress
+    },
+    activeIcon: {
+        color: colors.tooglePress
+    }
 })
 
 export default connect(mapStateToProps)(FeedScreen);
