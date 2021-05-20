@@ -79,7 +79,7 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
                 },
                 buttonIndex => {
                     if (buttonIndex === 0) {
-                        reportPost("False Infromation")
+                        reportPost("False Information")
                     } else if (buttonIndex === 1) {
                         reportPost("Invalid Photo")
                     } else if (buttonIndex === 2) {
@@ -179,7 +179,7 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
                 </View>
                 <View style={styles.cardHeaderRight}>
                     <TouchableOpacity>
-                        <Icon name='ellipsis-h' size={20} style={{ color: colors.textColor, paddingRight: 10 }} onPress={handleOptionsPress} />
+                        <Icon name='ellipsis-h' size={20} style={{ color: colors.textColor, paddingRight: 10 }} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -218,14 +218,14 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
                 </View>
             </View>
 
-            <Modal visible={pickerVisibility} animationType={"fade"} transparent={true}>
+            <Modal visible={pickerVisibility} animationType={"fade"} transparent={true} onRequestClose={togglePicker}>
                 <View style={styles.modalCover}>
                     <View style={styles.modal}>
                         <Image
                             source={photo}
                             style={styles.modalImageStyle}
                         />
-                        <TouchableHighlight onPress={() => togglePicker()} style={styles.exitModal}>
+                        <TouchableHighlight onPress={togglePicker} style={styles.exitModal}>
                             <View style={styles.modalIconClose}>
                                 <Icon name='times' size={25} color={colors.darkPurple} />
                             </View>
