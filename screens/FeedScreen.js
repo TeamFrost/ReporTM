@@ -119,6 +119,7 @@ function FeedScreen({ ...props }) {
                             />
                         }
                         onChangeText={value => setSearch(value)}
+                        onSubmitEditing={handleSearchPress}
                     />
                 </View>
                 <View style={styles.tagsContainer}>
