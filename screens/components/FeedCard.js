@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar } from 'react-native-paper';
+import { useActionSheet } from '@expo/react-native-action-sheet'
 import { connect } from 'react-redux';
 
 import { screenWidth, screenHeight, themeColors } from "../../helpers/style";
@@ -17,24 +18,99 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({ restoreSession: () => dispatch(restoreSession()) });
 
-function FeedCard({ userName, userAvatar, adress, time, photo, description, upvotes, tag, color, id, ...props }) {
+function FeedCard({ userName, userAvatar, adress, time, photo, description, upvotes, tag, color, id, author, ...props }) {
+
+    const { showActionSheetWithOptions } = useActionSheet();
 
     const { currentUser, restoreSession, theme } = props
 
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
     const [pickerVisibility, setPickerVisibility] = useState(false)
+    const [currentUserId, setCurrentUserId] = useState("")
 
     const togglePicker = () => {
         setPickerVisibility(!pickerVisibility)
     }
 
     useEffect(() => {
+        if (currentUser) {
+            const id = currentUser.id
+            setCurrentUserId(id)
+        }
         if (theme) {
             setColors(theme.theme)
             setStyles(styleSheetFactory(theme.theme))
         }
     }, [theme])
+
+    const handleOptionsPress = () => {
+
+        if (currentUserId === author) {
+            const options = ['Da', 'Nu'];
+            const destructiveButtonIndex = 0;
+            const title = "Ești sigur că vrei să stergi această postare?"
+
+            showActionSheetWithOptions(
+                {
+                    title,
+                    options,
+                    destructiveButtonIndex,
+                },
+                buttonIndex => {
+                    if (buttonIndex === 0) {
+                        deletePost()
+                    } else if (buttonIndex === 1) {
+                        // cancel
+                    }
+                },
+            );
+        }
+        else {
+            const options = ['Informații false', 'Poză necorepunzătoare', 'Anulează'];
+            const cancelButtonIndex = 2;
+            const title = "De ce vrei să raportezi această postare?"
+
+            showActionSheetWithOptions(
+                {
+                    title,
+                    options,
+                    cancelButtonIndex,
+                },
+                buttonIndex => {
+                    if (buttonIndex === 0) {
+                        reportPost("False Infromation")
+                    } else if (buttonIndex === 1) {
+                        reportPost("Invalid Photo")
+                    } else if (buttonIndex === 2) {
+                        //cancel
+                    }
+                },
+            );
+        }
+    }
+
+    const deletePost = () => {
+        firebase.firestore().collection('reports').doc(tag).collection('sub_reports').doc(id).delete()
+            .then(() => {
+                console.log("Document successfully deleted!");
+            }).catch((error) => {
+                console.error("Error removing document: ", error);
+            });
+    }
+
+    const reportPost = (reason) => {
+        firebase.firestore().collection('reportedPosts').add({
+            postId: id,
+            reason: reason
+        })
+            .then((docRef) => {
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch((error) => {
+                console.error("Error adding document: ", error);
+            });
+    }
 
     const onUpvotePress = async () => {
         const reportRef = firebase.firestore().collection('reports').doc(tag).collection('sub_reports').doc(id);
@@ -103,7 +179,7 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
                 </View>
                 <View style={styles.cardHeaderRight}>
                     <TouchableOpacity>
-                        <Icon name='ellipsis-h' size={20} style={{ color: colors.textColor, paddingRight: 10 }} />
+                        <Icon name='ellipsis-h' size={20} style={{ color: colors.textColor, paddingRight: 10 }} onPress={handleOptionsPress} />
                     </TouchableOpacity>
                 </View>
             </View>
