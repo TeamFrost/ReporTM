@@ -51,6 +51,7 @@ function FeedScreen({ ...props }) {
     const { reportsData, theme } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
+    const [reports, setReports] = useState(reportsData)
     const [recentToggle, setRecentToggle] = useState(false)
     const [popularToggle, setPopularToggle] = useState(false)
     const [refreshing, setRefreshing] = useState(false);
@@ -68,23 +69,36 @@ function FeedScreen({ ...props }) {
     const handleRecentPress = () => {
         if (recentToggle) {
             setRecentToggle(false)
-            reportsData.sort((a, b) => (new Date(a.timestamp.toDate()) > new Date(b.timestamp.toDate())) ? 1 : ((new Date(b.timestamp.toDate()) > new Date(a.timestamp.toDate())) ? -1 : 0))
+            reports.sort((a, b) => (new Date(a.timestamp.toDate()) > new Date(b.timestamp.toDate())) ? 1 : ((new Date(b.timestamp.toDate()) > new Date(a.timestamp.toDate())) ? -1 : 0))
         }
         else {
             setRecentToggle(true)
-            reportsData.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0))
+            reports.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0))
         }
     }
 
     const handlePopularPress = () => {
         if (popularToggle) {
             setPopularToggle(false)
-            reportsData.sort((a, b) => ((b.upvotes.length > a.upvotes.length) ? 1 : (a.upvotes.length > b.upvotes.length) ? -1 : 0))
+            reports.sort((a, b) => ((b.upvotes.length > a.upvotes.length) ? 1 : (a.upvotes.length > b.upvotes.length) ? -1 : 0))
         }
         else {
             setPopularToggle(true)
-            reportsData.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0))
+            reports.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0))
         }
+    }
+
+    const handleSearchPress = () => {
+        var res = [];
+        reportsData.filter((obj) => {
+            Object.keys(obj).forEach((key) => {
+                if (obj[key].toString().indexOf(search) !== -1) {
+                    res.push(obj);
+                }
+            });
+        });
+
+        setReports(res)
     }
 
     return (
@@ -99,9 +113,10 @@ function FeedScreen({ ...props }) {
                                 name='search'
                                 size={24}
                                 color={colors.textColor}
+                                onPress={handleSearchPress}
                             />
                         }
-                        onChangeText={value => setSearch({ value })}
+                        onChangeText={value => setSearch(value)}
                     />
                 </View>
                 <View style={styles.tagsContainer}>
@@ -137,7 +152,7 @@ function FeedScreen({ ...props }) {
 
             <View style={styles.mainPage}>
                 <FlatList
-                    data={reportsData}
+                    data={reports}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id}
                     extraData={reportsData}
