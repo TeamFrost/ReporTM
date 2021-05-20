@@ -51,6 +51,7 @@ function FeedScreen({ ...props }) {
     const { reportsData, theme } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
+    const [refreshing, setRefreshing] = useState(false);
 
     const [search, setSearch] = useState('')
 
@@ -65,7 +66,7 @@ function FeedScreen({ ...props }) {
 
     return (
         <View style={styles.container}>
-            <View >
+            <View>
                 <View style={styles.searchBar}>
                     <Input
                         style={{ padding: 5 }}
@@ -110,15 +111,18 @@ function FeedScreen({ ...props }) {
                     </TouchableOpacity>
                 </View>
             </View>
-            <KeyboardAwareScrollView>
-                <View style={styles.mainPage}>
-                    <FlatList
-                        data={reportsData}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.id}
-                    />
-                </View>
-            </KeyboardAwareScrollView>
+
+            <View style={styles.mainPage}>
+                <FlatList
+                    data={reportsData}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                    extraData={reportsData}
+                    onRefresh={watchReportsData}
+                    refreshing={refreshing}
+                />
+            </View>
+
             <NavBar />
             <Feed width={screenHeight / 8.5} height={screenHeight / 8.5} style={styles.bottomIcon} />
             <StatusBar style="auto" />
@@ -134,6 +138,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         justifyContent: "center",
     },
     mainPage: {
+        flex: 1,
         width: screenWidth,
     },
     bottomIcon: {
