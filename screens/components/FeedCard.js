@@ -11,6 +11,14 @@ import { screenWidth, screenHeight, themeColors } from "../../helpers/style";
 import { firebase } from "../../config/firebaseConfig";
 import { restoreSession } from '../../redux/actions/auth/auth';
 
+import SolvedIcon from '../../assets/ActionSheetIcons/SolvedIcon.js'
+import DeleteIcon from '../../assets/ActionSheetIcons/DeleteIcon.js';
+import CancelIcon from '../../assets/ActionSheetIcons/CancelIcon.js';
+import WrongInfo from '../../assets/ActionSheetIcons/WrongInfo.js';
+import WrongPhoto from '../../assets/ActionSheetIcons/WrongPhoto.js';
+import WrongTag from '../../assets/ActionSheetIcons/WrongTag.js';
+import ReportFeedIcon from '../../assets/Icons/reportFeedIcon.js';
+
 const mapStateToProps = (state) => ({
     currentUser: state.auth.user,
     theme: state.theme
@@ -47,35 +55,53 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
     const handleOptionsPress = () => {
 
         if (currentUserId === author) {
-            const options = ['Da', 'Nu'];
-            const destructiveButtonIndex = 0;
-            const title = "Ești sigur că vrei să stergi această postare?"
+            const options = ['Marchează ca rezolvat', 'Șterge postarea', "Anulează"];
+            const destructiveButtonIndex = 1;
+            const cancelButtonIndex = 2;
+            const title = "Ce acțiune dorești să execuți?"
+            const icons = [<SolvedIcon />, <DeleteIcon style={{ marginLeft: 2 }} />, <CancelIcon />]
+            const containerStyle = [{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }]
+            const textStyle = [{ marginLeft: -15 }]
+            const userInterfaceStyle = theme === themeColors.themeLight ? "light" : "dark";
 
             showActionSheetWithOptions(
                 {
                     title,
+                    containerStyle,
+                    textStyle,
                     options,
+                    icons,
                     destructiveButtonIndex,
+                    cancelButtonIndex,
+                    userInterfaceStyle,
                 },
                 buttonIndex => {
                     if (buttonIndex === 0) {
-                        deletePost()
+                        console.log("Marcata!")
                     } else if (buttonIndex === 1) {
-                        // cancel
+                        deletePostConfirm()
                     }
                 },
             );
         }
         else {
-            const options = ['Informații false', 'Poză necorepunzătoare', 'Anulează'];
-            const cancelButtonIndex = 2;
+            const options = ['Informații false', 'Poză necorepunzătoare', 'Categorie greșită', 'Anulează'];
+            const cancelButtonIndex = 3;
             const title = "De ce vrei să raportezi această postare?"
+            const icons = [<WrongInfo />, <WrongPhoto />, <WrongTag />, <CancelIcon />]
+            const containerStyle = [{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }]
+            const textStyle = [{ marginLeft: -15 }]
+            const userInterfaceStyle = theme === themeColors.themeLight ? "light" : "dark";
 
             showActionSheetWithOptions(
                 {
                     title,
+                    containerStyle,
+                    textStyle,
                     options,
+                    icons,
                     cancelButtonIndex,
+                    userInterfaceStyle,
                 },
                 buttonIndex => {
                     if (buttonIndex === 0) {
@@ -83,11 +109,32 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
                     } else if (buttonIndex === 1) {
                         reportPost("Invalid Photo")
                     } else if (buttonIndex === 2) {
-                        //cancel
+                        reportPost("Wrong Category")
                     }
                 },
             );
         }
+    }
+
+    const deletePostConfirm = () => {
+        const options = ['Da', 'Nu'];
+        const destructiveButtonIndex = 0;
+        const title = "Ești sigur că dorești să ștergi postarea?"
+
+        showActionSheetWithOptions(
+            {
+                title,
+                options,
+                destructiveButtonIndex,
+            },
+            buttonIndex => {
+                if (buttonIndex === 0) {
+                    deletePost()
+                } else if (buttonIndex === 1) {
+                    handleOptionsPress()
+                }
+            },
+        );
     }
 
     const deletePost = () => {
@@ -178,9 +225,14 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
                     </View>
                 </View>
                 <View style={styles.cardHeaderRight}>
-                    <TouchableOpacity>
-                        <Icon name='ellipsis-h' size={20} style={{ color: colors.textColor, paddingRight: 10 }} />
-                    </TouchableOpacity>
+                    <TouchableHighlight underlayColor="#eeeeee"
+                        style={{ height: '50%', alignItems: "center", justifyContent: 'center', width: 40, borderRadius: 20 }} onPress={() => handleOptionsPress()} >
+                        {
+                            currentUserId === author ?
+                                <Icon name='ellipsis-h' size={20} style={{ color: colors.textColor }} /> :
+                                <ReportFeedIcon fill={colors.textColor} />
+                        }
+                    </TouchableHighlight>
                 </View>
             </View>
 
