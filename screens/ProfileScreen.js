@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Text, View, StyleSheet, Image, FlatList } from "react-native";
+import { Text, View, StyleSheet, FlatList } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Avatar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -164,17 +164,17 @@ function ProfileScreen({ ...props }) {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     }, [user, theme])
 
-    const Item = ({ photo, title, upvotes }) => (
-        <View style={{ height: 45, alignItems: 'center', ...styles.flatListItem }}>
+    const Item = ({ photo, title, upvotes, solved }) => (
+        <View style={{ height: 47, alignItems: 'center', ...styles.flatListItem }}>
             <View style={{ flex: 1 }}>
-                <Avatar.Image size={35} source={{ uri: photo }} />
+                <Avatar.Image size={40} source={{ uri: photo }} style={[solved && styles.solved]} />
             </View>
             <View style={{ flex: 5, flexDirection: "row", justifyContent: "flex-start", width: '100%' }}>
-                <Text style={{ fontSize: 14, marginLeft: 5, color: colors.textColor }}>{title}</Text>
+                <Text style={styles.arangeIcon}>{title}</Text>
             </View>
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "flex-end" }}>
-                <Text style={{ fontWeight: "bold", color: colors.textColor }}>{upvotes}</Text>
-                <Icon name='arrow-alt-circle-up' size={16} style={{ marginRight: 10, marginLeft: 2, color: colors.textColor }} />
+            <View style={{ flex: 1, justifyContent: "flex-end", ...styles.rowArange }}>
+                <Text style={styles.textDefault}>{upvotes}</Text>
+                <Icon name='arrow-alt-circle-up' size={16} style={styles.arrowUp} />
             </View>
         </View >
     );
@@ -183,18 +183,18 @@ function ProfileScreen({ ...props }) {
         <Item photo={item.image}
             title={item.adress}
             upvotes={item.upvotes.length}
+            solved={item.solved}
         />
     );
 
     const ItemLegend = ({ color, title, number }) => (
-        <View style={{ height: 30, alignItems: 'flex-start', ...styles.flatListItem }}>
-            <View
-                style={{ width: 18, height: 18, borderRadius: 20, backgroundColor: color, elevation: 4 }}
-            >
-            </View>
+        <View style={{ height: 32, alignItems: 'flex-start', ...styles.flatListItem }}>
+            <View style={{ ...styles.circleLegend, backgroundColor: color }} />
+
             <View style={{ width: '40%', justifyContent: 'flex-start' }}>
                 <Text style={styles.textLegend}>{title}</Text>
             </View>
+
             <View style={{ width: '30%', alignItems: 'center' }}>
                 <Text style={styles.textLegend}>{number}</Text>
             </View>
@@ -211,18 +211,16 @@ function ProfileScreen({ ...props }) {
 
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView
-                style={{ flex: 1, width: '100%', height: '100%' }}
-                keyboardShouldPersistTaps="always">
+            <KeyboardAwareScrollView style={styles.scrollView}>
 
                 <View style={styles.avatarView}>
                     <Ellipse1 width={35} height={75} style={styles.ellipse1} />
                     <Ellipse2 width={50} height={100} style={styles.ellipse2} />
                     <Avatar.Image style={{ marginTop: 30 }} size={150} source={{ uri: profile }} />
-                    <Text style={{ fontSize: 28, fontWeight: "bold", color: colors.textColor }}>{username}</Text>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text style={{ fontSize: 28, ...styles.textDefault }}>{username}</Text>
+                    <View style={styles.rowArange}>
                         <Text
-                            style={{ fontSize: 14, textDecorationLine: 'underline', color: colors.textGray }}
+                            style={{ textDecorationLine: 'underline', color: colors.textGray }}
                             onPress={onEditProfilePress}
                         >
                             Editează-ți profilul
@@ -232,16 +230,16 @@ function ProfileScreen({ ...props }) {
                 </View>
 
                 <View style={styles.reportsList}>
-                    <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                        <Icon name="list-ul" type="font-awesome-5" size={20} style={{ marginLeft: 5, color: colors.textColor }} />
-                        <Text style={{ fontSize: 24, fontWeight: "bold", marginLeft: 5, color: colors.textColor }}>Sesizările mele</Text>
+                    <View style={styles.rowArange}>
+                        <Icon name="list-ul" type="font-awesome-5" size={20} style={styles.arangeIcon} />
+                        <Text style={styles.sectionHeaderText}>Sesizările mele</Text>
                     </View>
                     <View style={{ flex: 1 }}>
                         <FlatList
                             data={myReports}
                             renderItem={renderItem}
                             keyExtractor={(item) => item.id}
-                            ItemSeparatorComponent={() => <Divider style={{ flexDirection: 'column', backgroundColor: colors.textGray }} />}
+                            ItemSeparatorComponent={() => <Divider style={styles.divider} />}
                             style={{ flex: 1, marginTop: 10 }}
                             nestedScrollEnabled
 
@@ -251,24 +249,24 @@ function ProfileScreen({ ...props }) {
 
                 <View style={styles.statisticsView}>
                     <View style={{ flexDirection: 'row', alignItems: "center", marginBottom: 5 }}>
-                        <Icon name="chart-bar" type="font-awesome-5" size={24} style={{ marginLeft: 5, marginTop: 3, color: colors.textColor }} />
-                        <Text style={{ fontSize: 24, fontWeight: "bold", marginLeft: 5, color: colors.textColor }}>Statisticile mele</Text>
+                        <Icon name="chart-bar" type="font-awesome-5" size={24} style={{ ...styles.arangeIcon, marginTop: 3 }} />
+                        <Text style={styles.sectionHeaderText}>Statisticile mele</Text>
                     </View>
                     <View style={styles.statisticsCards}>
                         <View style={styles.statisticsCardsRow}>
 
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.statCard}>
                                 <View style={styles.cardTextView}>
-                                    <Text style={styles.cardText1}>Sesizari raportate</Text>
-                                    <Text style={styles.cardText2}>{reportsNumber}</Text>
+                                    <Text style={styles.cardText}>Sesizari raportate</Text>
+                                    <Text style={{ ...styles.cardText, fontSize: 18 }}>{reportsNumber}</Text>
                                 </View>
                                 <StatReport height={40} width={40} style={styles.statPhoto} />
                             </LinearGradient>
 
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.statCard}>
                                 <View style={styles.cardTextView}>
-                                    <Text style={styles.cardText1}>Sesizari votate</Text>
-                                    <Text style={styles.cardText2}>{upvotesGiven}</Text>
+                                    <Text style={styles.cardText}>Sesizari votate</Text>
+                                    <Text style={{ ...styles.cardText, fontSize: 18 }}>{upvotesGiven}</Text>
                                 </View>
                                 <StatCheck height={40} width={40} style={styles.statPhoto} />
                             </LinearGradient>
@@ -277,16 +275,16 @@ function ProfileScreen({ ...props }) {
                         <View style={styles.statisticsCardsRow}>
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.statCard}>
                                 <View style={styles.cardTextView}>
-                                    <Text style={styles.cardText1}>Voturi primite</Text>
-                                    <Text style={styles.cardText2}>{upvotesReceived}</Text>
+                                    <Text style={styles.cardText}>Voturi primite</Text>
+                                    <Text style={{ ...styles.cardText, fontSize: 18 }}>{upvotesReceived}</Text>
                                 </View>
                                 <StatUpvote height={40} width={40} style={styles.statPhoto} />
                             </LinearGradient>
 
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.statCard}>
                                 <View style={styles.cardTextView}>
-                                    <Text style={styles.cardText1}>Categorii sesizate</Text>
-                                    <Text style={styles.cardText2}>{categoriesReported}/6</Text>
+                                    <Text style={styles.cardText}>Categorii sesizate</Text>
+                                    <Text style={{ ...styles.cardText, fontSize: 18 }}>{categoriesReported}/6</Text>
                                 </View>
                                 <StatTag height={40} width={40} style={styles.statPhoto} />
                             </LinearGradient>
@@ -298,14 +296,14 @@ function ProfileScreen({ ...props }) {
                     <VictoryPie
                         data={chartData}
                         colorScale={["#593480", "#9457E0", "#BB6BD9", "#FFEB7B", "#ECDAF2", "#D4D0D9"]}
-                        labelRadius={screenWidth / 7.5}
+                        labelRadius={screenWidth / 8}
                         padding={{ top: 20 }}
                         height={160}
                         origin={{ x: screenWidth / 3.4 }}
                         radius={screenWidth / 4.7}
                         containerComponent={<VictoryContainer height={200} style={{ flex: 1 }} />}
                         style={{
-                            labels: { fill: "white", fontSize: 14, fontWeight: "bold" },
+                            labels: { fill: "white", fontWeight: "bold" },
                             data: { strokeWidth: 0.5, stroke: 'black' }
                         }}
                     />
@@ -320,9 +318,9 @@ function ProfileScreen({ ...props }) {
                 </View>
 
                 <View style={{ ...styles.reportsList, height: 500, marginBottom: 40 }}>
-                    <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                        <Icon name="medal" type="font-awesome-5" size={20} style={{ marginLeft: 5, color: colors.textColor }} />
-                        <Text style={{ fontSize: 24, fontWeight: "bold", marginLeft: 5, color: colors.textColor }}>Realizările mele</Text>
+                    <View style={styles.rowArange}>
+                        <Icon name="medal" type="font-awesome-5" size={20} style={styles.arangeIcon} />
+                        <Text style={styles.sectionHeaderText}>Realizările mele</Text>
                     </View>
 
                     <View style={styles.achievementsContainer}>
@@ -510,13 +508,8 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         paddingLeft: 15,
         alignItems: "flex-start",
     },
-    cardText1: {
+    cardText: {
         fontSize: 11,
-        fontWeight: "bold",
-        color: colors.white
-    },
-    cardText2: {
-        fontSize: 18,
         fontWeight: "bold",
         color: colors.white
     },
@@ -526,7 +519,6 @@ const styleSheetFactory = (colors) => StyleSheet.create({
     },
     textLegend: {
         color: colors.textColor,
-        fontSize: 14,
         fontWeight: "bold"
     },
     flatListItem: {
@@ -571,6 +563,49 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         },
         shadowOpacity: 0.29,
         shadowRadius: 4.65,
+    },
+    circleLegend: {
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        elevation: 4,
+    },
+    solved: {
+        borderWidth: 3,
+        borderColor: 'green',
+        overflow: 'hidden'
+    },
+    rowArange: {
+        flexDirection: 'row',
+        alignItems: "center",
+    },
+    arrowUp: {
+        marginRight: 10,
+        marginLeft: 2,
+        color: colors.textColor
+    },
+    scrollView: {
+        flex: 1,
+        width: '100%',
+        height: '100%'
+    },
+    textDefault: {
+        fontWeight: "bold",
+        color: colors.textColor
+    },
+    sectionHeaderText: {
+        fontSize: 24,
+        fontWeight: "bold",
+        marginLeft: 5,
+        color: colors.textColor
+    },
+    arangeIcon: {
+        marginLeft: 5,
+        color: colors.textColor
+    },
+    divider: {
+        flexDirection: 'column',
+        backgroundColor: colors.textGray
     }
 })
 
