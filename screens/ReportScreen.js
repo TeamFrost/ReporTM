@@ -174,8 +174,6 @@ function ReportScreen({ ...props }) {
                     takePicture()
                 } else if (buttonIndex === 1) {
                     pickImage()
-                } else if (buttonIndex === 2) {
-                    //cancel
                 }
             },
         );
@@ -196,8 +194,6 @@ function ReportScreen({ ...props }) {
             aspect: [1, 1],
             quality: 1,
         });
-        // console.log("Camera")
-        // console.log(result);
 
         if (!result.cancelled) {
             setDividerColor('green')
@@ -212,23 +208,12 @@ function ReportScreen({ ...props }) {
 
     const pickImage = async () => {
 
-        // (async () => {
-        //     if (Platform.OS !== 'web') {
-        //         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        //         if (status !== 'granted') {
-        //             alert('Sorry, we need camera roll permissions to make this work!');
-        //         }
-        //     }
-        // })();
-
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [1, 1],
             quality: 1,
         });
-        // console.log("Library")
-        // console.log(result);
 
         if (!result.cancelled) {
             setDividerColor('green')
@@ -270,6 +255,7 @@ function ReportScreen({ ...props }) {
                         coordinates: coords,
                         description: description,
                         image: imageURL,
+                        solved: false,
                         timestamp: timestamp,
                         upvotes: [],
                     }
