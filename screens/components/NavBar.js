@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableHighlight } from "react-native";
-// import Icon from 'react-native-vector-icons/Ionicons';
 import { DrawerActions } from '@react-navigation/native';
-import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import { themeColors } from "../../helpers/style";
+
+import HomeIcon from '../../assets/NavbarIcons/homeIcon';
+import DrawerIcon from '../../assets/NavbarIcons/drawerIcon';
 
 const mapStateToProps = (state) => ({ theme: state.theme });
 
@@ -27,34 +28,19 @@ function NavBar({ ...props }) {
 
     return (
         <View style={styles.bottomMenu}>
-            <TouchableHighlight
-                // onPress={() => console.log('PressedMenu!')}
-                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-                style={{ flex: 1 }}>
-                <View style={styles.bottomMenuTouchable}>
-                    <Icon
-                        name='bars'
-                        type="font-awesome"
-                        size={30}
 
-                        color={colors.navIconColor}
-                        style={{ marginRight: 25 }}
-                    />
-                </View>
+            <TouchableHighlight
+                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+                style={styles.bottomMenuTouchable}
+                underlayColor={"#C4C4C4"}>
+                <DrawerIcon fill={colors.navIconColor} style={{ marginRight: 25 }} />
             </TouchableHighlight>
 
             <TouchableHighlight
                 onPress={() => navigation.navigate('Home')}
-                style={{ flex: 1 }}>
-                <View style={styles.bottomMenuTouchable}>
-                    <Icon
-                        name='home'
-                        type="font-awesome"
-                        size={32}
-                        color={colors.navIconColor}
-                        style={{ marginLeft: 25 }}
-                    />
-                </View>
+                style={styles.bottomMenuTouchable}
+                underlayColor={"#C4C4C4"}>
+                <HomeIcon fill={colors.navIconColor} style={{ marginLeft: 30 }} />
             </TouchableHighlight>
         </View>
     );
