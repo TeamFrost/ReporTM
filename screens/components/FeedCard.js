@@ -26,7 +26,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({ restoreSession: () => dispatch(restoreSession()) });
 
-function FeedCard({ userName, userAvatar, adress, time, photo, description, upvotes, tag, color, id, author, ...props }) {
+function FeedCard({ userName, userAvatar, adress, time, photo, description, upvotes, tag, color, id, author, solved, ...props }) {
 
     const { showActionSheetWithOptions } = useActionSheet();
 
@@ -60,8 +60,8 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
             const cancelButtonIndex = 2;
             const title = "Ce acțiune dorești să execuți?"
             const icons = [<SolvedIcon />, <DeleteIcon style={{ marginLeft: 2 }} />, <CancelIcon />]
-            const containerStyle = [{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }]
-            const textStyle = [{ marginLeft: -15 }]
+            const containerStyle = [styles.bottomSheetContainer]
+            const textStyle = [{ marginLeft: -15, marginBottom: 2 }]
             const userInterfaceStyle = theme === themeColors.themeLight ? "light" : "dark";
 
             showActionSheetWithOptions(
@@ -77,7 +77,7 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
                 },
                 buttonIndex => {
                     if (buttonIndex === 0) {
-                        console.log("Marcata!")
+                        solvePostConfirm()
                     } else if (buttonIndex === 1) {
                         deletePostConfirm()
                     }
@@ -89,8 +89,8 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
             const cancelButtonIndex = 3;
             const title = "De ce vrei să raportezi această postare?"
             const icons = [<WrongInfo />, <WrongPhoto />, <WrongTag />, <CancelIcon />]
-            const containerStyle = [{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }]
-            const textStyle = [{ marginLeft: -15 }]
+            const containerStyle = [styles.bottomSheetContainer]
+            const textStyle = [{ marginLeft: -15, marginBottom: 2 }]
             const userInterfaceStyle = theme === themeColors.themeLight ? "light" : "dark";
 
             showActionSheetWithOptions(
@@ -120,12 +120,18 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
         const options = ['Da', 'Nu'];
         const destructiveButtonIndex = 0;
         const title = "Ești sigur că dorești să ștergi postarea?"
+        const containerStyle = [styles.bottomSheetContainer]
+        const icons = [<SolvedIcon fill={"#d32f2f"} />, <CancelIcon />]
+        const textStyle = [{ marginLeft: -15, marginBottom: 2 }]
 
         showActionSheetWithOptions(
             {
                 title,
                 options,
                 destructiveButtonIndex,
+                containerStyle,
+                icons,
+                textStyle,
             },
             buttonIndex => {
                 if (buttonIndex === 0) {
@@ -146,10 +152,53 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
             });
     }
 
+    const solvePostConfirm = () => {
+        const options = ['Da', 'Nu'];
+        const destructiveButtonIndex = 0;
+        const title = "Ești sigur că dorești să marchezi această postare ca rezolvată?"
+        const containerStyle = [styles.bottomSheetContainer]
+        const icons = [<SolvedIcon fill={"#d32f2f"} />, <CancelIcon />]
+        const textStyle = [{ marginLeft: -15, marginBottom: 2 }]
+
+        showActionSheetWithOptions(
+            {
+                title,
+                options,
+                destructiveButtonIndex,
+                containerStyle,
+                icons,
+                textStyle,
+            },
+            buttonIndex => {
+                if (buttonIndex === 0) {
+                    solvePost()
+                } else if (buttonIndex === 1) {
+                    handleOptionsPress()
+                }
+            },
+        );
+    }
+
+    const solvePost = () => {
+        firebase.firestore().collection('reports').doc(tag).collection('sub_reports').doc(id).update({
+            solved: true,
+        })
+            .then(() => {
+                console.log("Document successfully updated!");
+            }).catch((error) => {
+                console.error("Error updateing document: ", error);
+            });
+    }
+
     const reportPost = (reason) => {
+
+        const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+
         firebase.firestore().collection('reportedPosts').add({
             postId: id,
-            reason: reason
+            reason: reason,
+            reporterId: currentUserId,
+            reportTime: timestamp,
         })
             .then((docRef) => {
                 console.log("Document written with ID: ", docRef.id);
@@ -207,8 +256,40 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
         }
     }
 
+    const iconSolvedSelector = () => {
+        if (solved) {
+            return (
+                <View style={styles.solvedView}>
+                    <Text style={styles.solveText}>Rezolvat</Text>
+                </View>
+            )
+        }
+        else {
+            if (currentUserId === author) {
+                return (
+                    <TouchableHighlight
+                        underlayColor="#eeeeee"
+                        style={styles.actionIcons}
+                        onPress={() => handleOptionsPress()}
+                    >
+                        <Icon name='ellipsis-h' size={20} style={{ color: colors.textColor }} />
+                    </TouchableHighlight>
+                )
+            }
+            else return (
+                <TouchableHighlight
+                    underlayColor="#eeeeee"
+                    style={styles.actionIcons}
+                    onPress={() => handleOptionsPress()}
+                >
+                    <ReportFeedIcon fill={colors.textColor} />
+                </TouchableHighlight>
+            )
+        }
+    }
+
     return (
-        <View style={styles.card}>
+        <View style={[styles.card, solved && styles.solved]}>
             <View style={styles.cardHeader}>
                 <View style={styles.cardHeaderLeft}>
                     <Avatar.Image size={50} source={userAvatar} />
@@ -216,7 +297,7 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
                         <Text style={styles.usernameText}>{userName}</Text>
                         <View style={styles.cardFooterLeft}>
                             <Icon name='map-marker-alt' type="font-awesome-5" size={10} style={{ paddingRight: 7, color: colors.textColor }} />
-                            <Text style={{ fontSize: 12, color: colors.textColor }}>{adress}</Text>
+                            <Text numberOfLines={1} ellipsizeMode={'middle'} style={{ fontSize: 12, color: colors.textColor, width: screenWidth / 10 * 4, }}>{adress}</Text>
                         </View>
                         <View style={styles.cardFooterLeft}>
                             <Icon name='clock' type="font-awesome-5" size={10} style={{ paddingRight: 5, marginLeft: -1, color: colors.textGray }} />
@@ -225,14 +306,7 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
                     </View>
                 </View>
                 <View style={styles.cardHeaderRight}>
-                    <TouchableHighlight underlayColor="#eeeeee"
-                        style={{ height: '50%', alignItems: "center", justifyContent: 'center', width: 40, borderRadius: 20 }} onPress={() => handleOptionsPress()} >
-                        {
-                            currentUserId === author ?
-                                <Icon name='ellipsis-h' size={20} style={{ color: colors.textColor }} /> :
-                                <ReportFeedIcon fill={colors.textColor} />
-                        }
-                    </TouchableHighlight>
+                    {iconSolvedSelector()}
                 </View>
             </View>
 
@@ -296,7 +370,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         borderRadius: 20,
         margin: 10,
         width: "85%",
-        height: 275,
+        height: 280,
         backgroundColor: colors.feedCards,
         elevation: 5,
         shadowColor: "#000",
@@ -320,6 +394,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
 
     },
     cardHeaderText: {
+        width: screenWidth / 10 * 4.6,
         justifyContent: "center",
         alignItems: "flex-start",
         paddingLeft: 10,
@@ -342,7 +417,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         width: screenWidth > 400 ? screenWidth / 2.7 : screenWidth / 2.8,
     },
     cardFooter: {
-        height: 35,
+        height: 40,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -355,7 +430,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         alignItems: "center",
         flexDirection: "row",
         backgroundColor: colors.tooltipWhite,
-        marginTop: 2,
+        marginTop: 1,
         borderRadius: 20,
         padding: 5,
         paddingHorizontal: 10,
@@ -420,6 +495,33 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         backgroundColor: colors.backgroundColor,
         borderRadius: 5,
         elevation: 5
+    },
+    solved: {
+        borderWidth: 3,
+        borderColor: "#39AA45",
+    },
+    actionIcons: {
+        width: 40,
+        height: '50%',
+        alignItems: "center",
+        justifyContent: 'center',
+        borderRadius: 20
+    },
+    solvedView: {
+        width: 75,
+        height: 30,
+        alignItems: "center",
+        justifyContent: 'center',
+        borderRadius: 10,
+        backgroundColor: 'green',
+    },
+    bottomSheetContainer: {
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20
+    },
+    solveText: {
+        color: "#FFF",
+        fontSize: 13
     }
 })
 
