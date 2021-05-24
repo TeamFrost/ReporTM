@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
-import MapView, { Marker } from 'react-native-maps';
 import { Image, View, StyleSheet, ScrollView, TouchableOpacity, Text, Platform } from "react-native";
+import MapView, { Marker } from 'react-native-maps';
 import { SearchBar } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
@@ -9,8 +9,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Callout } from 'react-native-maps';
 import { Svg, Image as ImageSvg } from 'react-native-svg';
 
-import NavBar from './components/NavBar'
 import { screenHeight, screenWidth, mapStyle, themeColors } from "../helpers/style";
+import NavBar from './components/NavBar'
 import Map from "../assets/Map.svg";
 import { watchReportsData } from '../redux/actions/reports/reports';
 import { category } from '../helpers/category';

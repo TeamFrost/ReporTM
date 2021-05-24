@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
 import { connect } from 'react-redux';
 
 import { colors, screenHeight } from "../helpers/style";

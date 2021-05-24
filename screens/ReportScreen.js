@@ -9,10 +9,10 @@ import { LogBox } from 'react-native';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Random from 'expo-random';
-import moment from 'moment';
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import * as ImagePicker from 'expo-image-picker';
 import MapView, { Marker } from 'react-native-maps';
+import moment from 'moment';
 
 import { firebase } from '../config/firebaseConfig';
 import { category } from '../helpers/category';

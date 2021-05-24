@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Text, View, StyleSheet, Image, TouchableHighlight, } from "react-native";
+import { Text, View, StyleSheet, TouchableHighlight, } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Linking from 'expo-linking';
 import { connect } from 'react-redux';
-
 
 import NavBar from '../screens/components/NavBar'
 import { screenHeight, themeColors } from "../helpers/style";

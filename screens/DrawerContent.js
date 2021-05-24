@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
 import { View, Text, StyleSheet, Switch, Platform } from "react-native";
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Avatar, Caption } from 'react-native-paper';
 import { Icon } from 'react-native-elements';
-import { StatusBar } from "expo-status-bar";
 import { connect } from 'react-redux';
 import { DrawerActions } from '@react-navigation/native';
 
