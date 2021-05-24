@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StatusBar } from "expo-status-bar";
 import { Text, View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { Input } from 'react-native-elements';
@@ -41,6 +41,7 @@ const renderItem = ({ item }) => {
             tag={item.parent}
             color={item.color}
             author={item.author}
+            solved={item.solved}
         />
     );
 }
@@ -57,6 +58,8 @@ function FeedScreen({ ...props }) {
 
     const [search, setSearch] = useState('')
 
+    const flatListRef = useRef()
+
     useEffect(() => {
         if (theme) {
             setColors(theme.theme)
@@ -66,6 +69,9 @@ function FeedScreen({ ...props }) {
     }, [theme])
 
     const handleRecentPress = () => {
+
+        flatListRef.current.scrollToOffset({ animated: true, offset: 0 })
+
         if (popularToggle) setPopularToggle(!popularToggle);
         if (recentToggle) {
             setRecentToggle(false)
@@ -78,6 +84,9 @@ function FeedScreen({ ...props }) {
     }
 
     const handlePopularPress = () => {
+
+        flatListRef.current.scrollToOffset({ animated: true, offset: 0 })
+
         if (recentToggle) setRecentToggle(!recentToggle);
 
         if (popularToggle) {
@@ -155,6 +164,7 @@ function FeedScreen({ ...props }) {
 
             <View style={styles.mainPage}>
                 <FlatList
+                    ref={flatListRef}
                     data={reports}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id}
