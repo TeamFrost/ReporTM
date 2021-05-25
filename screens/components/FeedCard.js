@@ -439,7 +439,6 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         marginLeft: 4,
         borderWidth: 1,
         borderColor: colors.darkPurple,
-        elevation: 1,
     },
     rightBottomTag: {
         width: 110,
@@ -498,7 +497,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
     },
     solved: {
         borderWidth: 3,
-        borderColor: "#39AA45",
+        borderColor: colors.upvotePressed,
     },
     actionIcons: {
         width: 40,
@@ -513,7 +512,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center',
         borderRadius: 10,
-        backgroundColor: 'green',
+        backgroundColor: colors.upvotePressed,
     },
     bottomSheetContainer: {
         borderTopLeftRadius: 20,

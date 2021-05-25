@@ -572,7 +572,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
     },
     solved: {
         borderWidth: 3,
-        borderColor: 'green',
+        borderColor: colors.upvotePressed,
         overflow: 'hidden'
     },
     rowArange: {
