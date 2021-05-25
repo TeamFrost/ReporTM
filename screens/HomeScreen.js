@@ -63,7 +63,7 @@ function HomeScreen({ ...props }) {
                 <TouchableHighlight
                     onPress={() => navigation.navigate('Map')}
                     underlayColor={colors.pressedHomeCardsColor}
-                    style={{ borderRadius: 20 }}
+                    style={styles.card}
                 >
                     <View style={styles.paper}>
                         <Map width={50} height={50} style={styles.iconPaper} />
@@ -76,7 +76,7 @@ function HomeScreen({ ...props }) {
                 <TouchableHighlight
                     onPress={() => navigation.navigate('Report')}
                     underlayColor={colors.pressedHomeCardsColor}
-                    style={{ borderRadius: 20 }}
+                    style={styles.card}
                 >
                     <View style={styles.paper}>
                         <Report width={50} height={50} style={styles.iconPaper} />
@@ -92,7 +92,7 @@ function HomeScreen({ ...props }) {
                 <TouchableHighlight
                     onPress={() => navigation.navigate('Feed')}
                     underlayColor={colors.pressedHomeCardsColor}
-                    style={{ borderRadius: 20 }}
+                    style={styles.card}
                 >
                     <View style={styles.paper}>
                         <Feed width={50} height={50} style={styles.iconPaper} />
@@ -105,7 +105,7 @@ function HomeScreen({ ...props }) {
                 <TouchableHighlight
                     onPress={() => navigation.navigate('Profile')}
                     underlayColor={colors.pressedHomeCardsColor}
-                    style={{ borderRadius: 20 }}
+                    style={styles.card}
                 >
                     <View style={styles.paper}>
                         <Profile width={50} height={50} style={styles.iconPaper} />
@@ -120,7 +120,7 @@ function HomeScreen({ ...props }) {
                 <TouchableHighlight
                     onPress={() => navigation.navigate('Settings')}
                     underlayColor={colors.pressedHomeCardsColor}
-                    style={{ borderRadius: 20 }}
+                    style={styles.card}
                 >
                     <View style={styles.paper}>
                         <Settings width={50} height={50} style={styles.iconPaper} />
@@ -132,7 +132,7 @@ function HomeScreen({ ...props }) {
                 <TouchableHighlight
                     onPress={() => navigation.navigate('Help')}
                     underlayColor={colors.pressedHomeCardsColor}
-                    style={{ borderRadius: 20 }}
+                    style={styles.card}
                 >
                     <View style={styles.paper}>
                         <Help width={50} height={50} style={styles.iconPaper} />
@@ -223,6 +223,9 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         fontWeight: "bold",
         marginTop: 5
     },
+    card: {
+        borderRadius: 20
+    }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

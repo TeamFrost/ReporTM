@@ -7,7 +7,6 @@ import { Input } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Divider } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { useActionSheet } from '@expo/react-native-action-sheet'
 import ActionSheet from "react-native-actions-sheet";
 import * as ImagePicker from 'expo-image-picker';
 import * as Random from 'expo-random';
@@ -39,8 +38,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 function SettingsScreen({ ...props }) {
-
-    const { showActionSheetWithOptions } = useActionSheet();
 
     const { user, restoreSession, doneFetching, theme, changeTheme, dark } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
@@ -126,28 +123,6 @@ function SettingsScreen({ ...props }) {
 
     const togglePicker = () => {
         setPickerVisibility(!pickerVisibility)
-    }
-
-    const chooseImage = () => {
-
-        const options = ['Take Photo...', 'Choose from gallery...', 'Cancel'];
-        const cancelButtonIndex = 2;
-
-        showActionSheetWithOptions(
-            {
-                options,
-                cancelButtonIndex,
-            },
-            buttonIndex => {
-                if (buttonIndex === 0) {
-                    takePicture()
-                } else if (buttonIndex === 1) {
-                    pickImage()
-                } else if (buttonIndex === 2) {
-                    //cancel
-                }
-            },
-        );
     }
 
     const takePicture = async () => {
@@ -278,19 +253,19 @@ function SettingsScreen({ ...props }) {
                         >
                             Încarcă o poză de profil
                             </Text>
-                        <Icon name='camera' type="font-awesome-5" size={14} style={{ marginLeft: 5, marginTop: 2, color: colors.textGray }} />
+                        <Icon name='camera' type="font-awesome-5" size={14} style={styles.cameraIcon} />
                     </View>
                 </View>
 
                 <View style={{ ...styles.nameDiv, marginTop: 10 }}>
                     <Text style={styles.nameText}>Schimbă numele</Text>
-                    <Text style={{ marginLeft: 8, color: colors.textColor }}>Numele tau curent este: {username}</Text>
+                    <Text style={styles.defaultText}>Numele tau curent este: {username}</Text>
                     <Input
                         placeholder='Scrie aici noul nume'
                         onChangeText={(text) => setNewName(text)}
                         value={newName}
-                        inputStyle={{ fontStyle: 'italic', color: colors.textColor }}
-                        containerStyle={{ height: 65 }}
+                        inputStyle={styles.inputStyle}
+                        containerStyle={styles.inputContainerStyle}
                     />
                     <TouchableOpacity style={styles.confirmButton} onPress={changeName}>
                         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={{ ...styles.confirmButton, width: '100%' }}>
@@ -308,9 +283,9 @@ function SettingsScreen({ ...props }) {
                         placeholder='Parola veche'
                         onChangeText={(text) => setOldPass(text)}
                         value={oldPass}
-                        inputStyle={{ fontStyle: 'italic', color: colors.textColor }}
+                        inputStyle={styles.inputStyle}
                         secureTextEntry={true}
-                        containerStyle={{ height: 65 }}
+                        containerStyle={styles.inputContainerStyle}
                     />
                     <Input
                         placeholder='Parola nouă'
@@ -322,8 +297,8 @@ function SettingsScreen({ ...props }) {
                         onChangeText={(text) => setNewPass(text)}
                         value={newPass}
                         secureTextEntry={true}
-                        inputStyle={{ fontStyle: 'italic', color: colors.textColor }}
-                        containerStyle={{ height: 65 }}
+                        inputStyle={styles.inputStyle}
+                        containerStyle={styles.inputContainerStyle}
                     />
                     <Input
                         placeholder='Confirmă parola nouă'
@@ -335,8 +310,8 @@ function SettingsScreen({ ...props }) {
                         onChangeText={(text) => setNewPassConfirm(text)}
                         value={newPassConfirm}
                         secureTextEntry={true}
-                        inputStyle={{ fontStyle: 'italic', color: colors.textColor }}
-                        containerStyle={{ height: 65 }}
+                        inputStyle={styles.inputStyle}
+                        containerStyle={styles.inputContainerStyle}
 
                     />
                     <TouchableOpacity style={styles.confirmButton} onPress={changePass}>
@@ -351,7 +326,7 @@ function SettingsScreen({ ...props }) {
                 <View style={{ ...styles.nameDiv, justifyContent: 'flex-start', height: screenHeight / 2.8 }}>
                     <Text style={{ ...styles.nameText, marginTop: 20 }}>Notificări</Text>
                     <View style={styles.switchDiv}>
-                        <Text style={{ marginLeft: 8, color: colors.textColor }}>Vreau să primesc notificări de la aplicație</Text>
+                        <Text style={styles.defaultText}>Vreau să primesc notificări de la aplicație</Text>
                         <Switch
                             style={{ transform: Platform.OS ? 'andriod'[{ scaleX: 1.3 }, { scaleY: 1.3 }] : [{ scaleX: 1 }, { scaleY: 1 }] }}
                             trackColor={{ false: "#767577", true: "#34C759" }}
@@ -364,7 +339,7 @@ function SettingsScreen({ ...props }) {
 
                     <Text style={{ ...styles.nameText, marginTop: 5 }}>Dark mode</Text>
                     <View style={styles.switchDiv}>
-                        <Text style={{ marginLeft: 8, color: colors.textColor }}>Activează modul întunecat</Text>
+                        <Text style={styles.defaultText}>Activează modul întunecat</Text>
                         <Switch
                             style={{ transform: Platform.OS ? 'andriod'[{ scaleX: 1.3 }, { scaleY: 1.3 }] : [{ scaleX: 1 }, { scaleY: 1 }] }}
                             trackColor={{ false: "#767577", true: "#34C759" }}
@@ -501,7 +476,6 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         marginTop: 10
     },
     avatarText: {
-        fontSize: 14,
         textDecorationLine: 'underline',
         color: colors.textGray
     },
@@ -528,7 +502,6 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         marginTop: 5
     },
     buttonText: {
-        fontSize: 14,
         color: colors.white,
         fontWeight: "bold",
     },
@@ -557,13 +530,6 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         marginBottom: "7%",
         width: "95%",
         alignSelf: "center"
-    },
-    bottomSheetButton: {
-        height: 70,
-        width: 70,
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 35,
     },
     bottomSheetButton2: {
         height: 90,
@@ -606,6 +572,22 @@ const styleSheetFactory = (colors) => StyleSheet.create({
     bottomSheetView: {
         height: "60%",
         alignItems: "center",
+    },
+    cameraIcon: {
+        marginLeft: 5,
+        marginTop: 2,
+        color: colors.textGray
+    },
+    inputStyle: {
+        fontStyle: 'italic',
+        color: colors.textColor
+    },
+    inputContainerStyle: {
+        height: 65
+    },
+    defaultText: {
+        marginLeft: 8,
+        color: colors.textColor
     }
 })
 

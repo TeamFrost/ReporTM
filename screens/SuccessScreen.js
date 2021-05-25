@@ -63,7 +63,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         justifyContent: "flex-start",
     },
     confirmButton: {
-        height: 45,
+        height: 50,
         borderRadius: 18,
         justifyContent: 'center',
         width: '100%',

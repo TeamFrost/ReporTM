@@ -147,9 +147,9 @@ function RegisterScreen({ ...props }) {
                         leftIcon={<LockIcon />}
                         rightIcon={textSecurity ? <EyeIcon onPress={handleEyeOnPress} /> : <EyeCloseIcon onPress={handleEyeOnPress} />}
                     />
-                    <View style={{ alignItems: 'flex-start', justifyContent: 'center', flexDirection: "row", marginTop: '-4%', height: 60 }}>
+                    <View style={styles.textInfo}>
                         <InfoIcon marginTop={1} />
-                        <Text style={{ fontSize: 14, color: colors.textGray, }}> Parola trebuie să conțină minim 6 caractere.</Text>
+                        <Text style={{ color: colors.textGray }}> Parola trebuie să conțină minim 6 caractere.</Text>
                     </View>
 
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.button}>
@@ -243,6 +243,13 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center"
+    },
+    textInfo: {
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        flexDirection: "row",
+        marginTop: '-4%',
+        height: 60
     }
 })
 
