@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import { StatusBar } from "expo-status-bar";
 import { Text, View, StyleSheet, TouchableOpacity, Switch, Modal, Platform, TouchableHighlight } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -8,6 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Divider } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { useActionSheet } from '@expo/react-native-action-sheet'
+import ActionSheet from "react-native-actions-sheet";
 import * as ImagePicker from 'expo-image-picker';
 import * as Random from 'expo-random';
 import moment from 'moment';
@@ -22,6 +23,8 @@ import NavBar from '../screens/components/NavBar'
 import ProfilePlus from '../assets/ProfilePlus.svg'
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
+import AddPhoto from '../assets/ActionSheetIcons/AddPhoto.js';
+import ChoosePhoto from '../assets/ActionSheetIcons/ChoosePhoto.js';
 
 const mapStateToProps = (state) => ({
     user: state.auth.user,
@@ -55,6 +58,8 @@ function SettingsScreen({ ...props }) {
     const [isSwitchDark, setIsSwitchDark] = useState(dark)
     const [value, setValueState] = useState('Română');
     const [pickerVisibility, setPickerVisibility] = useState(false)
+
+    const actionSheetRefPhoto = createRef();
 
     useEffect(() => {
         if (user) {
@@ -160,8 +165,6 @@ function SettingsScreen({ ...props }) {
             aspect: [4, 3],
             quality: 1,
         });
-        // console.log("Camera")
-        // console.log(result);
 
         if (!result.cancelled) {
             let image = result.uri;
@@ -173,23 +176,12 @@ function SettingsScreen({ ...props }) {
 
     const pickImage = async () => {
 
-        // (async () => {
-        //     if (Platform.OS !== 'web') {
-        //         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        //         if (status !== 'granted') {
-        //             alert('Sorry, we need camera roll permissions to make this work!');
-        //         }
-        //     }
-        // })();
-
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
         });
-        // console.log("Library")
-        // console.log(result);
 
         if (!result.cancelled) {
             let image = result.uri;
@@ -265,7 +257,6 @@ function SettingsScreen({ ...props }) {
         else {
             changeTheme(themeColors.themeLight)
         }
-        // setIsSwitchDark(dark)
     }
 
     return (
@@ -281,7 +272,9 @@ function SettingsScreen({ ...props }) {
                     <View style={styles.avatarTextDiv}>
                         <Text
                             style={styles.avatarText}
-                            onPress={chooseImage}
+                            onPress={() => {
+                                actionSheetRefPhoto.current.setModalVisible();
+                            }}
                         >
                             Încarcă o poză de profil
                             </Text>
@@ -294,16 +287,10 @@ function SettingsScreen({ ...props }) {
                     <Text style={{ marginLeft: 8, color: colors.textColor }}>Numele tau curent este: {username}</Text>
                     <Input
                         placeholder='Scrie aici noul nume'
-                        // rightIcon={<Icon
-                        //     name='check'
-                        //     size={16}
-                        //     color={colors.textGray}
-                        // />}
                         onChangeText={(text) => setNewName(text)}
                         value={newName}
                         inputStyle={{ fontStyle: 'italic', color: colors.textColor }}
                         containerStyle={{ height: 65 }}
-                    // errorMessage='ENTER A VALID NAME HERE'
                     />
                     <TouchableOpacity style={styles.confirmButton} onPress={changeName}>
                         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={{ ...styles.confirmButton, width: '100%' }}>
@@ -319,11 +306,6 @@ function SettingsScreen({ ...props }) {
                     <Text style={styles.nameText}>Schimbă parola</Text>
                     <Input
                         placeholder='Parola veche'
-                        // rightIcon={<Icon
-                        //     name='check'
-                        //     size={16}
-                        //     color={colors.textGray}
-                        // />}
                         onChangeText={(text) => setOldPass(text)}
                         value={oldPass}
                         inputStyle={{ fontStyle: 'italic', color: colors.textColor }}
@@ -449,6 +431,34 @@ function SettingsScreen({ ...props }) {
                     </Modal>
                 </View>
 
+                <ActionSheet ref={actionSheetRefPhoto} containerStyle={styles.bottomSheetContainerStyle}>
+                    <View style={{ ...styles.bottomSheetView, height: '48%' }}>
+                        <Text style={styles.textBottom}>Alege una dintre optiunile</Text>
+                        <View style={styles.bottomSheetRow}>
+                            <View style={styles.bottomSheetOrganizer2}>
+                                <TouchableOpacity style={{ ...styles.bottomSheetButton2, backgroundColor: "#BB6BD9" }}
+                                    onPress={() => {
+                                        takePicture();
+                                        actionSheetRefPhoto.current.hide();
+                                    }}>
+                                    <AddPhoto />
+                                </TouchableOpacity>
+                                <Text style={styles.bottomSheetText}>Deschide camera</Text>
+                            </View>
+                            <View style={styles.bottomSheetOrganizer2}>
+                                <TouchableOpacity style={{ ...styles.bottomSheetButton2, backgroundColor: "#793BB2" }}
+                                    onPress={() => {
+                                        pickImage();
+                                        actionSheetRefPhoto.current.hide();
+                                    }}>
+                                    <ChoosePhoto />
+                                </TouchableOpacity>
+                                <Text style={styles.bottomSheetText}>Alege din galerie</Text>
+                            </View>
+                        </View>
+                    </View>
+                </ActionSheet>
+
             </KeyboardAwareScrollView>
             <NavBar />
             <StatusBar style="auto" />
@@ -548,6 +558,55 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         width: "95%",
         alignSelf: "center"
     },
+    bottomSheetButton: {
+        height: 70,
+        width: 70,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 35,
+    },
+    bottomSheetButton2: {
+        height: 90,
+        width: 90,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 45,
+    },
+    bottomSheetRow: {
+        flexDirection: 'row',
+        width: '100%',
+        height: 120,
+        alignItems: "center",
+        justifyContent: "space-evenly",
+        paddingTop: 10,
+    },
+    bottomSheetText: {
+        textAlign: 'center',
+        paddingTop: 5,
+        color: colors.textColor
+    },
+    bottomSheetOrganizer2: {
+        width: 120,
+        height: 120,
+        alignItems: "center",
+        textAlign: 'center',
+        marginTop: "5%",
+    },
+    textBottom: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginTop: "5%",
+        color: colors.textColor
+    },
+    bottomSheetContainerStyle: {
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        backgroundColor: colors.modalColor
+    },
+    bottomSheetView: {
+        height: "60%",
+        alignItems: "center",
+    }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);

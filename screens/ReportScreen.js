@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, createRef } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TouchableHighlight, Modal, TextInput, Platform } from "react-native";
+import { StyleSheet, Text, View, TouchableHighlight, TextInput, Platform, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
+import Icon5 from 'react-native-vector-icons/FontAwesome5';
 import { Divider } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as Location from 'expo-location';
@@ -12,6 +13,7 @@ import * as Random from 'expo-random';
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import * as ImagePicker from 'expo-image-picker';
 import MapView, { Marker } from 'react-native-maps';
+import ActionSheet from "react-native-actions-sheet";
 import moment from 'moment';
 
 import { firebase } from '../config/firebaseConfig';
@@ -22,6 +24,8 @@ import NavBar from './components/NavBar';
 import Report from "../assets/Report.svg"
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
+import AddPhoto from '../assets/ActionSheetIcons/AddPhoto.js';
+import ChoosePhoto from '../assets/ActionSheetIcons/ChoosePhoto.js';
 
 const mapStateToProps = (state) => ({
     currentUser: state.auth.user,
@@ -30,13 +34,10 @@ const mapStateToProps = (state) => ({
 
 function ReportScreen({ ...props }) {
 
-    const { showActionSheetWithOptions } = useActionSheet();
-
     const { currentUser, navigation, theme } = props;
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
-    const [pickerVisibility, setPickerVisibility] = useState(false)
     const [value, setValueState] = useState('');
     const [color, setColor] = useState('');
     const [description, setDescriptionState] = useState('');
@@ -60,6 +61,11 @@ function ReportScreen({ ...props }) {
     const [iconColor, setIconColor] = useState(colors.backgroundColor)
 
     const mapRef = useRef();
+    const actionSheetRef = createRef();
+    const actionSheetRefPhoto = createRef();
+
+    const firstHalf = category.slice(0, 3);
+    const secondHalf = category.slice(3, 6);
 
     useEffect(() => {
         if (props.route.params) {
@@ -155,30 +161,6 @@ function ReportScreen({ ...props }) {
         changeRegion(coords);
     }
 
-    const togglePicker = () => {
-        setPickerVisibility(!pickerVisibility)
-    }
-
-    const chooseImage = () => {
-
-        const options = ['Take Photo...', 'Choose from gallery...', 'Cancel'];
-        const cancelButtonIndex = 2;
-
-        showActionSheetWithOptions(
-            {
-                options,
-                cancelButtonIndex,
-            },
-            buttonIndex => {
-                if (buttonIndex === 0) {
-                    takePicture()
-                } else if (buttonIndex === 1) {
-                    pickImage()
-                }
-            },
-        );
-    }
-
     const takePicture = async () => {
         (async () => {
             if (Platform.OS !== 'web') {
@@ -216,9 +198,9 @@ function ReportScreen({ ...props }) {
         });
 
         if (!result.cancelled) {
-            setDividerColor('green')
+            setDividerColor('#6CAF5F')
             setDividerHeight(2)
-            setIconColor('green')
+            setIconColor('#6CAF5F')
             let image = result.uri;
             setImage(image);
             let imageName = moment(Date.parse(new Date())).format().toString() + '-' + Random.getRandomBytes(1).toString();
@@ -332,57 +314,12 @@ function ReportScreen({ ...props }) {
                             name="md-arrow-dropdown"
                             size={35}
                             color={colors.textColor}
-                            onPress={() => togglePicker()}
+                            onPress={() => {
+                                actionSheetRef.current.setModalVisible();
+                            }}
                         />
                     </View>
                     <Divider style={styles.divider} />
-                    <Modal visible={pickerVisibility} animationType={"slide"} transparent={true}>
-                        <View style={{
-                            alignSelf: "center",
-                            margin: 20, padding: 20,
-                            backgroundColor: colors.modalColor,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            position: 'absolute',
-                            top: "48%",
-                            width: "80%",
-
-                        }}>
-                            <Text style={{ color: colors.modalTextHelp }}>Selectează o categorie</Text>
-                            {category.map((value, index) => {
-                                return <TouchableHighlight
-                                    key={index}
-                                    underlayColor={colors.homeCardsColor}
-                                    onPress={() => {
-                                        setValueState(value.value);
-                                        setTitle(value.title);
-                                        setColor(value.color);
-                                        togglePicker()
-                                    }}
-                                    style={{
-                                        padding: 6,
-                                        width: "80%",
-                                        alignItems: "center",
-                                        borderRadius: 20,
-                                    }}
-                                >
-                                    <Text style={{ fontSize: 18, color: colors.textColor }}>{value.title}</Text>
-                                </TouchableHighlight>
-                            })}
-                            <TouchableHighlight
-                                underlayColor='none'
-                                onPress={() =>
-                                    togglePicker()
-                                }
-                                style={{
-                                    paddingTop: 4,
-                                    paddingBottom: 4
-                                }}
-                            >
-                                <Text style={{ color: colors.modalCancel, fontSize: 18 }}>Cancel</Text>
-                            </TouchableHighlight>
-                        </View>
-                    </Modal>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.section}>Incarcă o fotografie</Text>
                         <Icon style={styles.uploadIcon}
@@ -394,7 +331,9 @@ function ReportScreen({ ...props }) {
                             name="md-cloud-upload"
                             size={30}
                             color={colors.textColor}
-                            onPress={chooseImage}
+                            onPress={() => {
+                                actionSheetRefPhoto.current.setModalVisible();
+                            }}
                         />
 
                     </View>
@@ -423,6 +362,86 @@ function ReportScreen({ ...props }) {
                     </TouchableHighlight>
 
                 </View>
+
+                <ActionSheet ref={actionSheetRef} containerStyle={styles.bottomSheetContainerStyle}>
+                    <View style={styles.bottomSheetView}>
+                        <Text style={styles.textBottom}>Alege o categorie</Text>
+                        <View style={styles.bottomSheetRow}>
+                            {firstHalf.map((value) => {
+                                return <View style={styles.bottomSheetOrganizer}>
+                                    <TouchableOpacity
+                                        key={value.title}
+                                        style={{ ...styles.bottomSheetButton, backgroundColor: value.color }}
+                                        onPress={() => {
+                                            setValueState(value.value);
+                                            setTitle(value.title);
+                                            setColor(value.color);
+                                            actionSheetRef.current.hide();
+                                        }}>
+                                        <Icon5
+                                            type="font-awesome"
+                                            name={value.icon}
+                                            size={30}
+                                            style={{ color: "#FFFFFF" }}
+                                        />
+                                    </TouchableOpacity>
+                                    <Text style={styles.bottomSheetText}>{value.title}</Text>
+                                </View>
+                            })}
+                        </View>
+                        <View style={styles.bottomSheetRow}>
+                            {secondHalf.map((value) => {
+                                return <View style={styles.bottomSheetOrganizer}>
+                                    <TouchableOpacity
+                                        key={value.title}
+                                        style={{ ...styles.bottomSheetButton, backgroundColor: value.color }}
+                                        onPress={() => {
+                                            setValueState(value.value);
+                                            setTitle(value.title);
+                                            setColor(value.color);
+                                            actionSheetRef.current.hide();
+                                        }}>
+                                        <Icon5
+                                            type="font-awesome"
+                                            name={value.icon}
+                                            size={30}
+                                            style={{ color: "#FFFFFF" }}
+                                        />
+                                    </TouchableOpacity>
+                                    <Text style={styles.bottomSheetText}>{value.title}</Text>
+                                </View>
+                            })}
+                        </View>
+                    </View>
+                </ActionSheet>
+
+                <ActionSheet ref={actionSheetRefPhoto} containerStyle={styles.bottomSheetContainerStyle}>
+                    <View style={{ ...styles.bottomSheetView, height: '48%' }}>
+                        <Text style={styles.textBottom}>Alege una dintre optiunile</Text>
+                        <View style={styles.bottomSheetRow}>
+                            <View style={styles.bottomSheetOrganizer2}>
+                                <TouchableOpacity style={{ ...styles.bottomSheetButton2, backgroundColor: "#BB6BD9" }}
+                                    onPress={() => {
+                                        takePicture();
+                                        actionSheetRefPhoto.current.hide();
+                                    }}>
+                                    <AddPhoto />
+                                </TouchableOpacity>
+                                <Text style={styles.bottomSheetText}>Deschide camera</Text>
+                            </View>
+                            <View style={styles.bottomSheetOrganizer2}>
+                                <TouchableOpacity style={{ ...styles.bottomSheetButton2, backgroundColor: "#793BB2" }}
+                                    onPress={() => {
+                                        pickImage();
+                                        actionSheetRefPhoto.current.hide();
+                                    }}>
+                                    <ChoosePhoto />
+                                </TouchableOpacity>
+                                <Text style={styles.bottomSheetText}>Alege din galerie</Text>
+                            </View>
+                        </View>
+                    </View>
+                </ActionSheet>
 
             </KeyboardAwareScrollView>
             <NavBar />
@@ -569,6 +588,61 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         justifyContent: "center",
         marginBottom: "5%",
         borderRadius: 20,
+    },
+    bottomSheetButton: {
+        height: 70,
+        width: 70,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 35,
+    },
+    bottomSheetButton2: {
+        height: 90,
+        width: 90,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 45,
+    },
+    bottomSheetRow: {
+        flexDirection: 'row',
+        width: '100%',
+        height: 120,
+        alignItems: "center",
+        justifyContent: "space-evenly",
+        paddingTop: 10,
+    },
+    bottomSheetText: {
+        textAlign: 'center',
+        paddingTop: 5,
+        color: colors.textColor
+    },
+    bottomSheetOrganizer: {
+        width: 80,
+        height: 100,
+        alignItems: "center",
+        textAlign: 'center',
+    },
+    bottomSheetOrganizer2: {
+        width: 120,
+        height: 120,
+        alignItems: "center",
+        textAlign: 'center',
+        marginTop: "5%",
+    },
+    textBottom: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginTop: "5%",
+        color: colors.textColor
+    },
+    bottomSheetContainerStyle: {
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        backgroundColor: colors.modalColor
+    },
+    bottomSheetView: {
+        height: "60%",
+        alignItems: "center",
     }
 })
 
