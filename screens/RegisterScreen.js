@@ -21,9 +21,7 @@ import { signupUser } from '../redux/actions/auth/auth';
 
 const mapStateToProps = (state) => ({
     doneFetching: state.auth.doneFetching,
-    loggedIn: state.auth.loggedIn,
     isFetching: state.auth.isFetching,
-    signUp: state.auth.signUp,
     hasError: state.auth.hasError,
     errorMessage: state.auth.errorMessage,
     user: state.auth.user,
@@ -33,7 +31,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({ signupUser: (email, password, username) => dispatch(signupUser(email, password, username)) });
 
 function RegisterScreen({ ...props }) {
-    const { navigation, signupUser, theme } = props
+    const { navigation, signupUser, theme, doneFetching, user } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
@@ -54,7 +52,19 @@ function RegisterScreen({ ...props }) {
             setStyles(styleSheetFactory(theme.theme))
             setCheckColor(colors.backgroundColor)
         }
-    }, [theme])
+        if (doneFetching) {
+            if (user != null) {
+                navigation.navigate('Drawer', {
+                    screen: 'HomeStack',
+                    initial: false,
+                    params: {
+                        screen: 'Home',
+                        params: { showIntro: true },
+                    }
+                })
+            }
+        }
+    }, [doneFetching])
 
 
     const onFooterLinkPress = () => {
@@ -88,7 +98,6 @@ function RegisterScreen({ ...props }) {
             setEmail('')
             setUsername('')
             setPassword('')
-            navigation.navigate('Drawer', { showIntro: true })
         }
         else {
             Alert.alert("A apărut o problemă", "Datele introduse nu sunt corecte")
