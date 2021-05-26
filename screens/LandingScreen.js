@@ -9,6 +9,7 @@ import Logo from "../assets/Logo";
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
 import { changeTheme } from "../redux/actions/colorTheme/colorTheme";
+import { changeLanguage } from "../redux/actions/translations/translations";
 import { getData } from "../helpers/storage"
 
 const mapStateToProps = (state) => ({
@@ -22,12 +23,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     restoreSession: () => dispatch(restoreSession()),
-    changeTheme: (theme) => dispatch(changeTheme(theme))
+    changeTheme: (theme) => dispatch(changeTheme(theme)),
+    changeLanguage: (language) => dispatch(changeLanguage(language))
 });
 
 function LandingScreen({ ...props }) {
 
-    const { user, doneFetching, navigation, restoreSession, changeTheme } = props;
+    const { user, doneFetching, navigation, restoreSession, changeTheme, changeLanguage } = props;
 
     useEffect(() => {
         getData('@reportm-theme')
@@ -35,7 +37,16 @@ function LandingScreen({ ...props }) {
                 if (theme) {
                     changeTheme(theme);
                 }
-                restoreSession()
+                getData('@reportm-language')
+                    .then((language) => {
+                        if (language) {
+                            changeLanguage(language);
+                        }
+                        restoreSession()
+                    })
+                    .catch(() => {
+                        console.log(error)
+                    });
             })
             .catch(() => {
                 console.log(error)
