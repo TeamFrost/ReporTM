@@ -13,10 +13,7 @@ import { getData } from "../helpers/storage"
 
 const mapStateToProps = (state) => ({
     doneFetching: state.auth.doneFetching,
-    loggedIn: state.auth.loggedIn,
     isFetching: state.auth.isFetching,
-    signUp: state.auth.signUp,
-    loggedOut: state.auth.loggedOut,
     hasError: state.auth.hasError,
     errorMessage: state.auth.errorMessage,
     user: state.auth.user,
@@ -30,7 +27,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 function LandingScreen({ ...props }) {
 
-    const { loggedIn, doneFetching, navigation, restoreSession, changeTheme } = props;
+    const { user, doneFetching, navigation, restoreSession, changeTheme } = props;
 
     useEffect(() => {
         getData('@reportm-theme')
@@ -47,14 +44,15 @@ function LandingScreen({ ...props }) {
 
     if (doneFetching) {
         setTimeout(() => {
-            if (loggedIn) {
+            if (user != null) {
                 navigation.navigate('Drawer')
             }
             else {
-                navigation.navigate('Login')
+                navigation.navigate('LoginStack')
             }
         }, 2000);
     }
+
 
     return (
         <View style={styles.container}>
