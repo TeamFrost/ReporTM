@@ -239,7 +239,7 @@ function SettingsScreen({ ...props }) {
         }
     }
 
-    const handleOnRoPress = () => changeLanguage("ro")
+    const handleOnLanguagePress = (language) => changeLanguage(language)
 
     return (
         <View style={styles.container}>
@@ -385,12 +385,10 @@ function SettingsScreen({ ...props }) {
                             <Text style={{ color: colors.modalTextHelp }}>Alege o limbă</Text>
                             <TouchableHighlight
                                 underlayColor={colors.homeCardsColor}
-                                // onPress={() => {
-                                //     setValueState("Româna");
-                                //     changeLanguage("ro")
-                                //     togglePicker()
-                                // }}
-                                onPress={handleOnRoPress}
+                                onPress={() => {
+                                    setValueState("Româna");
+                                    togglePicker()
+                                }}
                                 style={{
                                     padding: 6,
                                     width: "85%",
@@ -452,7 +450,7 @@ function SettingsScreen({ ...props }) {
                             <View style={styles.bottomSheetOrganizer2}>
                                 <TouchableOpacity style={styles.bottomSheetButton2}
                                     onPress={() => {
-                                        console.log("cf")
+                                        handleOnLanguagePress("ro")
                                         actionSheetRefLanguage.current.hide();
                                     }}>
                                     <RoFlag />
@@ -462,7 +460,7 @@ function SettingsScreen({ ...props }) {
                             <View style={styles.bottomSheetOrganizer2}>
                                 <TouchableOpacity style={styles.bottomSheetButton2}
                                     onPress={() => {
-                                        console.log("ceva")
+                                        handleOnLanguagePress("en")
                                         actionSheetRefLanguage.current.hide();
                                     }}>
                                     <UkFlag />
