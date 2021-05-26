@@ -16,6 +16,7 @@ import Settings from "../assets/Settings.svg"
 import { firebase } from '../config/firebaseConfig'
 import { restoreSession } from '../redux/actions/auth/auth';
 import { changeTheme } from '../redux/actions/colorTheme/colorTheme'
+import { changeLanguage } from '../redux/actions/translations/translations'
 
 import { screenHeight, themeColors } from "../helpers/style";
 import NavBar from '../screens/components/NavBar'
@@ -34,12 +35,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     restoreSession: () => dispatch(restoreSession()),
-    changeTheme: (theme) => dispatch(changeTheme(theme))
+    changeTheme: (theme) => dispatch(changeTheme(theme)),
+    changeLanguage: (language) => dispatch(changeLanguage(language))
 });
 
 function SettingsScreen({ ...props }) {
 
-    const { user, restoreSession, doneFetching, theme, changeTheme, dark } = props
+    const { user, restoreSession, doneFetching, theme, changeTheme, dark, changeLanguage } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
@@ -234,6 +236,8 @@ function SettingsScreen({ ...props }) {
         }
     }
 
+    const handleOnRoPress = () => changeLanguage("ro")
+
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView
@@ -376,10 +380,12 @@ function SettingsScreen({ ...props }) {
                             <Text style={{ color: colors.modalTextHelp }}>Alege o limbă</Text>
                             <TouchableHighlight
                                 underlayColor={colors.homeCardsColor}
-                                onPress={() => {
-                                    setValueState("Româna");
-                                    togglePicker()
-                                }}
+                                // onPress={() => {
+                                //     setValueState("Româna");
+                                //     changeLanguage("ro")
+                                //     togglePicker()
+                                // }}
+                                onPress={handleOnRoPress}
                                 style={{
                                     padding: 6,
                                     width: "85%",
