@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { connect } from 'react-redux';
@@ -28,6 +28,8 @@ const mapDispatchToProps = (dispatch) => ({
 function LandingScreen({ ...props }) {
 
     const { user, doneFetching, navigation, restoreSession, changeTheme } = props;
+    const [doneFetchingLanding, setDoneFetchingLanding] = useState(doneFetching)
+    const [reload, setReload] = useState(false)
 
     useEffect(() => {
         getData('@reportm-theme')
@@ -42,17 +44,26 @@ function LandingScreen({ ...props }) {
             });
     }, []);
 
-    if (doneFetching) {
-        setTimeout(() => {
-            if (user != null) {
-                navigation.navigate('Drawer')
+    useEffect(
+        () => {
+            if (doneFetchingLanding) {
+                let timer = setTimeout(() => {
+                    if (user != null) {
+                        navigation.navigate('Drawer')
+                    }
+                    else {
+                        navigation.navigate('LoginStack')
+                    }
+                }, 2000);
+                return () => {
+                    clearTimeout(timer);
+                };
             }
             else {
-                navigation.navigate('LoginStack')
+                setDoneFetchingLanding(doneFetching)
+                setReload(!reload)
             }
-        }, 2000);
-    }
-
+        }, [reload]);
 
     return (
         <View style={styles.container}>
