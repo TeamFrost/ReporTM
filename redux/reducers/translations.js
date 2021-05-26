@@ -2,7 +2,7 @@ import * as types from "../actions/translations/actionTypes";
 import * as Localization from 'expo-localization';
 
 const initialState = {
-    language: Localization.locale
+    language: Localization.locale //"ro"
 };
 
 export default translations = (state = initialState, action) => {

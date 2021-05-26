@@ -36,7 +36,6 @@ function HomeScreen({ ...props }) {
     i18n.fallbacks = true
     i18n.translations = { ro, en }
     i18n.locale = language
-    console.log(language)
 
     useEffect(() => {
         if (theme) {
