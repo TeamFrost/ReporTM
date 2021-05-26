@@ -19,8 +19,6 @@ export const changeTheme = (theme) => (dispatch) => {
         });
 };
 
-
-
 const change_theme = (theme, value) => ({
     type: types.CHANGE_THEME,
     theme: theme,
