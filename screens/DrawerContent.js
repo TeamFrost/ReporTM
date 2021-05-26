@@ -13,8 +13,6 @@ import { screenHeight, themeColors } from "../helpers/style";
 
 const mapStateToProps = (state) => ({
     doneFetching: state.auth.doneFetching,
-    loggedIn: state.auth.loggedIn,
-    loggedOut: state.auth.loggedOut,
     isFetching: state.auth.isFetching,
     hasError: state.auth.hasError,
     errorMessage: state.auth.errorMessage,
@@ -30,7 +28,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 function DrawerContent({ ...props }) {
-    const { logoutUser, doneFetching, loggedOut, navigation, user, theme, changeTheme, dark } = props
+    const { logoutUser, doneFetching, navigation, user, theme, changeTheme, dark } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
@@ -46,16 +44,17 @@ function DrawerContent({ ...props }) {
     }
 
     useEffect(() => {
-        if (loggedOut && doneFetching) {
-            navigation.dispatch(DrawerActions.closeDrawer());
-            navigation.navigate('Login')
+        if (doneFetching) {
+            if (user === null) {
+                navigation.navigate('LoginStack')
+            }
         }
         if (theme) {
             setColors(theme.theme)
             setStyles(styleSheetFactory(theme.theme))
             setIsSwitch(dark)
         }
-    }, [doneFetching, theme]);
+    }, [theme, doneFetching]);
 
     const toggleSwitch = () => {
         if (isSwitch === false) {
