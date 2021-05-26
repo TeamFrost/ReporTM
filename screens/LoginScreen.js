@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, BackHandler } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from 'react-native-elements';
@@ -21,7 +21,6 @@ import { loginUser } from '../redux/actions/auth/auth';
 
 const mapStateToProps = (state) => ({
     doneFetching: state.auth.doneFetching,
-    loggedIn: state.auth.loggedIn,
     isFetching: state.auth.isFetching,
     hasError: state.auth.hasError,
     errorMessage: state.auth.errorMessage,
@@ -36,19 +35,24 @@ function LoginScreen({ ...props }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [textSecurity, setTextSecurity] = useState(true)
-    const { doneFetching, loggedIn, navigation, loginUser, theme } = props
+    const { doneFetching, user, navigation, loginUser, theme } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
     useEffect(() => {
-        if (loggedIn && doneFetching) {
-            navigation.navigate('Drawer')
+        if (doneFetching) {
+            if (user != null) {
+                navigation.navigate('Drawer')
+            }
         }
         if (theme) {
             setColors(theme.theme)
             setStyles(styleSheetFactory(theme.theme))
         }
-    }, [doneFetching, theme]);
+        BackHandler.addEventListener('hardwareBackPress', () => true)
+        return () =>
+            BackHandler.removeEventListener('hardwareBackPress', () => true)
+    }, [doneFetching]);
 
     const onLoginPress = () => {
         loginUser(email, password)
