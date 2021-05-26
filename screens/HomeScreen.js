@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { Text, View, StyleSheet, TouchableHighlight } from "react-native";
+import { Text, View, StyleSheet, TouchableHighlight, BackHandler } from "react-native";
 import { connect } from 'react-redux';
 
 import { screenHeight, themeColors } from "../helpers/style";
@@ -29,6 +29,7 @@ function HomeScreen({ ...props }) {
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
+    console.log(props.route)
 
     useEffect(() => {
         if (theme) {
@@ -37,13 +38,17 @@ function HomeScreen({ ...props }) {
         }
 
         watchReportsData()
+
         if (props.route.params) {
             let showIntro = props.route.params.showIntro;
             if (showIntro) {
                 navigation.navigate("Intro");
             }
         }
-    }, [theme])
+        BackHandler.addEventListener('hardwareBackPress', () => true)
+        return () =>
+            BackHandler.removeEventListener('hardwareBackPress', () => true)
+    }, [theme, props.route.params])
 
     return (
         <View style={styles.container}>
