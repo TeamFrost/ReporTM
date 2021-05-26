@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity, TouchableHighlight, Modal } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity, TouchableHighlight, Modal, Share } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -18,6 +18,7 @@ import WrongInfo from '../../assets/ActionSheetIcons/WrongInfo.js';
 import WrongPhoto from '../../assets/ActionSheetIcons/WrongPhoto.js';
 import WrongTag from '../../assets/ActionSheetIcons/WrongTag.js';
 import ReportFeedIcon from '../../assets/Icons/reportFeedIcon.js';
+import ShareIcon from '../../assets/ActionSheetIcons/ShareIcon.js';
 
 const mapStateToProps = (state) => ({
     currentUser: state.auth.user,
@@ -55,11 +56,11 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
     const handleOptionsPress = () => {
 
         if (currentUserId === author) {
-            const options = ['Marchează ca rezolvat', 'Șterge postarea', "Anulează"];
-            const destructiveButtonIndex = 1;
-            const cancelButtonIndex = 2;
+            const options = ['Partajează', 'Marchează ca rezolvat', 'Șterge postarea', "Anulează"];
+            const destructiveButtonIndex = 2;
+            const cancelButtonIndex = 3;
             const title = "Ce acțiune dorești să execuți?"
-            const icons = [<SolvedIcon />, <DeleteIcon style={{ marginLeft: 2 }} />, <CancelIcon />]
+            const icons = [<ShareIcon />, <SolvedIcon />, <DeleteIcon style={{ marginLeft: 2 }} />, <CancelIcon />]
             const containerStyle = [styles.bottomSheetContainer]
             const textStyle = [{ marginLeft: -15, marginBottom: 2 }]
             const userInterfaceStyle = theme === themeColors.themeLight ? "light" : "dark";
@@ -77,8 +78,11 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
                 },
                 buttonIndex => {
                     if (buttonIndex === 0) {
-                        solvePostConfirm()
+                        console.log(photo);
+                        handleSharePress();
                     } else if (buttonIndex === 1) {
+                        solvePostConfirm()
+                    } else if (buttonIndex === 2) {
                         deletePostConfirm()
                     }
                 },
@@ -115,6 +119,25 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
             );
         }
     }
+
+    const handleSharePress = async () => {
+        try {
+            const result = await Share.share({
+                message: "Privește sesizarea mea de la adresa: " + adress + " din categoria " + tag + " cu descrierea: \"" + description + "\". \n" + photo.uri
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    // shared with activity type of result.activityType
+                } else {
+                    // shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+                // dismissed
+            }
+        } catch (error) {
+            alert(error.message);
+        }
+    };
 
     const deletePostConfirm = () => {
         const options = ['Da', 'Nu'];
