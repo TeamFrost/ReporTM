@@ -367,10 +367,10 @@ function ReportScreen({ ...props }) {
                     <View style={styles.bottomSheetView}>
                         <Text style={styles.textBottom}>Alege o categorie</Text>
                         <View style={styles.bottomSheetRow}>
-                            {firstHalf.map((value) => {
+                            {firstHalf.map((value, index) => {
                                 return <View style={styles.bottomSheetOrganizer}>
                                     <TouchableOpacity
-                                        key={value.title}
+                                        key={index}
                                         style={{ ...styles.bottomSheetButton, backgroundColor: value.color }}
                                         onPress={() => {
                                             setValueState(value.value);
@@ -390,10 +390,10 @@ function ReportScreen({ ...props }) {
                             })}
                         </View>
                         <View style={styles.bottomSheetRow}>
-                            {secondHalf.map((value) => {
+                            {secondHalf.map((value, index) => {
                                 return <View style={styles.bottomSheetOrganizer}>
                                     <TouchableOpacity
-                                        key={value.title}
+                                        key={index}
                                         style={{ ...styles.bottomSheetButton, backgroundColor: value.color }}
                                         onPress={() => {
                                             setValueState(value.value);
