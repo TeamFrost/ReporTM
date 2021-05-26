@@ -5,6 +5,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import LandingScreen from '../screens/LandingScreen';
 import LoginScreen from '../screens/LoginScreen';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import HomeScreen from '../screens/HomeScreen';
 import MapScreen from '../screens/MapScreen';
@@ -17,7 +18,15 @@ import SuccessScreen from '../screens/SuccessScreen';
 import DrawerContent from '../screens/DrawerContent';
 import IntroScreen from '../screens/IntroScreen';
 
-const Stack = createStackNavigator();
+const LandingStack = createStackNavigator();
+const LoginStack = createStackNavigator();
+const HomeStack = createStackNavigator();
+const MapStack = createStackNavigator();
+const ReportStack = createStackNavigator();
+const FeedStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
+const SettingsStack = createStackNavigator();
+const HelpStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const createDrawer = () =>
@@ -77,82 +86,93 @@ const createDrawer = () =>
     </Drawer.Navigator>
 
 export const createLandingStack = () =>
-    <Stack.Navigator
+    <LandingStack.Navigator
         screenOptions={{
             headerShown: false,
             gestureEnabled: false
         }}>
-        <Stack.Screen name="Landing" component={LandingScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Drawer" component={createDrawer} />
-    </Stack.Navigator>
+        <LandingStack.Screen name="Landing" component={LandingScreen} />
+        <LandingStack.Screen name="LoginStack" component={createLoginStack} />
+        <LandingStack.Screen name="Drawer" component={createDrawer} />
+    </LandingStack.Navigator>
+
+const createLoginStack = () =>
+    <LoginStack.Navigator
+        screenOptions={{
+            headerShown: false,
+            gestureEnabled: false
+        }}>
+        <LoginStack.Screen name="Login" component={LoginScreen} />
+        <LoginStack.Screen name="Drawer" component={createDrawer} />
+        <LoginStack.Screen name="Register" component={RegisterScreen} />
+        <LoginStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+    </LoginStack.Navigator>
 
 const createHomeStack = () =>
-    <Stack.Navigator
+    <HomeStack.Navigator
         initialRouteName="Home"
         screenOptions={{
             headerShown: false
         }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Map" component={MapScreen} />
-        <Stack.Screen name="Report" component={ReportScreen} />
-        <Stack.Screen name="Feed" component={FeedScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-        <Stack.Screen name="Help" component={HelpScreen} />
-        <Stack.Screen name="Success" component={SuccessScreen} />
-        <Stack.Screen name="Intro" component={IntroScreen} />
-    </Stack.Navigator>
+        <HomeStack.Screen name="Intro" component={IntroScreen} />
+        <HomeStack.Screen name="Home" component={HomeScreen} />
+        <HomeStack.Screen name="Map" component={MapScreen} />
+        <HomeStack.Screen name="Report" component={ReportScreen} />
+        <HomeStack.Screen name="Feed" component={FeedScreen} />
+        <HomeStack.Screen name="Profile" component={ProfileScreen} />
+        <HomeStack.Screen name="Settings" component={SettingsScreen} />
+        <HomeStack.Screen name="Help" component={HelpScreen} />
+        <HomeStack.Screen name="Success" component={SuccessScreen} />
+    </HomeStack.Navigator>
 
 const createMapStack = () =>
-    <Stack.Navigator
+    <MapStack.Navigator
         screenOptions={{
             headerShown: false
         }}>
-        <Stack.Screen name="Map" component={MapScreen} />
-    </Stack.Navigator>
+        <MapStack.Screen name="Map" component={MapScreen} />
+    </MapStack.Navigator>
 
 const createReportStack = () =>
-    <Stack.Navigator
+    <ReportStack.Navigator
         screenOptions={{
             headerShown: false
         }}>
-        <Stack.Screen name="Report" component={ReportScreen} />
-        <Stack.Screen name="Success" component={SuccessScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
-    </Stack.Navigator>
+        <ReportStack.Screen name="Report" component={ReportScreen} />
+        <ReportStack.Screen name="Success" component={SuccessScreen} />
+        <ReportStack.Screen name="Home" component={HomeScreen} />
+    </ReportStack.Navigator>
 
 const createFeedStack = () =>
-    <Stack.Navigator
+    <FeedStack.Navigator
         screenOptions={{
             headerShown: false
         }}>
-        <Stack.Screen name="Feed" component={FeedScreen} />
-    </Stack.Navigator>
+        <FeedStack.Screen name="Feed" component={FeedScreen} />
+    </FeedStack.Navigator>
 
 const createProfileStack = () =>
-    <Stack.Navigator
+    <ProfileStack.Navigator
         screenOptions={{
             headerShown: false
         }}>
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-    </Stack.Navigator>
+        <ProfileStack.Screen name="Profile" component={ProfileScreen} />
+        <ProfileStack.Screen name="Settings" component={SettingsScreen} />
+    </ProfileStack.Navigator>
 
 const createSettingsStack = () =>
-    <Stack.Navigator
+    <SettingsStack.Navigator
         screenOptions={{
             headerShown: false
         }}>
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-    </Stack.Navigator>
+        <SettingsStack.Screen name="Settings" component={SettingsScreen} />
+    </SettingsStack.Navigator>
 
 const createHelpStack = () =>
-    <Stack.Navigator
+    <HelpStack.Navigator
         screenOptions={{
             headerShown: false
         }}>
-        <Stack.Screen name="Help" component={HelpScreen} />
-        <Stack.Screen name="Intro" component={IntroScreen} />
-    </Stack.Navigator>
+        <HelpStack.Screen name="Help" component={HelpScreen} />
+        <HelpStack.Screen name="Intro" component={IntroScreen} />
+    </HelpStack.Navigator>
