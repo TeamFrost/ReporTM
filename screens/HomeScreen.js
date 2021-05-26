@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { StatusBar } from "expo-status-bar";
 import { Text, View, StyleSheet, TouchableHighlight, BackHandler } from "react-native";
 import { connect } from 'react-redux';
+import * as Localization from 'expo-localization';
+import i18n from 'i18n-js';
 
+import { ro, en } from "../helpers/dictionary"
 import { screenHeight, themeColors } from "../helpers/style";
 import { watchReportsData } from '../redux/actions/reports/reports';
 import NavBar from '../screens/components/NavBar'
@@ -18,18 +21,22 @@ import Help from '../assets/Help.svg'
 
 const mapStateToProps = (state) => ({
     reportsData: state.reports.reportsData,
-    theme: state.theme
+    theme: state.theme,
+    language: state.translations.language
 });
 
 const mapDispatchToProps = (dispatch) => ({ watchReportsData: () => dispatch(watchReportsData()) });
 
 function HomeScreen({ ...props }) {
 
-    const { watchReportsData, navigation, theme } = props;
+    const { watchReportsData, navigation, theme, language } = props;
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
-    console.log(props.route)
+    i18n.fallbacks = true
+    i18n.translations = { ro, en }
+    i18n.locale = language
+    console.log(language)
 
     useEffect(() => {
         if (theme) {
@@ -101,7 +108,10 @@ function HomeScreen({ ...props }) {
                 >
                     <View style={styles.paper}>
                         <Feed width={50} height={50} style={styles.iconPaper} />
-                        <Text style={styles.titlePaper}>Sesizări</Text>
+                        {/* <Text style={styles.titlePaper}>Sesizări</Text> */}
+                        <Text style={styles.titlePaper}>
+                            {i18n.t('feed')}
+                        </Text>
                         <Text style={styles.descriptionPaper}>Toate sesizările utilizatorilor</Text>
                     </View>
 
