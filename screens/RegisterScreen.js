@@ -74,9 +74,9 @@ function RegisterScreen({ ...props }) {
     const handleOnTextChangeEmail = (text) => {
         const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (reg.test(text) === true) {
-            setErrorStyle({ color: 'green' })
+            setErrorStyle({ color: '#6CAF5F' })
             setErrorMessage('Adresa de email valida!')
-            setCheckColor('green')
+            setCheckColor('#6CAF5F')
             setIsValid(true)
         }
         else {

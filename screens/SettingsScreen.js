@@ -25,6 +25,8 @@ import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
 import AddPhoto from '../assets/ActionSheetIcons/AddPhoto.js';
 import ChoosePhoto from '../assets/ActionSheetIcons/ChoosePhoto.js';
+import RoFlag from '../assets/ActionSheetIcons/RoFlag';
+import UkFlag from '../assets/ActionSheetIcons/UkFlag';
 
 const mapStateToProps = (state) => ({
     user: state.auth.user,
@@ -59,6 +61,7 @@ function SettingsScreen({ ...props }) {
     const [pickerVisibility, setPickerVisibility] = useState(false)
 
     const actionSheetRefPhoto = createRef();
+    const actionSheetRefLanguage = createRef();
 
     useEffect(() => {
         if (user) {
@@ -361,7 +364,9 @@ function SettingsScreen({ ...props }) {
                             name="sort-down"
                             size={24}
                             color={colors.textColor}
-                            onPress={() => togglePicker()}
+                            onPress={() => {
+                                actionSheetRefLanguage.current.setModalVisible();
+                            }}
                         />
                     </View>
                     <Divider style={styles.divider} />
@@ -435,6 +440,34 @@ function SettingsScreen({ ...props }) {
                                     <ChoosePhoto />
                                 </TouchableOpacity>
                                 <Text style={styles.bottomSheetText}>Alege din galerie</Text>
+                            </View>
+                        </View>
+                    </View>
+                </ActionSheet>
+
+                <ActionSheet ref={actionSheetRefLanguage} containerStyle={styles.bottomSheetContainerStyle}>
+                    <View style={{ ...styles.bottomSheetView, height: '48%' }}>
+                        <Text style={styles.textBottom}>Alege una dintre optiunile</Text>
+                        <View style={styles.bottomSheetRow}>
+                            <View style={styles.bottomSheetOrganizer2}>
+                                <TouchableOpacity style={styles.bottomSheetButton2}
+                                    onPress={() => {
+                                        console.log("cf")
+                                        actionSheetRefLanguage.current.hide();
+                                    }}>
+                                    <RoFlag />
+                                </TouchableOpacity>
+                                <Text style={styles.bottomSheetText}>Romana</Text>
+                            </View>
+                            <View style={styles.bottomSheetOrganizer2}>
+                                <TouchableOpacity style={styles.bottomSheetButton2}
+                                    onPress={() => {
+                                        console.log("ceva")
+                                        actionSheetRefLanguage.current.hide();
+                                    }}>
+                                    <UkFlag />
+                                </TouchableOpacity>
+                                <Text style={styles.bottomSheetText}>Engleza</Text>
                             </View>
                         </View>
                     </View>
