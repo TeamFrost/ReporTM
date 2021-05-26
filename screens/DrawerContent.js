@@ -46,6 +46,7 @@ function DrawerContent({ ...props }) {
     useEffect(() => {
         if (doneFetching) {
             if (user === null) {
+                navigation.dispatch(DrawerActions.closeDrawer());
                 navigation.navigate('LoginStack')
             }
         }

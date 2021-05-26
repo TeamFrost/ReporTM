@@ -49,9 +49,9 @@ function LoginScreen({ ...props }) {
             setColors(theme.theme)
             setStyles(styleSheetFactory(theme.theme))
         }
-        BackHandler.addEventListener('hardwareBackPress', () => true)
-        return () =>
-            BackHandler.removeEventListener('hardwareBackPress', () => true)
+        // BackHandler.addEventListener('hardwareBackPress', () => true)
+        // return () =>
+        //     BackHandler.removeEventListener('hardwareBackPress', () => true)
     }, [doneFetching]);
 
     const onLoginPress = () => {
@@ -65,7 +65,7 @@ function LoginScreen({ ...props }) {
     }
 
     const onForgotPress = () => {
-        console.log("Forgot")
+        navigation.navigate('ForgotPassword')
     }
 
     const onFooterLinkPress = () => {

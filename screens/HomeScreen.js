@@ -29,8 +29,6 @@ function HomeScreen({ ...props }) {
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
-    console.log(props.route)
-
     useEffect(() => {
         if (theme) {
             setColors(theme.theme)
@@ -39,15 +37,15 @@ function HomeScreen({ ...props }) {
 
         watchReportsData()
 
-        if (props.route.params) {
-            let showIntro = props.route.params.showIntro;
-            if (showIntro) {
-                navigation.navigate("Intro");
-            }
-        }
-        BackHandler.addEventListener('hardwareBackPress', () => true)
-        return () =>
-            BackHandler.removeEventListener('hardwareBackPress', () => true)
+        // if (props.route.params) {
+        //     let showIntro = props.route.params.showIntro;
+        //     if (showIntro) {
+        //         navigation.navigate("Intro");
+        //     }
+        // }
+        // BackHandler.addEventListener('hardwareBackPress', () => BackHandler.exitApp())
+        // return () =>
+        //     BackHandler.removeEventListener('hardwareBackPress', () => true)
     }, [theme, props.route.params])
 
     return (
