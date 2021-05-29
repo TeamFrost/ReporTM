@@ -374,10 +374,9 @@ function ReportScreen({ ...props }) {
                     <View style={styles.bottomSheetView}>
                         <Text style={styles.textBottom}>{i18n.t("reportCategory")}</Text>
                         <View style={styles.bottomSheetRow}>
-                            {firstHalf.map((value, index) => {
-                                return <View style={styles.bottomSheetOrganizer}>
+                            {firstHalf.map((value) => (
+                                <View style={styles.bottomSheetOrganizer} key={value.key}>
                                     <TouchableOpacity
-                                        key={index}
                                         style={{ ...styles.bottomSheetButton, backgroundColor: value.color }}
                                         onPress={() => {
                                             setValueState(value.value);
@@ -394,13 +393,12 @@ function ReportScreen({ ...props }) {
                                     </TouchableOpacity>
                                     <Text style={styles.bottomSheetText}>{value.title}</Text>
                                 </View>
-                            })}
+                            ))}
                         </View>
                         <View style={styles.bottomSheetRow}>
-                            {secondHalf.map((value, index) => {
-                                return <View style={styles.bottomSheetOrganizer}>
+                            {secondHalf.map((value) => (
+                                <View style={styles.bottomSheetOrganizer} key={value.key}>
                                     <TouchableOpacity
-                                        key={index}
                                         style={{ ...styles.bottomSheetButton, backgroundColor: value.color }}
                                         onPress={() => {
                                             setValueState(value.value);
@@ -417,7 +415,7 @@ function ReportScreen({ ...props }) {
                                     </TouchableOpacity>
                                     <Text style={styles.bottomSheetText}>{value.title}</Text>
                                 </View>
-                            })}
+                            ))}
                         </View>
                     </View>
                 </ActionSheet>

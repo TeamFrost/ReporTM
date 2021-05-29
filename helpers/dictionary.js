@@ -126,7 +126,7 @@ export const ro = {
     reportSend: "Trimite",
     search: "Caută",
     settingsNameTitle: "Schimbă numele",
-    settingsNameCurrent: "Numele tău curent este:",
+    settingsNameCurrent: "Numele tău curent este: ",
     settingsNamePlaceholder: "Scrie aici noul nume",
     settingsConfirmButton: "Confirmă schimbarea",
     settingsPassTitle: "Schimbă parola",
