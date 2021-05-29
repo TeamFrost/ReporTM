@@ -6,7 +6,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
+import i18n from 'i18n-js';
 
+import { ro, en } from "../helpers/dictionary";
 import { screenHeight, screenWidth, themeColors } from "../helpers/style";
 import Logo from "../assets/Logo";
 import Ellipse1 from "../assets/Ellipse1";
@@ -25,7 +27,8 @@ const mapStateToProps = (state) => ({
     hasError: state.auth.hasError,
     errorMessage: state.auth.errorMessage,
     user: state.auth.user,
-    theme: state.theme
+    theme: state.theme,
+    language: state.translations.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({ loginUser: (email, password) => dispatch(loginUser(email, password)) });
@@ -35,7 +38,7 @@ function LoginScreen({ ...props }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [textSecurity, setTextSecurity] = useState(true)
-    const { doneFetching, user, navigation, loginUser, theme } = props
+    const { doneFetching, user, navigation, loginUser, theme, language } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
@@ -53,6 +56,10 @@ function LoginScreen({ ...props }) {
         // return () =>
         //     BackHandler.removeEventListener('hardwareBackPress', () => true)
     }, [doneFetching]);
+
+    i18n.fallbacks = true
+    i18n.translations = { ro, en }
+    i18n.locale = language
 
     const onLoginPress = () => {
         loginUser(email, password)
@@ -89,43 +96,43 @@ function LoginScreen({ ...props }) {
                 </View>
                 <View style={styles.info}>
                     <Input
-                        label='Email'
+                        label={i18n.t("loginEmail")}
                         labelStyle={styles.text}
                         color={colors.textColor}
                         autoCapitalize="none"
                         onChangeText={(text) => setEmail(text)}
                         value={email}
                         keyboardType="email-address"
-                        placeholder='Email'
+                        placeholder={i18n.t("loginEmail")}
                         leftIcon={<MailIcon />}
                     />
                     <Input
-                        label='Parola'
+                        label={i18n.t("loginPass")}
                         labelStyle={styles.text}
                         color={colors.textColor}
                         secureTextEntry={textSecurity}
                         autoCapitalize="none"
                         onChangeText={(text) => setPassword(text)}
                         value={password}
-                        placeholder='Parola'
+                        placeholder={i18n.t("loginPass")}
                         leftIcon={<LockIcon />}
                         rightIcon={textSecurity ? <EyeIcon onPress={handleEyeOnPress} /> : <EyeCloseIcon onPress={handleEyeOnPress} />}
                     />
 
-                    <Text style={styles.forgotText} onPress={onForgotPress}>Am uitat parola.</Text>
+                    <Text style={styles.forgotText} onPress={onForgotPress}>{i18n.t("loginForgotRedirect")}</Text>
 
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.button}>
                         <TouchableOpacity onPress={onLoginPress} style={styles.touchable}>
-                            <Text style={styles.buttonText}>Autentificare</Text>
+                            <Text style={styles.buttonText}>{i18n.t("loginButton")}</Text>
                             <Icon active name='md-arrow-forward' style={styles.arrowIcon} />
                         </TouchableOpacity>
                     </LinearGradient>
 
-                    <Text style={styles.footerOuterText}>Dacă nu ai cont, <Text onPress={onFooterLinkPress} style={styles.footerInnerText}>înregistrează-te</Text> acum.</Text>
+                    <Text style={styles.footerOuterText}>{i18n.t("loginRegisterRedirect")}<Text onPress={onFooterLinkPress} style={styles.footerInnerText}>{i18n.t("loginRegisterRedirect2")}</Text>{i18n.t("loginRegisterRedirect3")}</Text>
 
                     <TouchableOpacity style={styles.googleButton} onPress={onGooglePress}>
                         <GoogleIcon style={{ marginRight: 10 }} />
-                        <Text style={{ ...styles.buttonText, color: colors.darkPurple, fontSize: 18 }}>Autentificare cu Google</Text>
+                        <Text style={{ ...styles.buttonText, color: colors.darkPurple, fontSize: 18 }}>{i18n.t("loginGoogle")}</Text>
                     </TouchableOpacity>
                 </View>
                 <StatusBar style="auto" />

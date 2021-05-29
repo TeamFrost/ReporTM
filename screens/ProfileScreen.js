@@ -6,12 +6,14 @@ import { Avatar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Divider } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
+import { VictoryPie, VictoryContainer } from "victory-native";
 import { LogBox } from 'react-native';
 import { connect } from 'react-redux';
-import { VictoryPie, VictoryContainer } from "victory-native";
+import i18n from 'i18n-js';
 
-import NavBar from './components/NavBar';
+import { ro, en } from "../helpers/dictionary";
 import { screenHeight, screenWidth, themeColors } from "../helpers/style";
+import NavBar from './components/NavBar';
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
 import StatCheck from "../assets/StatCheck.svg"
@@ -47,12 +49,13 @@ import Ach10 from "../assets/Achievements/Gray/Ach10.svg"
 const mapStateToProps = (state) => ({
     reportsData: state.reports.reportsData,
     user: state.auth.user,
-    theme: state.theme
+    theme: state.theme,
+    language: state.translations.language,
 });
 
 function ProfileScreen({ ...props }) {
 
-    const { user, reportsData, navigation, theme } = props
+    const { user, reportsData, navigation, theme, language } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
@@ -69,15 +72,19 @@ function ProfileScreen({ ...props }) {
     const [categoriesReported, setCategoriesReported] = useState(0)
     const [chartData, setChartData] = useState([])
 
+    i18n.fallbacks = true
+    i18n.translations = { ro, en }
+    i18n.locale = language
+
     const onlyUnique = (value, index, self) => (self.indexOf(value) === index)
 
     const chart = [
-        { title: "Groapă", color: "#593480" },
-        { title: "Graffiti", color: "#9457E0" },
-        { title: "Gunoi", color: "#BB6BD9" },
-        { title: "Iluminat", color: "#FFEB7B" },
-        { title: "Poluare", color: "#ECDAF2" },
-        { title: "Parcare", color: "#D4D0D9" },
+        { title: i18n.t("catGroapa"), color: "#593480" },
+        { title: i18n.t("catGraffiti"), color: "#9457E0" },
+        { title: i18n.t("catGunoi"), color: "#BB6BD9" },
+        { title: i18n.t("catIluminat"), color: "#FFEB7B" },
+        { title: i18n.t("catPoluare"), color: "#ECDAF2" },
+        { title: i18n.t("catParcare"), color: "#D4D0D9" },
     ]
 
     const getChartData = (category, categoryData) => {
@@ -123,32 +130,32 @@ function ProfileScreen({ ...props }) {
             let chartData = []
             chart.forEach((obj) => {
                 switch (obj.title) {
-                    case "Groapă": {
+                    case i18n.t("catGroapa"): {
                         let partial = getChartData('groapa', categoryData)
                         chartData.push({ ...partial, title: obj.title, color: obj.color })
                         return;
                     }
-                    case "Graffiti": {
+                    case i18n.t("catGraffiti"): {
                         let partial = getChartData('graffiti', categoryData)
                         chartData.push({ ...partial, title: obj.title, color: obj.color })
                         return;
                     }
-                    case "Gunoi": {
+                    case i18n.t("catGunoi"): {
                         let partial = getChartData('gunoi', categoryData)
                         chartData.push({ ...partial, title: obj.title, color: obj.color })
                         return;
                     }
-                    case "Iluminat": {
+                    case i18n.t("catIluminat"): {
                         let partial = getChartData('iluminat', categoryData)
                         chartData.push({ ...partial, title: obj.title, color: obj.color })
                         return;
                     }
-                    case "Poluare": {
+                    case i18n.t("catPoluare"): {
                         let partial = getChartData('poluare', categoryData)
                         chartData.push({ ...partial, title: obj.title, color: obj.color })
                         return;
                     }
-                    case "Parcare": {
+                    case i18n.t("catParcare"): {
                         let partial = getChartData('parcare', categoryData)
                         chartData.push({ ...partial, title: obj.title, color: obj.color })
                         return;
@@ -169,7 +176,7 @@ function ProfileScreen({ ...props }) {
             <View style={{ flex: 1 }}>
                 <Avatar.Image size={40} source={{ uri: photo }} style={[solved && styles.solved]} />
             </View>
-            <View style={{ flex: 5, flexDirection: "row", justifyContent: "flex-start", width: '100%' }}>
+            <View style={styles.titleArrangeFlatList}>
                 <Text style={styles.arangeIcon}>{title}</Text>
             </View>
             <View style={{ flex: 1, justifyContent: "flex-end", ...styles.rowArange }}>
@@ -191,7 +198,7 @@ function ProfileScreen({ ...props }) {
         <View style={{ height: 32, alignItems: 'flex-start', ...styles.flatListItem }}>
             <View style={{ ...styles.circleLegend, backgroundColor: color }} />
 
-            <View style={{ width: '40%', justifyContent: 'flex-start' }}>
+            <View style={{ width: '45%', justifyContent: 'flex-start' }}>
                 <Text style={styles.textLegend}>{title}</Text>
             </View>
 
@@ -223,7 +230,7 @@ function ProfileScreen({ ...props }) {
                             style={{ textDecorationLine: 'underline', color: colors.textGray }}
                             onPress={onEditProfilePress}
                         >
-                            Editează-ți profilul
+                            {i18n.t("profileEdit")}
                         </Text>
                         <Icon name='sliders-h' type="font-awesome-5" size={12} style={{ marginLeft: 5, color: colors.textGray }} />
                     </View>
@@ -232,7 +239,7 @@ function ProfileScreen({ ...props }) {
                 <View style={styles.reportsList}>
                     <View style={styles.rowArange}>
                         <Icon name="list-ul" type="font-awesome-5" size={20} style={styles.arangeIcon} />
-                        <Text style={styles.sectionHeaderText}>Sesizările mele</Text>
+                        <Text style={styles.sectionHeaderText}>{i18n.t("profileReports")}</Text>
                     </View>
                     <View style={{ flex: 1 }}>
                         <FlatList
@@ -250,14 +257,14 @@ function ProfileScreen({ ...props }) {
                 <View style={styles.statisticsView}>
                     <View style={{ flexDirection: 'row', alignItems: "center", marginBottom: 5 }}>
                         <Icon name="chart-bar" type="font-awesome-5" size={24} style={{ ...styles.arangeIcon, marginTop: 3 }} />
-                        <Text style={styles.sectionHeaderText}>Statisticile mele</Text>
+                        <Text style={styles.sectionHeaderText}>{i18n.t("profileStat")}</Text>
                     </View>
                     <View style={styles.statisticsCards}>
                         <View style={styles.statisticsCardsRow}>
 
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.statCard}>
                                 <View style={styles.cardTextView}>
-                                    <Text style={styles.cardText}>Sesizari raportate</Text>
+                                    <Text style={styles.cardText}>{i18n.t("profileStatCard1")}</Text>
                                     <Text style={{ ...styles.cardText, fontSize: 18 }}>{reportsNumber}</Text>
                                 </View>
                                 <StatReport height={40} width={40} style={styles.statPhoto} />
@@ -265,7 +272,7 @@ function ProfileScreen({ ...props }) {
 
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.statCard}>
                                 <View style={styles.cardTextView}>
-                                    <Text style={styles.cardText}>Sesizari votate</Text>
+                                    <Text style={styles.cardText}>{i18n.t("profileStatCard2")}</Text>
                                     <Text style={{ ...styles.cardText, fontSize: 18 }}>{upvotesGiven}</Text>
                                 </View>
                                 <StatCheck height={40} width={40} style={styles.statPhoto} />
@@ -275,7 +282,7 @@ function ProfileScreen({ ...props }) {
                         <View style={styles.statisticsCardsRow}>
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.statCard}>
                                 <View style={styles.cardTextView}>
-                                    <Text style={styles.cardText}>Voturi primite</Text>
+                                    <Text style={styles.cardText}>{i18n.t("profileStatCard3")}</Text>
                                     <Text style={{ ...styles.cardText, fontSize: 18 }}>{upvotesReceived}</Text>
                                 </View>
                                 <StatUpvote height={40} width={40} style={styles.statPhoto} />
@@ -283,7 +290,7 @@ function ProfileScreen({ ...props }) {
 
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.statCard}>
                                 <View style={styles.cardTextView}>
-                                    <Text style={styles.cardText}>Categorii sesizate</Text>
+                                    <Text style={styles.cardText}>{i18n.t("profileStatCard4")}</Text>
                                     <Text style={{ ...styles.cardText, fontSize: 18 }}>{categoriesReported}/6</Text>
                                 </View>
                                 <StatTag height={40} width={40} style={styles.statPhoto} />
@@ -320,7 +327,7 @@ function ProfileScreen({ ...props }) {
                 <View style={{ ...styles.reportsList, height: 500, marginBottom: 40 }}>
                     <View style={styles.rowArange}>
                         <Icon name="medal" type="font-awesome-5" size={20} style={styles.arangeIcon} />
-                        <Text style={styles.sectionHeaderText}>Realizările mele</Text>
+                        <Text style={styles.sectionHeaderText}>{i18n.t("profileAchievements")}</Text>
                     </View>
 
                     <View style={styles.achievementsContainer}>
@@ -330,16 +337,16 @@ function ProfileScreen({ ...props }) {
                             <View style={styles.achievementsCard}>
                                 <Ach1g width={65} height={65} style={styles.achievements} />
                                 <View style={styles.achievementsCardText}>
-                                    <Text style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>Bine ai venit</Text>
-                                    <Text style={styles.achievementsCardTextDescription}>Te-ai înregistrat pe aplicație</Text>
+                                    <Text style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>{i18n.t("profileAchievement1")}</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>{i18n.t("profileAchDesc1")}</Text>
                                 </View>
                             </View>
 
                             <View style={styles.achievementsCard}>
                                 <Ach2g width={65} height={65} style={styles.achievements} />
                                 <View style={styles.achievementsCardText}>
-                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>Sesizarea #1</Text>
-                                    <Text style={styles.achievementsCardTextDescription}>Ai adăugat prima sesizare în aplicație</Text>
+                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>{i18n.t("profileAchievement2")}</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>{i18n.t("profileAchDesc2")}</Text>
                                 </View>
                             </View>
 
@@ -350,16 +357,16 @@ function ProfileScreen({ ...props }) {
                             <View style={styles.achievementsCard}>
                                 <Ach3g width={65} height={65} style={styles.achievements} />
                                 <View style={styles.achievementsCardText}>
-                                    <Text style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>Probleme++</Text>
-                                    <Text style={styles.achievementsCardTextDescription}>Ai descoperit pagina de sesizări</Text>
+                                    <Text style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>{i18n.t("profileAchievement3")}</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>{i18n.t("profileAchDesc3")}</Text>
                                 </View>
                             </View>
 
                             <View style={styles.achievementsCard}>
                                 <Ach4 width={65} height={65} style={styles.achievements} />
                                 <View style={styles.achievementsCardText}>
-                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>Votat!</Text>
-                                    <Text style={styles.achievementsCardTextDescription}>Ai votat prima problemă în aplicație</Text>
+                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>{i18n.t("profileAchievement4")}</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>{i18n.t("profileAchDesc4")}</Text>
                                 </View>
                             </View>
 
@@ -370,16 +377,16 @@ function ProfileScreen({ ...props }) {
                             <View style={styles.achievementsCard}>
                                 <Ach5g width={65} height={65} style={styles.achievements} />
                                 <View style={styles.achievementsCardText}>
-                                    <Text style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>fotograf</Text>
-                                    <Text style={styles.achievementsCardTextDescription}>Ai adaugat 5 poze pentru probleme</Text>
+                                    <Text style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>{i18n.t("profileAchievement5")}</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>{i18n.t("profileAchDesc5")}</Text>
                                 </View>
                             </View>
 
                             <View style={styles.achievementsCard}>
                                 <Ach6 width={65} height={65} style={styles.achievements} />
                                 <View style={styles.achievementsCardText}>
-                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>selfie</Text>
-                                    <Text style={styles.achievementsCardTextDescription}>Ți-ai schimbat poza de profil</Text>
+                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>{i18n.t("profileAchievement6")}</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>{i18n.t("profileAchDesc6")}</Text>
                                 </View>
                             </View>
 
@@ -390,16 +397,16 @@ function ProfileScreen({ ...props }) {
                             <View style={styles.achievementsCard}>
                                 <Ach7 width={65} height={65} style={styles.achievements} />
                                 <View style={styles.achievementsCardText}>
-                                    <Text style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>Influencer</Text>
-                                    <Text style={styles.achievementsCardTextDescription}>Ai primit 50 de voturi la problema sesizată</Text>
+                                    <Text style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>{i18n.t("profileAchievement7")}</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>{i18n.t("profileAchDesc7")}</Text>
                                 </View>
                             </View>
 
                             <View style={styles.achievementsCard}>
                                 <Ach8g width={65} height={65} style={styles.achievements} />
                                 <View style={styles.achievementsCardText}>
-                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>inspector</Text>
-                                    <Text style={styles.achievementsCardTextDescription}>Ai adăugat 10 (Z-E-C-E) probleme în aplicație</Text>
+                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>{i18n.t("profileAchievement8")}</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>{i18n.t("profileAchDesc8")}</Text>
                                 </View>
                             </View>
 
@@ -410,16 +417,16 @@ function ProfileScreen({ ...props }) {
                             <View style={styles.achievementsCard}>
                                 <Ach9 width={65} height={65} style={styles.achievements} />
                                 <View style={styles.achievementsCardText}>
-                                    <Text style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>UNDE SUNT?</Text>
-                                    <Text style={styles.achievementsCardTextDescription}>Ai folosit locația curentă în sesizare</Text>
+                                    <Text style={{ ...styles.textLegend, color: colors.textGray, textTransform: 'uppercase' }}>{i18n.t("profileAchievement9")}</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>{i18n.t("profileAchDesc9")}</Text>
                                 </View>
                             </View>
 
                             <View style={styles.achievementsCard}>
                                 <Ach10g width={65} height={65} style={styles.achievements} />
                                 <View style={styles.achievementsCardText}>
-                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>specialist</Text>
-                                    <Text style={styles.achievementsCardTextDescription}>Ai adăugat 5 categorii diferite de probleme</Text>
+                                    <Text numberOfLines={1} style={{ ...styles.textLegend, color: colors.textYellow, textTransform: 'uppercase' }}>{i18n.t("profileAchievement10")}</Text>
+                                    <Text style={styles.achievementsCardTextDescription}>{i18n.t("profileAchDesc10")}</Text>
                                 </View>
                             </View>
 
@@ -606,6 +613,12 @@ const styleSheetFactory = (colors) => StyleSheet.create({
     divider: {
         flexDirection: 'column',
         backgroundColor: colors.textGray
+    },
+    titleArrangeFlatList: {
+        flex: 5,
+        flexDirection: "row",
+        width: '100%',
+        justifyContent: "flex-start",
     }
 })
 

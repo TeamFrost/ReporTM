@@ -10,14 +10,15 @@ import { LogBox } from 'react-native';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Random from 'expo-random';
-import { useActionSheet } from '@expo/react-native-action-sheet'
 import * as ImagePicker from 'expo-image-picker';
 import MapView, { Marker } from 'react-native-maps';
 import ActionSheet from "react-native-actions-sheet";
 import moment from 'moment';
+import i18n from 'i18n-js';
 
 import { firebase } from '../config/firebaseConfig';
 import { category } from '../helpers/category';
+import { ro, en } from "../helpers/dictionary";
 
 import { screenHeight, mapStyle, themeColors } from "../helpers/style";
 import NavBar from './components/NavBar';
@@ -29,19 +30,20 @@ import ChoosePhoto from '../assets/ActionSheetIcons/ChoosePhoto.js';
 
 const mapStateToProps = (state) => ({
     currentUser: state.auth.user,
-    theme: state.theme
+    theme: state.theme,
+    language: state.translations.language,
 });
 
 function ReportScreen({ ...props }) {
 
-    const { currentUser, navigation, theme } = props;
+    const { currentUser, navigation, theme, language } = props;
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
     const [value, setValueState] = useState('');
     const [color, setColor] = useState('');
     const [description, setDescriptionState] = useState('');
-    const [title, setTitle] = useState('Alege o categorie');
+    const [title, setTitle] = useState(i18n.t("reportCategory"));
 
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
@@ -66,6 +68,10 @@ function ReportScreen({ ...props }) {
 
     const firstHalf = category.slice(0, 3);
     const secondHalf = category.slice(3, 6);
+
+    i18n.fallbacks = true
+    i18n.translations = { ro, en }
+    i18n.locale = language
 
     useEffect(() => {
         if (props.route.params) {
@@ -224,7 +230,7 @@ function ReportScreen({ ...props }) {
         const timestamp = firebase.firestore.FieldValue.serverTimestamp();
         if ((text === '') || (coords === '') || (imageRef === '') || (value === '') || (description === "")) {
             check = false
-            alert("Toate câmpurile trebuie completate!")
+            alert(i18n.t("submitFormAlert"))
         }
         if (check === true) {
             imageRef.getDownloadURL()
@@ -265,14 +271,15 @@ function ReportScreen({ ...props }) {
                 <Ellipse2 width={31} height={61} style={styles.ellipse2} />
 
                 <View style={styles.form}>
-                    <Text style={styles.header}>COMPLETEAZĂ FORMULARUL PENTRU A SEMNALA O PROBLEMĂ</Text>
-                    <Text style={styles.section}>Locație</Text>
+                    <Text style={styles.header}>{i18n.t('reportHeader')}</Text>
+                    <Text style={styles.section}>{i18n.t('reportLocation')}</Text>
                     <Divider style={{ ...styles.divider, marginBottom: '1%' }} />
-                    <Text style={styles.textHelp}>ⓘ Apasă pe butonul ⦿ pentru a afla locația curentă.</Text>
+                    <Text style={styles.textHelp}>{i18n.t('reportCurrentLocation')}</Text>
                     <View style={styles.location}>
                         <TextInput
+                            editable={false}
                             style={styles.locationInput}
-                            placeholder="Adaugă locația problemei"
+                            placeholder={i18n.t('reportLocationPlaceholder')}
                             placeholderTextColor={colors.textColor}
                         >
                             {text}
@@ -321,7 +328,7 @@ function ReportScreen({ ...props }) {
                     </View>
                     <Divider style={styles.divider} />
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={styles.section}>Incarcă o fotografie</Text>
+                        <Text style={styles.section}>{i18n.t("reportUpload")}</Text>
                         <Icon style={styles.uploadIcon}
                             name="md-checkmark"
                             size={30}
@@ -338,7 +345,7 @@ function ReportScreen({ ...props }) {
 
                     </View>
                     <Divider style={{ backgroundColor: dividerColor, marginBottom: "7%", height: dividerHeight }} />
-                    <Text style={styles.section}>Descriere</Text>
+                    <Text style={styles.section}>{i18n.t("reportDescription")}</Text>
                     <Divider style={{ ...styles.divider, marginBottom: "4%" }} />
                     <View>
                         <TextInput
@@ -346,7 +353,7 @@ function ReportScreen({ ...props }) {
                             multiline
                             numberOfLines={6}
                             maxLength={240}
-                            placeholder='Adauga o descriere'
+                            placeholder={i18n.t("reportDescriptionPlaceholder")}
                             placeholderTextColor={colors.textColor}
                             onChangeText={text => setDescriptionState(text)}
                             value={description}
@@ -356,7 +363,7 @@ function ReportScreen({ ...props }) {
 
                         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.button}>
                             <View style={{ alignItems: "center" }}>
-                                <Text style={styles.buttonText}>Trimite</Text>
+                                <Text style={styles.buttonText}>{i18n.t("reportSend")}</Text>
                             </View>
                         </LinearGradient>
                     </TouchableHighlight>
@@ -365,7 +372,7 @@ function ReportScreen({ ...props }) {
 
                 <ActionSheet ref={actionSheetRef} containerStyle={styles.bottomSheetContainerStyle}>
                     <View style={styles.bottomSheetView}>
-                        <Text style={styles.textBottom}>Alege o categorie</Text>
+                        <Text style={styles.textBottom}>{i18n.t("reportCategory")}</Text>
                         <View style={styles.bottomSheetRow}>
                             {firstHalf.map((value, index) => {
                                 return <View style={styles.bottomSheetOrganizer}>
@@ -417,7 +424,7 @@ function ReportScreen({ ...props }) {
 
                 <ActionSheet ref={actionSheetRefPhoto} containerStyle={styles.bottomSheetContainerStyle}>
                     <View style={{ ...styles.bottomSheetView, height: '48%' }}>
-                        <Text style={styles.textBottom}>Alege una dintre optiunile</Text>
+                        <Text style={styles.textBottom}>{i18n.t("actionReportTitle")}</Text>
                         <View style={styles.bottomSheetRow}>
                             <View style={styles.bottomSheetOrganizer2}>
                                 <TouchableOpacity style={{ ...styles.bottomSheetButton2, backgroundColor: "#BB6BD9" }}
@@ -427,7 +434,7 @@ function ReportScreen({ ...props }) {
                                     }}>
                                     <AddPhoto />
                                 </TouchableOpacity>
-                                <Text style={styles.bottomSheetText}>Deschide camera</Text>
+                                <Text style={styles.bottomSheetText}>{i18n.t("actionCamera")}</Text>
                             </View>
                             <View style={styles.bottomSheetOrganizer2}>
                                 <TouchableOpacity style={{ ...styles.bottomSheetButton2, backgroundColor: "#793BB2" }}
@@ -437,7 +444,7 @@ function ReportScreen({ ...props }) {
                                     }}>
                                     <ChoosePhoto />
                                 </TouchableOpacity>
-                                <Text style={styles.bottomSheetText}>Alege din galerie</Text>
+                                <Text style={styles.bottomSheetText}>{i18n.t("actionGallery")}</Text>
                             </View>
                         </View>
                     </View>
@@ -614,7 +621,8 @@ const styleSheetFactory = (colors) => StyleSheet.create({
     bottomSheetText: {
         textAlign: 'center',
         paddingTop: 5,
-        color: colors.textColor
+        color: colors.textColor,
+        width: "120%",
     },
     bottomSheetOrganizer: {
         width: 80,

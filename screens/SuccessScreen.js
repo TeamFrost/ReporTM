@@ -3,16 +3,18 @@ import { StatusBar } from "expo-status-bar";
 import { Text, View, StyleSheet, TouchableHighlight } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { connect } from 'react-redux';
+import i18n from 'i18n-js';
 
+import { ro, en } from "../helpers/dictionary";
 import { screenHeight, themeColors } from "../helpers/style";
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
 import Success from "../assets/Success.svg"
 
-const mapStateToProps = (state) => ({ theme: state.theme });
+const mapStateToProps = (state) => ({ theme: state.theme, language: state.translations.language, });
 
 function SuccessScreen({ ...props }) {
-    const { navigation, theme } = props
+    const { navigation, theme, language } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
@@ -26,6 +28,10 @@ function SuccessScreen({ ...props }) {
         }
     }, [theme])
 
+    i18n.fallbacks = true
+    i18n.translations = { ro, en }
+    i18n.locale = language
+
     return (
         <View style={styles.container}>
             <View style={styles.textView}>
@@ -36,8 +42,8 @@ function SuccessScreen({ ...props }) {
 
             </View>
             <View style={{ ...styles.textView, height: screenHeight / 3, width: '80%', justifyContent: 'space-around', }}>
-                <Text style={styles.text}>Formular trimis!</Text>
-                <Text style={{ ...styles.text, fontSize: 14 }}>Sesizarea ta a fost inregistrata cu succes. Intoarce-te la pagina principala.</Text>
+                <Text style={styles.text}>{i18n.t("succesTitle")}</Text>
+                <Text style={{ ...styles.text, fontSize: 14 }}>{i18n.t("succesDesc")}</Text>
                 <TouchableHighlight
                     style={styles.confirmButton}
                     onPress={onButtonPress}
@@ -45,7 +51,7 @@ function SuccessScreen({ ...props }) {
                 >
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={{ ...styles.confirmButton, width: '100%' }}>
                         <View style={{ alignItems: "center" }}>
-                            <Text style={styles.buttonText}>Pagina principală</Text>
+                            <Text style={styles.buttonText}>{i18n.t("succesButton")}</Text>
                         </View>
                     </LinearGradient>
                 </TouchableHighlight>

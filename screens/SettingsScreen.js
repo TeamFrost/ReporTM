@@ -11,14 +11,16 @@ import ActionSheet from "react-native-actions-sheet";
 import * as ImagePicker from 'expo-image-picker';
 import * as Random from 'expo-random';
 import moment from 'moment';
+import i18n from 'i18n-js';
 
-import Settings from "../assets/Settings.svg"
+import { ro, en } from "../helpers/dictionary";
 import { firebase } from '../config/firebaseConfig'
 import { restoreSession } from '../redux/actions/auth/auth';
 import { changeTheme } from '../redux/actions/colorTheme/colorTheme'
 import { changeLanguage } from '../redux/actions/translations/translations'
 
 import { screenHeight, themeColors } from "../helpers/style";
+import Settings from "../assets/Settings.svg"
 import NavBar from '../screens/components/NavBar'
 import ProfilePlus from '../assets/ProfilePlus.svg'
 import Ellipse1 from "../assets/Ellipse1"
@@ -32,7 +34,8 @@ const mapStateToProps = (state) => ({
     user: state.auth.user,
     doneFetching: state.auth.doneFetching,
     theme: state.theme,
-    dark: state.theme.dark
+    dark: state.theme.dark,
+    language: state.translations.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -43,7 +46,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 function SettingsScreen({ ...props }) {
 
-    const { user, restoreSession, doneFetching, theme, changeTheme, dark, changeLanguage } = props
+    const { user, restoreSession, doneFetching, theme, changeTheme, dark, changeLanguage, language } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
@@ -57,22 +60,26 @@ function SettingsScreen({ ...props }) {
 
     const [isSwitch, setIsSwitch] = useState(false)
     const [isSwitchDark, setIsSwitchDark] = useState(dark)
-    const [value, setValueState] = useState('Română');
-    const [pickerVisibility, setPickerVisibility] = useState(false)
+    const [value, setValueState] = useState('');
 
     const actionSheetRefPhoto = createRef();
     const actionSheetRefLanguage = createRef();
 
+    i18n.fallbacks = true
+    i18n.translations = { ro, en }
+    i18n.locale = language
+
     useEffect(() => {
         if (user) {
             setIsSwitch(user.notifications)
-            // setIsSwitchDark(user.darkmode)
         }
         if (theme) {
             setColors(theme.theme)
             setStyles(styleSheetFactory(theme.theme))
             setIsSwitchDark(dark)
         }
+        if (language === 'ro') setValueState('Română')
+        else if (language === 'en-US') setValueState('English')
     }, [user, theme])
 
     let username = '';
@@ -123,11 +130,7 @@ function SettingsScreen({ ...props }) {
     let iconColor = colors.backgroundColor
 
     if (newPass === newPassConfirm && newPass.length != 0) {
-        iconColor = 'green'
-    }
-
-    const togglePicker = () => {
-        setPickerVisibility(!pickerVisibility)
+        iconColor = '#6CAF5F'
     }
 
     const takePicture = async () => {
@@ -258,17 +261,17 @@ function SettingsScreen({ ...props }) {
                                 actionSheetRefPhoto.current.setModalVisible();
                             }}
                         >
-                            Încarcă o poză de profil
-                            </Text>
+                            {i18n.t('uploadPhoto')}
+                        </Text>
                         <Icon name='camera' type="font-awesome-5" size={14} style={styles.cameraIcon} />
                     </View>
                 </View>
 
                 <View style={{ ...styles.nameDiv, marginTop: 10 }}>
-                    <Text style={styles.nameText}>Schimbă numele</Text>
-                    <Text style={styles.defaultText}>Numele tau curent este: {username}</Text>
+                    <Text style={styles.nameText}>{i18n.t('settingsNameTitle')}</Text>
+                    <Text style={styles.defaultText}>{i18n.t('settingsNameCurrent')}{username}</Text>
                     <Input
-                        placeholder='Scrie aici noul nume'
+                        placeholder={i18n.t('settingsNamePlaceholder')}
                         onChangeText={(text) => setNewName(text)}
                         value={newName}
                         inputStyle={styles.inputStyle}
@@ -277,7 +280,7 @@ function SettingsScreen({ ...props }) {
                     <TouchableOpacity style={styles.confirmButton} onPress={changeName}>
                         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={{ ...styles.confirmButton, width: '100%' }}>
                             <View style={{ alignItems: "center" }}>
-                                <Text style={styles.buttonText}>Confirmă schimbarea</Text>
+                                <Text style={styles.buttonText}>{i18n.t('settingsConfirmButton')}</Text>
                             </View>
                         </LinearGradient>
                     </TouchableOpacity>
@@ -285,9 +288,9 @@ function SettingsScreen({ ...props }) {
                 </View>
 
                 <View style={{ ...styles.nameDiv, height: screenHeight / 2.6, marginTop: 10 }}>
-                    <Text style={styles.nameText}>Schimbă parola</Text>
+                    <Text style={styles.nameText}>{i18n.t('settingsPassTitle')}</Text>
                     <Input
-                        placeholder='Parola veche'
+                        placeholder={i18n.t('settingsOldPass')}
                         onChangeText={(text) => setOldPass(text)}
                         value={oldPass}
                         inputStyle={styles.inputStyle}
@@ -295,7 +298,7 @@ function SettingsScreen({ ...props }) {
                         containerStyle={styles.inputContainerStyle}
                     />
                     <Input
-                        placeholder='Parola nouă'
+                        placeholder={i18n.t('settingsNewPass')}
                         rightIcon={<Icon
                             name='check'
                             size={16}
@@ -308,7 +311,7 @@ function SettingsScreen({ ...props }) {
                         containerStyle={styles.inputContainerStyle}
                     />
                     <Input
-                        placeholder='Confirmă parola nouă'
+                        placeholder={i18n.t('settingsNewPassConfirm')}
                         rightIcon={<Icon
                             name='check'
                             size={16}
@@ -324,19 +327,19 @@ function SettingsScreen({ ...props }) {
                     <TouchableOpacity style={styles.confirmButton} onPress={changePass}>
                         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={{ ...styles.confirmButton, width: '100%' }}>
                             <View style={{ alignItems: "center" }}>
-                                <Text style={styles.buttonText}>Confirmă schimbarea</Text>
+                                <Text style={styles.buttonText}>{i18n.t('settingsConfirmButton')}</Text>
                             </View>
                         </LinearGradient>
                     </TouchableOpacity>
                 </View>
 
                 <View style={{ ...styles.nameDiv, justifyContent: 'flex-start', height: screenHeight / 2.8 }}>
-                    <Text style={{ ...styles.nameText, marginTop: 20 }}>Notificări</Text>
+                    <Text style={{ ...styles.nameText, marginTop: 20 }}>{i18n.t('settingsNotificationTitle')}</Text>
                     <View style={styles.switchDiv}>
-                        <Text style={styles.defaultText}>Vreau să primesc notificări de la aplicație</Text>
+                        <Text style={styles.defaultText}>{i18n.t('settingsNotificationDesc')}</Text>
                         <Switch
                             style={{ transform: Platform.OS ? 'andriod'[{ scaleX: 1.3 }, { scaleY: 1.3 }] : [{ scaleX: 1 }, { scaleY: 1 }] }}
-                            trackColor={{ false: "#767577", true: "#34C759" }}
+                            trackColor={{ false: "#767577", true: "#6CAF5F" }}
                             thumbColor={isSwitch ? colors.white : colors.white}
                             ios_backgroundColor="#767577"
                             onValueChange={toggleSwitch}
@@ -344,12 +347,12 @@ function SettingsScreen({ ...props }) {
                         />
                     </View>
 
-                    <Text style={{ ...styles.nameText, marginTop: 5 }}>Dark mode</Text>
+                    <Text style={{ ...styles.nameText, marginTop: 5 }}>{i18n.t('settingsDarkModeTitle')}</Text>
                     <View style={styles.switchDiv}>
-                        <Text style={styles.defaultText}>Activează modul întunecat</Text>
+                        <Text style={styles.defaultText}>{i18n.t('settingsDarkModeDesc')}</Text>
                         <Switch
                             style={{ transform: Platform.OS ? 'andriod'[{ scaleX: 1.3 }, { scaleY: 1.3 }] : [{ scaleX: 1 }, { scaleY: 1 }] }}
-                            trackColor={{ false: "#767577", true: "#34C759" }}
+                            trackColor={{ false: "#767577", true: "#6CAF5F" }}
                             thumbColor={isSwitch ? colors.white : colors.white}
                             ios_backgroundColor="#767577"
                             onValueChange={toggleSwitchDark}
@@ -357,7 +360,7 @@ function SettingsScreen({ ...props }) {
                         />
                     </View>
 
-                    <Text style={{ ...styles.nameText, marginTop: 5 }}>Alege limba</Text>
+                    <Text style={{ ...styles.nameText, marginTop: 5 }}>{i18n.t('settingsChangeLanguageTitle')}</Text>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.categorySection}>{value}</Text>
                         <Icon style={styles.searchIcon}
@@ -370,54 +373,11 @@ function SettingsScreen({ ...props }) {
                         />
                     </View>
                     <Divider style={styles.divider} />
-                    <Modal visible={pickerVisibility} animationType={"slide"} transparent={true}>
-                        <View style={{
-                            alignSelf: "center",
-                            margin: 20, padding: 20,
-                            backgroundColor: colors.modalColor,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            position: 'absolute',
-                            top: "65%",
-                            width: "85%",
-
-                        }}>
-                            <Text style={{ color: colors.modalTextHelp }}>Alege o limbă</Text>
-                            <TouchableHighlight
-                                underlayColor={colors.homeCardsColor}
-                                onPress={() => {
-                                    setValueState("Româna");
-                                    togglePicker()
-                                }}
-                                style={{
-                                    padding: 6,
-                                    width: "85%",
-                                    alignItems: "center",
-                                    borderRadius: 20,
-                                }}
-                            >
-                                <Text style={{ fontSize: 18, color: colors.textColor }}>Română</Text>
-                            </TouchableHighlight>
-
-                            <TouchableHighlight
-                                underlayColor='none'
-                                onPress={() =>
-                                    togglePicker()
-                                }
-                                style={{
-                                    paddingTop: 4,
-                                    paddingBottom: 4
-                                }}
-                            >
-                                <Text style={{ color: colors.modalCancel, fontSize: 18 }}>Cancel</Text>
-                            </TouchableHighlight>
-                        </View>
-                    </Modal>
                 </View>
 
                 <ActionSheet ref={actionSheetRefPhoto} containerStyle={styles.bottomSheetContainerStyle}>
-                    <View style={{ ...styles.bottomSheetView, height: '48%' }}>
-                        <Text style={styles.textBottom}>Alege una dintre optiunile</Text>
+                    <View style={{ ...styles.bottomSheetView, height: screenHeight / 10 * 2.6 }}>
+                        <Text style={styles.textBottom}>{i18n.t('actionReportTitle')}</Text>
                         <View style={styles.bottomSheetRow}>
                             <View style={styles.bottomSheetOrganizer2}>
                                 <TouchableOpacity style={{ ...styles.bottomSheetButton2, backgroundColor: "#BB6BD9" }}
@@ -427,7 +387,7 @@ function SettingsScreen({ ...props }) {
                                     }}>
                                     <AddPhoto />
                                 </TouchableOpacity>
-                                <Text style={styles.bottomSheetText}>Deschide camera</Text>
+                                <Text style={styles.bottomSheetText}>{i18n.t('actionCamera')}</Text>
                             </View>
                             <View style={styles.bottomSheetOrganizer2}>
                                 <TouchableOpacity style={{ ...styles.bottomSheetButton2, backgroundColor: "#793BB2" }}
@@ -437,35 +397,37 @@ function SettingsScreen({ ...props }) {
                                     }}>
                                     <ChoosePhoto />
                                 </TouchableOpacity>
-                                <Text style={styles.bottomSheetText}>Alege din galerie</Text>
+                                <Text style={styles.bottomSheetText}>{i18n.t('actionGallery')}</Text>
                             </View>
                         </View>
                     </View>
                 </ActionSheet>
 
                 <ActionSheet ref={actionSheetRefLanguage} containerStyle={styles.bottomSheetContainerStyle}>
-                    <View style={{ ...styles.bottomSheetView, height: '48%' }}>
-                        <Text style={styles.textBottom}>Alege una dintre optiunile</Text>
+                    <View style={{ ...styles.bottomSheetView, height: screenHeight / 10 * 2.6 }}>
+                        <Text style={styles.textBottom}>{i18n.t('actionReportTitle')}</Text>
                         <View style={styles.bottomSheetRow}>
                             <View style={styles.bottomSheetOrganizer2}>
                                 <TouchableOpacity style={styles.bottomSheetButton2}
                                     onPress={() => {
+                                        setValueState("Română")
                                         handleOnLanguagePress("ro")
                                         actionSheetRefLanguage.current.hide();
                                     }}>
                                     <RoFlag />
                                 </TouchableOpacity>
-                                <Text style={styles.bottomSheetText}>Romana</Text>
+                                <Text style={styles.bottomSheetText}>Română</Text>
                             </View>
                             <View style={styles.bottomSheetOrganizer2}>
                                 <TouchableOpacity style={styles.bottomSheetButton2}
                                     onPress={() => {
+                                        setValueState("English")
                                         handleOnLanguagePress("en")
                                         actionSheetRefLanguage.current.hide();
                                     }}>
                                     <UkFlag />
                                 </TouchableOpacity>
-                                <Text style={styles.bottomSheetText}>Engleza</Text>
+                                <Text style={styles.bottomSheetText}>English</Text>
                             </View>
                         </View>
                     </View>
@@ -546,6 +508,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         flexDirection: 'row',
         alignItems: "center",
         justifyContent: 'space-between',
+        marginTop: 5,
     },
     categorySection: {
         flex: 8.9,
@@ -586,6 +549,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
     bottomSheetText: {
         textAlign: 'center',
         paddingTop: 5,
+        width: "120%",
         color: colors.textColor
     },
     bottomSheetOrganizer2: {
@@ -623,7 +587,7 @@ const styleSheetFactory = (colors) => StyleSheet.create({
         height: 65
     },
     defaultText: {
-        marginLeft: 8,
+        marginLeft: 10,
         color: colors.textColor
     }
 })

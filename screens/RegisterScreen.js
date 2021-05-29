@@ -6,7 +6,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { connect } from 'react-redux';
+import i18n from 'i18n-js';
 
+import { ro, en } from "../helpers/dictionary";
 import { screenHeight, screenWidth, themeColors } from "../helpers/style";
 import Logo from "../assets/Logo";
 import Ellipse1 from "../assets/Ellipse1"
@@ -25,13 +27,14 @@ const mapStateToProps = (state) => ({
     hasError: state.auth.hasError,
     errorMessage: state.auth.errorMessage,
     user: state.auth.user,
-    theme: state.theme
+    theme: state.theme,
+    language: state.translations.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({ signupUser: (email, password, username) => dispatch(signupUser(email, password, username)) });
 
 function RegisterScreen({ ...props }) {
-    const { navigation, signupUser, theme, doneFetching, user } = props
+    const { navigation, signupUser, theme, doneFetching, user, language } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
@@ -66,6 +69,9 @@ function RegisterScreen({ ...props }) {
         }
     }, [doneFetching])
 
+    i18n.fallbacks = true
+    i18n.translations = { ro, en }
+    i18n.locale = language
 
     const onFooterLinkPress = () => {
         navigation.navigate('Login')
@@ -75,13 +81,13 @@ function RegisterScreen({ ...props }) {
         const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (reg.test(text) === true) {
             setErrorStyle({ color: '#6CAF5F' })
-            setErrorMessage('Adresa de email valida!')
+            setErrorMessage(i18n.t('registerMailAlert'))
             setCheckColor('#6CAF5F')
             setIsValid(true)
         }
         else {
             setErrorStyle({ color: colors.modalCancel })
-            setErrorMessage('Adresa de email invalida!')
+            setErrorMessage(i18n.t('registerMailAlert'))
             setCheckColor(colors.backgroundColor)
             setIsValid(false)
         }
@@ -100,7 +106,7 @@ function RegisterScreen({ ...props }) {
             setPassword('')
         }
         else {
-            Alert.alert("A apărut o problemă", "Datele introduse nu sunt corecte")
+            Alert.alert(i18n.t("registerAlert1"), i18n.t("registerAlert2"))
         }
     }
 
@@ -119,10 +125,10 @@ function RegisterScreen({ ...props }) {
                         inputContainerStyle={{ borderBottomColor: errorStyle.color }}
                         errorMessage={errorMessage}
                         color={colors.textColor}
-                        label='Email'
+                        label={i18n.t("loginEmail")}
                         labelStyle={styles.text}
                         autoCapitalize="none"
-                        placeholder='Email'
+                        placeholder={i18n.t("loginEmail")}
                         onChangeText={(text) => handleOnTextChangeEmail(text)}
                         value={email}
                         keyboardType="email-address"
@@ -135,22 +141,22 @@ function RegisterScreen({ ...props }) {
                             />}
                     />
                     <Input
-                        label='Nume de utilizator'
+                        label={i18n.t("registerUser")}
                         labelStyle={styles.text}
                         color={colors.textColor}
                         autoCapitalize="none"
-                        placeholder='Nume de utilizator'
+                        placeholder={i18n.t("registerUser")}
                         onChangeText={(text) => setUsername(text)}
                         value={username}
                         leftIcon={<UserIcon />}
                     />
                     <Input
-                        label='Parola'
+                        label={i18n.t("loginPass")}
                         labelStyle={styles.text}
                         color={colors.textColor}
                         autoCapitalize="none"
                         secureTextEntry={textSecurity}
-                        placeholder='Parola'
+                        placeholder={i18n.t("loginPass")}
                         onChangeText={(text) => setPassword(text)}
                         value={password}
                         leftIcon={<LockIcon />}
@@ -158,17 +164,17 @@ function RegisterScreen({ ...props }) {
                     />
                     <View style={styles.textInfo}>
                         <InfoIcon marginTop={1} />
-                        <Text style={{ color: colors.textGray }}> Parola trebuie să conțină minim 6 caractere.</Text>
+                        <Text style={{ color: colors.textGray }}> {i18n.t("registerInfo")}</Text>
                     </View>
 
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.button}>
                         <TouchableOpacity onPress={onRegisterPress} style={styles.touchable}>
-                            <Text style={styles.buttonText}>Înregistrare</Text>
+                            <Text style={styles.buttonText}>{i18n.t("registerButton")}</Text>
                             <Icon active name='md-arrow-forward' style={styles.arrowIcon} />
                         </TouchableOpacity>
                     </LinearGradient>
 
-                    <Text style={styles.footerOuterText}>Dacă ai deja cont, <Text onPress={onFooterLinkPress} style={styles.footerInnerText}>autentifică-te</Text> acum.</Text>
+                    <Text style={styles.footerOuterText}>{i18n.t("registerRedirect")}<Text onPress={onFooterLinkPress} style={styles.footerInnerText}>{i18n.t("registerRedirect2")}</Text>{i18n.t("registerRedirect3")}</Text>
 
                 </View>
 

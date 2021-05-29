@@ -6,7 +6,9 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { LogBox } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import i18n from 'i18n-js';
 
+import { ro, en } from "../helpers/dictionary";
 import NavBar from '../screens/components/NavBar'
 import { screenHeight, screenWidth, themeColors } from "../helpers/style";
 import Feed from "../assets/Feed.svg"
@@ -20,7 +22,8 @@ const mapStateToProps = (state) => ({
     errorMessage: state.reports.errorMessage,
     reportsData: state.reports.reportsData,
     currentUser: state.auth.user,
-    theme: state.theme
+    theme: state.theme,
+    language: state.translations.language,
 });
 
 const renderItem = ({ item }) => {
@@ -48,7 +51,7 @@ const renderItem = ({ item }) => {
 
 function FeedScreen({ ...props }) {
 
-    const { reportsData, theme } = props
+    const { reportsData, theme, language } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
     const [reports, setReports] = useState(reportsData)
@@ -112,13 +115,17 @@ function FeedScreen({ ...props }) {
         setReports(res)
     }
 
+    i18n.fallbacks = true
+    i18n.translations = { ro, en }
+    i18n.locale = language
+
     return (
         <View style={styles.container}>
             <View>
                 <View style={styles.searchBar}>
                     <Input
                         style={{ padding: 5 }}
-                        placeholder='Caută'
+                        placeholder={i18n.t('search')}
                         rightIcon={
                             <Icon
                                 name='search'
@@ -139,7 +146,7 @@ function FeedScreen({ ...props }) {
                             size={16}
                             style={[styles.headerIcons, recentToggle && styles.activeIcon]}
                         />
-                        <Text style={styles.headerIconsText}> Recente</Text>
+                        <Text style={styles.headerIconsText}>{i18n.t('feedButtonRecent')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.tagButton, popularToggle && styles.active]} onPress={handlePopularPress}>
                         <Icon
@@ -148,7 +155,7 @@ function FeedScreen({ ...props }) {
                             size={16}
                             style={[styles.headerIcons, popularToggle && styles.activeIcon]}
                         />
-                        <Text style={styles.headerIconsText}> Populare</Text>
+                        <Text style={styles.headerIconsText}>{i18n.t('feedButtonPopular')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{ ...styles.tagButton, }}>
                         <Icon
@@ -157,7 +164,7 @@ function FeedScreen({ ...props }) {
                             size={16}
                             style={styles.headerIcons}
                         />
-                        <Text style={styles.headerIconsText}> Rezolvate</Text>
+                        <Text style={styles.headerIconsText}>{i18n.t('feedButtonRezolvat')}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

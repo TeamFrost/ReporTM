@@ -6,7 +6,9 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar } from 'react-native-paper';
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import { connect } from 'react-redux';
+import i18n from 'i18n-js';
 
+import { ro, en } from "../../helpers/dictionary";
 import { screenWidth, screenHeight, themeColors } from "../../helpers/style";
 import { firebase } from "../../config/firebaseConfig";
 import { restoreSession } from '../../redux/actions/auth/auth';
@@ -22,7 +24,8 @@ import ShareIcon from '../../assets/ActionSheetIcons/ShareIcon.js';
 
 const mapStateToProps = (state) => ({
     currentUser: state.auth.user,
-    theme: state.theme
+    theme: state.theme,
+    language: state.translations.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({ restoreSession: () => dispatch(restoreSession()) });
@@ -31,7 +34,7 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
 
     const { showActionSheetWithOptions } = useActionSheet();
 
-    const { currentUser, restoreSession, theme } = props
+    const { currentUser, restoreSession, theme, language } = props
 
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
@@ -41,6 +44,10 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
     const togglePicker = () => {
         setPickerVisibility(!pickerVisibility)
     }
+
+    i18n.fallbacks = true
+    i18n.translations = { ro, en }
+    i18n.locale = language
 
     useEffect(() => {
         if (currentUser) {
@@ -56,10 +63,10 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
     const handleOptionsPress = () => {
 
         if (currentUserId === author) {
-            const options = ['Partajează', 'Marchează ca rezolvat', 'Șterge postarea', "Anulează"];
+            const options = [i18n.t('actionShare'), i18n.t('actionSolve'), i18n.t('actionDelete'), i18n.t('actionCancel')];
             const destructiveButtonIndex = 2;
             const cancelButtonIndex = 3;
-            const title = "Ce acțiune dorești să execuți?"
+            const title = i18n.t('actionFeedTitle')
             const icons = [<ShareIcon />, <SolvedIcon />, <DeleteIcon style={{ marginLeft: 2 }} />, <CancelIcon />]
             const containerStyle = [styles.bottomSheetContainer]
             const textStyle = [{ marginLeft: -15, marginBottom: 2 }]
@@ -89,9 +96,9 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
             );
         }
         else {
-            const options = ['Informații false', 'Poză necorepunzătoare', 'Categorie greșită', 'Anulează'];
+            const options = [i18n.t('actionReportInfo'), i18n.t('actionReportPhoto'), i18n.t('actionReportTag'), i18n.t('actionCancel')];
             const cancelButtonIndex = 3;
-            const title = "De ce vrei să raportezi această postare?"
+            const title = i18n.t('actionFeedTitleReport')
             const icons = [<WrongInfo />, <WrongPhoto />, <WrongTag />, <CancelIcon />]
             const containerStyle = [styles.bottomSheetContainer]
             const textStyle = [{ marginLeft: -15, marginBottom: 2 }]
@@ -123,7 +130,7 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
     const handleSharePress = async () => {
         try {
             const result = await Share.share({
-                message: "Privește sesizarea mea de la adresa: " + adress + " din categoria " + tag + " cu descrierea: \"" + description + "\". \n" + photo.uri
+                message: i18n.t('shareMessage1') + adress + i18n.t('shareMessage2') + tag + i18n.t('shareMessage3') + description + "\". \n" + photo.uri
             });
             if (result.action === Share.sharedAction) {
                 if (result.activityType) {
@@ -140,9 +147,9 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
     };
 
     const deletePostConfirm = () => {
-        const options = ['Da', 'Nu'];
+        const options = [i18n.t("actionYes"), i18n.t("actionNo")];
         const destructiveButtonIndex = 0;
-        const title = "Ești sigur că dorești să ștergi postarea?"
+        const title = i18n.t("actionConfirmDelete")
         const containerStyle = [styles.bottomSheetContainer]
         const icons = [<SolvedIcon fill={"#d32f2f"} />, <CancelIcon />]
         const textStyle = [{ marginLeft: -15, marginBottom: 2 }]
@@ -176,9 +183,9 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
     }
 
     const solvePostConfirm = () => {
-        const options = ['Da', 'Nu'];
+        const options = [i18n.t("actionYes"), i18n.t("actionNo")];
         const destructiveButtonIndex = 0;
-        const title = "Ești sigur că dorești să marchezi această postare ca rezolvată?"
+        const title = i18n.t("actionConfirmSolve")
         const containerStyle = [styles.bottomSheetContainer]
         const icons = [<SolvedIcon fill={"#d32f2f"} />, <CancelIcon />]
         const textStyle = [{ marginLeft: -15, marginBottom: 2 }]
@@ -283,7 +290,7 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
         if (solved) {
             return (
                 <View style={styles.solvedView}>
-                    <Text style={styles.solveText}>Rezolvat</Text>
+                    <Text style={styles.solveText}>{i18n.t("solvedCard")}</Text>
                 </View>
             )
         }
@@ -352,7 +359,7 @@ function FeedCard({ userName, userAvatar, adress, time, photo, description, upvo
                     <TouchableOpacity onPress={onUpvotePress}>
                         {displayIcon()}
                     </TouchableOpacity>
-                    <Text style={styles.normalText}>{upvotes} {upvotes === 1 ? <Text>Aprobare</Text> : <Text>Aprobări</Text>}</Text>
+                    <Text style={styles.normalText}>{upvotes} {upvotes === 1 ? <Text>{i18n.t('upvote')}</Text> : <Text>{i18n.t('upvotes')}</Text>}</Text>
                 </View>
                 <View style={styles.rightBottomTag}>
                     <TouchableOpacity style={styles.tagButton2} >

@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from "react-native";
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { connect } from 'react-redux';
+import i18n from 'i18n-js';
 
+import { ro, en } from "../helpers/dictionary";
 import { screenHeight, themeColors } from "../helpers/style";
 import Ellipse from "../assets/Ellipse"
 import Slide1 from "../assets/Slide1";
@@ -14,35 +16,35 @@ import Slide5 from "../assets/Slide5";
 const slides = [
     {
         key: "1",
-        title: "Identificarea unei probleme",
-        text: "În momentul în care sesizezi o problemă în oraș este foarte usor să o faci mai vizibilă către cetățeni și administrație. Trebuie doar să îți deschizi telefonul și să pornești \nReporTM.",
+        title: i18n.t("introSlide1Title"),
+        text: i18n.t("introSlide1Desc"),
     },
     {
         key: "2",
-        title: "Locația problemei",
-        text: "Adăugarea locației pe hartă este un pas foarte importat și se poate face în două moduri: \n\n ‣ prin oferirea locației curente, caz în care se apasă pe butonul ⦿ de lângă locație din formular. \n\n  ‣ prin oferirea unei locații specifice. Pentru a face asta utilizatorul trebuie să meargă pe ecranul HARTĂ și să țină apăsat pe o locație până ce este redirecționat pe pagina de raportare.",
+        title: i18n.t("introSlide2Title"),
+        text: i18n.t("introSlide2Desc"),
     },
     {
         key: "3",
-        title: "Categoria din care face parte",
-        text: "Mai departe, trebui să alegi în ce categorie se încadrează problema ta dintre cele 6 disponibile: \n\n ‣ Gropi \n‣ Gunoi \n‣ Graffiti \n‣ Iluminat \n‣ Poluare \n‣ Parcare \n ",
+        title: i18n.t("introSlide3Title"),
+        text: i18n.t("introSlide3Desc"),
     },
     {
         key: "4",
-        title: "Imaginea",
-        text: "Adăugarea unei fotografii este esențială pentru a oferi credibilitate sesizării, dar și pentru a o face mai bine înțeleasă de ceilalți utilizatori. \n\n Poți face o poză cu telefonul pe loc sau poți alege una pe care o ai deja în galerie. După încărcare va apărea o iconiță verde ✓, care confirmă încărcarea cu succes.",
+        title: i18n.t("introSlide4Title"),
+        text: i18n.t("introSlide4Desc"),
     },
     {
         key: "5",
-        title: "Descrierea",
-        text: "Ultimul pas înainte de a trimite formularul este de a oferi un context sesizării și de a descrie în câteva cuvinte problema.\n\n Ceva scurt și la obiect care să prezinte situația ar finaliza în mod adecvat raportarea.",
+        title: i18n.t("introSlide5Title"),
+        text: i18n.t("introSlide5Desc"),
     },
 ];
 
-const mapStateToProps = (state) => ({ theme: state.theme });
+const mapStateToProps = (state) => ({ theme: state.theme, language: state.translations.language, });
 
 function IntroScreen({ ...props }) {
-    const { navigation, theme } = props
+    const { navigation, theme, language } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
@@ -53,31 +55,35 @@ function IntroScreen({ ...props }) {
         }
     }, [theme])
 
+    i18n.fallbacks = true
+    i18n.translations = { ro, en }
+    i18n.locale = language
+
     const renderNextButton = () => {
         return (
             <View style={styles.nextButton}>
-                <Text style={styles.nextText}>Înainte</Text>
+                <Text style={styles.nextText}>{i18n.t('introNext')}</Text>
             </View>
         );
     }
     const renderPrevButton = () => {
         return (
             <View style={{ ...styles.nextButton, marginLeft: 5 }}>
-                <Text style={styles.nextText}>Înapoi</Text>
+                <Text style={styles.nextText}>{i18n.t('introBack')}</Text>
             </View>
         );
     }
     const renderDoneButton = () => {
         return (
             <View style={styles.nextButton}>
-                <Text style={styles.nextText}>Gata</Text>
+                <Text style={styles.nextText}>{i18n.t('introDone')}</Text>
             </View>
         );
     }
     const renderSkipButton = () => {
         return (
             <View style={{ ...styles.nextButton, marginLeft: 5 }}>
-                <Text style={styles.nextText}>Sari</Text>
+                <Text style={styles.nextText}>{i18n.t('introSkip')}</Text>
             </View>
         );
     }

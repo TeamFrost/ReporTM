@@ -8,12 +8,14 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Callout } from 'react-native-maps';
 import { Svg, Image as ImageSvg } from 'react-native-svg';
+import i18n from 'i18n-js';
 
 import { screenHeight, screenWidth, mapStyle, themeColors } from "../helpers/style";
 import NavBar from './components/NavBar'
 import Map from "../assets/Map.svg";
 import { watchReportsData } from '../redux/actions/reports/reports';
 import { category } from '../helpers/category';
+import { ro, en } from "../helpers/dictionary";
 
 const mapStateToProps = (state) => ({
     doneFetching: state.reports.doneFetching,
@@ -21,19 +23,24 @@ const mapStateToProps = (state) => ({
     hasError: state.reports.hasError,
     errorMessage: state.reports.errorMessage,
     reportsData: state.reports.reportsData,
-    theme: state.theme
+    theme: state.theme,
+    language: state.translations.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({ watchReportsData: () => dispatch(watchReportsData()) });
 
 function MapScreen({ ...props }) {
-    const { reportsData, theme, watchReportsData } = props;
+    const { reportsData, theme, watchReportsData, language } = props;
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
     const [search, setSearch] = useState('')
     const [categoryFilter, setCategoryFilter] = useState('')
     const [mapData, setMapData] = useState(reportsData)
+
+    i18n.fallbacks = true
+    i18n.translations = { ro, en }
+    i18n.locale = language
 
     useEffect(() => {
         // watchReportsData()
@@ -118,7 +125,7 @@ function MapScreen({ ...props }) {
                     platform='default'
                     lightTheme={(colors.textColor === colors.white) ? false : true}
                     autoCapitalize="none"
-                    placeholder='Search'
+                    placeholder={i18n.t("search")}
                     textAlign='center'
                     round={true}
                     containerStyle={styles.searchBarContainer}

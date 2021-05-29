@@ -6,7 +6,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { connect } from 'react-redux';
+import i18n from 'i18n-js';
 
+import { ro, en } from "../helpers/dictionary";
 import { firebase } from '../config/firebaseConfig'
 import { screenHeight, screenWidth, themeColors } from "../helpers/style";
 
@@ -17,11 +19,12 @@ import MailIcon from "../assets/Icons/mailIcon.js";
 
 const mapStateToProps = (state) => ({
     user: state.auth.user,
-    theme: state.theme
+    theme: state.theme,
+    language: state.translations.language,
 });
 
 function ForgotPasswordScreen({ ...props }) {
-    const { navigation, theme } = props
+    const { navigation, theme, language } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight));
     const [colors, setColors] = useState(themeColors.themeLight);
 
@@ -32,13 +35,16 @@ function ForgotPasswordScreen({ ...props }) {
     const [errorMessage, setErrorMessage] = useState('');
     const [checkColor, setCheckColor] = useState(colors.backgroundColor);
 
-
     useEffect(() => {
         if (theme) {
             setColors(theme.theme)
             setStyles(styleSheetFactory(theme.theme))
         }
     }, [theme])
+
+    i18n.fallbacks = true
+    i18n.translations = { ro, en }
+    i18n.locale = language
 
     const onFooterLinkPress = () => {
         navigation.navigate('Login')
@@ -92,20 +98,18 @@ function ForgotPasswordScreen({ ...props }) {
 
                 <View style={styles.info}>
 
-                    <Text style={styles.headerText}>Ți-ai uitat parola?</Text>
-                    <Text style={styles.descriptionText}>
-                        Completează câmpul de mai jos pentru a primi instrucțiunile de resetare a parolei la adresa de email introdusă.
-                        </Text>
+                    <Text style={styles.headerText}>{i18n.t("forgotTitle")}</Text>
+                    <Text style={styles.descriptionText}>{i18n.t("forgotDesc")}</Text>
 
                     <Input
                         errorStyle={errorStyle}
                         inputContainerStyle={{ borderBottomColor: errorStyle.color }}
                         errorMessage={errorMessage}
                         color={colors.textColor}
-                        label='Email'
+                        label={i18n.t("helpMail")}
                         labelStyle={styles.text}
                         autoCapitalize="none"
-                        placeholder='Email'
+                        placeholder='Mail'
                         onChangeText={(text) => handleOnTextChangeEmail(text)}
                         value={email}
                         keyboardType="email-address"
@@ -120,13 +124,13 @@ function ForgotPasswordScreen({ ...props }) {
 
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.button}>
                         <TouchableOpacity onPress={onConfirmPress} style={styles.touchable}>
-                            <Text style={styles.buttonText}>Trimite email</Text>
+                            <Text style={styles.buttonText}>{i18n.t("forgotButton")}</Text>
                             <Icon active name='md-arrow-forward' style={styles.arrowIcon} />
                         </TouchableOpacity>
                     </LinearGradient>
 
                     <Text style={styles.footerOuterText}>
-                        Ți-ai amintit parola? Întroarce-te la <Text onPress={onFooterLinkPress} style={styles.footerInnerText}>autentificare</Text> acum.
+                        {i18n.t("forgotRedirect")}<Text onPress={onFooterLinkPress} style={styles.footerInnerText}>{i18n.t("forgotRedirect2")}</Text>{i18n.t("forgotRedirect3")}
                     </Text>
 
                 </View>

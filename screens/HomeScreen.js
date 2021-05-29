@@ -5,19 +5,19 @@ import { connect } from 'react-redux';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 
-import { ro, en } from "../helpers/dictionary"
+import { ro, en } from "../helpers/dictionary";
 import { screenHeight, themeColors } from "../helpers/style";
 import { watchReportsData } from '../redux/actions/reports/reports';
-import NavBar from '../screens/components/NavBar'
+import NavBar from '../screens/components/NavBar';
 import Home from "../assets/Home";
-import Ellipse1 from "../assets/Ellipse1"
-import Ellipse2 from "../assets/Ellipse2"
-import Map from '../assets/Map.svg'
-import Report from '../assets/Report.svg'
-import Feed from '../assets/Feed.svg'
-import Profile from '../assets/Profile.svg'
-import Settings from '../assets/Settings.svg'
-import Help from '../assets/Help.svg'
+import Ellipse1 from "../assets/Ellipse1";
+import Ellipse2 from "../assets/Ellipse2";
+import Map from '../assets/Map.svg';
+import Report from '../assets/Report.svg';
+import Feed from '../assets/Feed.svg';
+import Profile from '../assets/Profile.svg';
+import Settings from '../assets/Settings.svg';
+import Help from '../assets/Help.svg';
 
 const mapStateToProps = (state) => ({
     reportsData: state.reports.reportsData,
@@ -64,9 +64,7 @@ function HomeScreen({ ...props }) {
                 <Text style={styles.titleBaseText}>
                     Repor<Text style={styles.titleInnerText}>TM</Text>
                 </Text>
-                <Text style={styles.description}>
-                    Ajută-ți orașul să devină mai bun prin semnalarea problemelor întâlnite. Cu ajutorul acestei aplicații îți poți face vocea auzită și poți face parte din schimbare!
-                </Text>
+                <Text style={styles.description}>{i18n.t('homeDescription')}</Text>
             </View>
 
             <View style={styles.paperView}>
@@ -78,8 +76,8 @@ function HomeScreen({ ...props }) {
                 >
                     <View style={styles.paper}>
                         <Map width={50} height={50} style={styles.iconPaper} />
-                        <Text style={styles.titlePaper}>Hartă</Text>
-                        <Text style={styles.descriptionPaper}>Vezi harta problemelor din oraș</Text>
+                        <Text style={styles.titlePaper}>{i18n.t('drawerMap')}</Text>
+                        <Text style={styles.descriptionPaper}>{i18n.t('homeMapDesc')}</Text>
                     </View>
 
                 </TouchableHighlight>
@@ -91,8 +89,8 @@ function HomeScreen({ ...props }) {
                 >
                     <View style={styles.paper}>
                         <Report width={50} height={50} style={styles.iconPaper} />
-                        <Text style={styles.titlePaper}>Raportează</Text>
-                        <Text style={styles.descriptionPaper}>Raportează o problemă întâlnită</Text>
+                        <Text style={styles.titlePaper}>{i18n.t('drawerReport')}</Text>
+                        <Text style={styles.descriptionPaper}>{i18n.t('homeReportDesc')}</Text>
                     </View>
                 </TouchableHighlight>
 
@@ -107,11 +105,8 @@ function HomeScreen({ ...props }) {
                 >
                     <View style={styles.paper}>
                         <Feed width={50} height={50} style={styles.iconPaper} />
-                        {/* <Text style={styles.titlePaper}>Sesizări</Text> */}
-                        <Text style={styles.titlePaper}>
-                            {i18n.t('feed')}
-                        </Text>
-                        <Text style={styles.descriptionPaper}>Toate sesizările utilizatorilor</Text>
+                        <Text style={styles.titlePaper}>{i18n.t('drawerFeed')}</Text>
+                        <Text style={styles.descriptionPaper}>{i18n.t('homeFeedDesc')}</Text>
                     </View>
 
                 </TouchableHighlight>
@@ -123,8 +118,8 @@ function HomeScreen({ ...props }) {
                 >
                     <View style={styles.paper}>
                         <Profile width={50} height={50} style={styles.iconPaper} />
-                        <Text style={styles.titlePaper}>Profilul meu</Text>
-                        <Text style={styles.descriptionPaper}>Vezi informațiile despre utilizator</Text>
+                        <Text style={styles.titlePaper}>{i18n.t('drawerProfile')}</Text>
+                        <Text style={styles.descriptionPaper}>{i18n.t('homeProfileDesc')}</Text>
                     </View>
                 </TouchableHighlight>
 
@@ -138,8 +133,8 @@ function HomeScreen({ ...props }) {
                 >
                     <View style={styles.paper}>
                         <Settings width={50} height={50} style={styles.iconPaper} />
-                        <Text style={styles.titlePaper}>Setări</Text>
-                        <Text style={styles.descriptionPaper}>Setări aplicație</Text>
+                        <Text style={styles.titlePaper}>{i18n.t('drawerSettings')}</Text>
+                        <Text style={styles.descriptionPaper}>{i18n.t('homeSettingsDesc')}</Text>
                     </View>
                 </TouchableHighlight>
 
@@ -150,8 +145,8 @@ function HomeScreen({ ...props }) {
                 >
                     <View style={styles.paper}>
                         <Help width={50} height={50} style={styles.iconPaper} />
-                        <Text style={styles.titlePaper}>Ajutor</Text>
-                        <Text style={styles.descriptionPaper}>Află cum să folosești aplicația</Text>
+                        <Text style={styles.titlePaper}>{i18n.t('drawerHelp')}</Text>
+                        <Text style={styles.descriptionPaper}>{i18n.t('homeHelpDesc')}</Text>
                     </View>
                 </TouchableHighlight>
 

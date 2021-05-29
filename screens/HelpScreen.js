@@ -6,18 +6,20 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Linking from 'expo-linking';
 import { connect } from 'react-redux';
+import i18n from 'i18n-js';
 
-import NavBar from '../screens/components/NavBar'
+import { ro, en } from "../helpers/dictionary";
 import { screenHeight, themeColors } from "../helpers/style";
+import NavBar from '../screens/components/NavBar'
 import Ellipse1 from "../assets/Ellipse1"
 import Ellipse2 from "../assets/Ellipse2"
 import Help from "../assets/Help.svg"
 
-const mapStateToProps = (state) => ({ theme: state.theme });
+const mapStateToProps = (state) => ({ theme: state.theme, language: state.translations.language, });
 
 function HelpScreen({ ...props }) {
 
-    const { navigation, theme } = props
+    const { navigation, theme, language } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
@@ -27,6 +29,10 @@ function HelpScreen({ ...props }) {
             setStyles(styleSheetFactory(theme.theme))
         }
     }, [theme])
+
+    i18n.fallbacks = true
+    i18n.translations = { ro, en }
+    i18n.locale = language
 
     return (
         <View style={styles.container}>
@@ -38,51 +44,51 @@ function HelpScreen({ ...props }) {
                 <Ellipse2 width={41} height={80} style={styles.ellipse2} />
 
                 <View style={styles.infoTop}>
-                    <Text style={styles.textTop}>INFORMAȚII ADMINISTRAȚIE PUBLICĂ TIMIȘOARA</Text>
-                    <Text style={{ ...styles.textTop, fontSize: 16, color: colors.textColor, fontWeight: 'normal' }}>Pentru a contacta prin canale oficiale probleme sesizate, găsiți mai jos datele de contact pentru instituțiile relevante.</Text>
+                    <Text style={styles.textTop}>{i18n.t("helpTitle")}</Text>
+                    <Text style={{ ...styles.textTop, fontSize: 16, color: colors.textColor, fontWeight: 'normal' }}>{i18n.t("helpDesc")}</Text>
                 </View>
 
                 <View style={styles.infoDiv}>
                     <View style={styles.infoTextDiv}>
-                        <Text style={styles.infoText}>Primăria Timișoara</Text>
-                        <Text style={styles.linkInfo}>Telefon: <Text onPress={() => Linking.openURL(`tel:0256 408 300`)} style={styles.linkText}>0256 408 300</Text></Text>
-                        <Text style={styles.linkInfo}>Email: <Text onPress={() => Linking.openURL(`mailto:primariatm@primariatm.ro`)} style={styles.linkText}>primariatm@primariatm.ro</Text></Text>
-                        <Text style={styles.linkInfo}>Website: <Text onPress={() => Linking.openURL(`https:www.primariatm.ro`)} style={styles.linkText}>www.primariatm.ro</Text></Text>
+                        <Text style={styles.infoText}>{i18n.t("help1")}</Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpPhone")} <Text onPress={() => Linking.openURL(`tel:0256 408 300`)} style={styles.linkText}>0256 408 300</Text></Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpMail")} <Text onPress={() => Linking.openURL(`mailto:primariatm@primariatm.ro`)} style={styles.linkText}>primariatm@primariatm.ro</Text></Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpWeb")} <Text onPress={() => Linking.openURL(`https:www.primariatm.ro`)} style={styles.linkText}>www.primariatm.ro</Text></Text>
                     </View>
 
                     <View style={styles.infoTextDiv}>
-                        <Text style={styles.infoText}>Poliția Locală Timișoara</Text>
-                        <Text style={styles.linkInfo}>Telefon: <Text onPress={() => Linking.openURL(`tel:0256 246 112`)} style={styles.linkText}>0256 246 112</Text></Text>
-                        <Text style={styles.linkInfo}>Email: <Text onPress={() => Linking.openURL(`mailto:contact@politialoctm.ro`)} style={styles.linkText}>contact@politialoctm.ro</Text></Text>
-                        <Text style={styles.linkInfo}>Website: <Text onPress={() => Linking.openURL(`https:www.polcomtim.ro`)} style={styles.linkText}>www.polcomtim.ro</Text></Text>
+                        <Text style={styles.infoText}>{i18n.t("help2")}</Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpPhone")} <Text onPress={() => Linking.openURL(`tel:0256 246 112`)} style={styles.linkText}>0256 246 112</Text></Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpMail")} <Text onPress={() => Linking.openURL(`mailto:contact@politialoctm.ro`)} style={styles.linkText}>contact@politialoctm.ro</Text></Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpWeb")} <Text onPress={() => Linking.openURL(`https:www.polcomtim.ro`)} style={styles.linkText}>www.polcomtim.ro</Text></Text>
                     </View>
 
                     <View style={styles.infoTextDiv}>
-                        <Text style={styles.infoText}>Societatea de Transport Public Timișoara</Text>
-                        <Text style={styles.linkInfo}>Telefon: <Text onPress={() => Linking.openURL(`tel:0356 803 700`)} style={styles.linkText}>0356 803 700</Text></Text>
-                        <Text style={styles.linkInfo}>Email: <Text onPress={() => Linking.openURL(`mailto:relatiipublice@stpt.ro`)} style={styles.linkText}>relatiipublice@stpt.ro</Text></Text>
-                        <Text style={styles.linkInfo}>Website: <Text onPress={() => Linking.openURL(`http:www.ratt.ro`)} style={styles.linkText}>www.ratt.ro</Text></Text>
+                        <Text style={styles.infoText}>{i18n.t("help3")}</Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpPhone")} <Text onPress={() => Linking.openURL(`tel:0356 803 700`)} style={styles.linkText}>0356 803 700</Text></Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpMail")} <Text onPress={() => Linking.openURL(`mailto:relatiipublice@stpt.ro`)} style={styles.linkText}>relatiipublice@stpt.ro</Text></Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpWeb")} <Text onPress={() => Linking.openURL(`http:www.ratt.ro`)} style={styles.linkText}>www.ratt.ro</Text></Text>
                     </View>
 
                     <View style={styles.infoTextDiv}>
-                        <Text style={styles.infoText}>S.C. RETIM Ecologic Service S.A.</Text>
-                        <Text style={styles.linkInfo}>Telefon: <Text onPress={() => Linking.openURL(`tel:0256 499 490`)} style={styles.linkText}>0256 499 490</Text></Text>
-                        <Text style={styles.linkInfo}>Email: <Text onPress={() => Linking.openURL(`mailto:contact@retim.ro`)} style={styles.linkText}>contact@retim.ro</Text></Text>
-                        <Text style={styles.linkInfo}>Website: <Text onPress={() => Linking.openURL(`https:www.retim.ro`)} style={styles.linkText}>www.retim.ro</Text></Text>
+                        <Text style={styles.infoText}>{i18n.t("help4")}</Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpPhone")} <Text onPress={() => Linking.openURL(`tel:0256 499 490`)} style={styles.linkText}>0256 499 490</Text></Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpMail")} <Text onPress={() => Linking.openURL(`mailto:contact@retim.ro`)} style={styles.linkText}>contact@retim.ro</Text></Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpWeb")} <Text onPress={() => Linking.openURL(`https:www.retim.ro`)} style={styles.linkText}>www.retim.ro</Text></Text>
                     </View>
 
                     <View style={styles.infoTextDiv}>
-                        <Text style={styles.infoText}>Direcția de Sănătate Publică Timiș</Text>
-                        <Text style={styles.linkInfo}>Telefon: <Text onPress={() => Linking.openURL(`tel:0256 494 680`)} style={styles.linkText}>0256 494 680</Text></Text>
-                        <Text style={styles.linkInfo}>Email: <Text onPress={() => Linking.openURL(`mailto:dspj.timis@dsptimis.ro`)} style={styles.linkText}>dspj.timis@dsptimis.ro</Text></Text>
-                        <Text style={styles.linkInfo}>Website: <Text onPress={() => Linking.openURL(`https:www.dsptimis.ro`)} style={styles.linkText}>www.dsptimis.ro</Text></Text>
+                        <Text style={styles.infoText}>{i18n.t("help5")}</Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpPhone")} <Text onPress={() => Linking.openURL(`tel:0256 494 680`)} style={styles.linkText}>0256 494 680</Text></Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpMail")} <Text onPress={() => Linking.openURL(`mailto:dspj.timis@dsptimis.ro`)} style={styles.linkText}>dspj.timis@dsptimis.ro</Text></Text>
+                        <Text style={styles.linkInfo}>{i18n.t("helpWeb")} <Text onPress={() => Linking.openURL(`https:www.dsptimis.ro`)} style={styles.linkText}>www.dsptimis.ro</Text></Text>
                     </View>
                 </View>
 
                 <View style={styles.tutorialTextDiv}>
                     <Icon name='info-circle' type="font-awesome-5" size={24} style={{ padding: 5, color: colors.textColor }} />
                     <Text style={{ fontWeight: "bold", fontSize: 15, color: colors.textColor }}>
-                        Pentru a afla cum să faci o sesizare din aplicație, apasă pe butonul de mai jos.
+                        {i18n.t("helpInfo")}
                     </Text>
                 </View>
 
@@ -91,7 +97,7 @@ function HelpScreen({ ...props }) {
                     <TouchableHighlight onPress={() => navigation.navigate('Intro')} style={styles.touchButton}>
                         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#C17BDB', '#9853C5', '#6C4397']} style={styles.button}>
                             <View style={{ alignItems: "center" }}>
-                                <Text style={styles.buttonText}>Cum raportez o problemă?</Text>
+                                <Text style={styles.buttonText}> {i18n.t("helpButton")}</Text>
                             </View>
                         </LinearGradient>
                     </TouchableHighlight>

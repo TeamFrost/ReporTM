@@ -5,8 +5,10 @@ import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Avatar, Caption } from 'react-native-paper';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
+import i18n from 'i18n-js';
 import { DrawerActions } from '@react-navigation/native';
 
+import { ro, en } from "../helpers/dictionary";
 import { logoutUser } from '../redux/actions/auth/auth';
 import { changeTheme } from '../redux/actions/colorTheme/colorTheme'
 import { screenHeight, themeColors } from "../helpers/style";
@@ -18,7 +20,8 @@ const mapStateToProps = (state) => ({
     errorMessage: state.auth.errorMessage,
     user: state.auth.user,
     theme: state.theme,
-    dark: state.theme.dark
+    dark: state.theme.dark,
+    language: state.translations.language,
 });
 
 
@@ -28,11 +31,15 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 function DrawerContent({ ...props }) {
-    const { logoutUser, doneFetching, navigation, user, theme, changeTheme, dark } = props
+    const { logoutUser, doneFetching, navigation, user, theme, changeTheme, dark, language } = props
     const [styles, setStyles] = useState(styleSheetFactory(themeColors.themeLight))
     const [colors, setColors] = useState(themeColors.themeLight)
 
     const [isSwitch, setIsSwitch] = useState(dark)
+
+    i18n.fallbacks = true
+    i18n.translations = { ro, en }
+    i18n.locale = language
 
     let username = ''
     let nickname = ''
@@ -83,37 +90,37 @@ function DrawerContent({ ...props }) {
                 </View>
                 <View style={{ flex: 1, shadowColor: 'transparent' }}>
                     <DrawerItem
-                        label="Hartă"
+                        label={i18n.t('drawerMap')}
                         style={styles.itemDrawer}
                         labelStyle={styles.itemText}
                         onPress={() => { props.navigation.navigate("Map") }}
                     />
                     <DrawerItem
-                        label="Raportează"
+                        label={i18n.t('drawerReport')}
                         style={styles.itemDrawer}
                         labelStyle={styles.itemText}
                         onPress={() => { props.navigation.navigate("Report") }}
                     />
                     <DrawerItem
-                        label="Sesizări"
+                        label={i18n.t('drawerFeed')}
                         style={styles.itemDrawer}
                         labelStyle={styles.itemText}
                         onPress={() => { props.navigation.navigate("Feed") }}
                     />
                     <DrawerItem
-                        label="Profilul meu"
+                        label={i18n.t('drawerProfile')}
                         style={styles.itemDrawer}
                         labelStyle={styles.itemText}
                         onPress={() => { props.navigation.navigate("Profile") }}
                     />
                     <DrawerItem
-                        label="Setări"
+                        label={i18n.t('drawerSettings')}
                         style={styles.itemDrawer}
                         labelStyle={styles.itemText}
                         onPress={() => { props.navigation.navigate("Settings") }}
                     />
                     <DrawerItem
-                        label="Ajutor"
+                        label={i18n.t('drawerHelp')}
                         style={styles.itemDrawer}
                         labelStyle={styles.itemText}
                         onPress={() => { props.navigation.navigate("Help") }}
@@ -137,7 +144,7 @@ function DrawerContent({ ...props }) {
                 </View>
                 <View style={styles.bottomItemDrawer}>
                     <DrawerItem
-                        label="Deconectare"
+                        label={i18n.t('drawerLogout')}
                         labelStyle={styles.bottomItemText}
                         icon={() => <Icon
                             name="sign-out"
